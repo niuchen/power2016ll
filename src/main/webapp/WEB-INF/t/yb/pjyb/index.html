@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <title>票据数据月报</title>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet">
+	<link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet">
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet">
+    <link href="${ctx.contextPath}/res/jqgrid/jqgrid.css" rel="stylesheet">
+	<link href="${ctx.contextPath}/res/wdTree/tree.css" rel="stylesheet"/>
+	
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+	<script src="${ctx.contextPath}/res/jqgrid/jqgrid.min.js"></script>
+	<script src="${ctx.contextPath}/res/datepicker/WdatePicker.js"></script>
+	<script src="${ctx.contextPath}/res/wdTree/tree.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+    
+    <style>
+        body {margin: 10px;margin-bottom: 0px;}
+    </style>	
+</head>
+<body>
+<script>
+    var _nowDate = new Date(Date.parse("${.now}".replace(/-/g, "/").replace("T", " ").split(".")[0]));
+    var _now = formatDate(_nowDate,'yyyy-MM')
+    $(function () {
+    	var st = _nowDate.getFullYear();
+    	$("#StartTime").val(st);
+        $("#EndTime").val(st);
+        $("#SelectedStartTime").html($("#StartTime").val());
+        $("#SelectedEndTime").html($("#EndTime").val());
+        InitialPage();
+        GetGrid();
+    	//中心/站点
+      	$("#deptId").ComboBoxTree({
+      		url: "${ctx.contextPath}/sys/dept/deptTree",
+            description: "==请选择==",
+            height: "180px",
+            click: function (item) {
+                if (item.sort == 'org') {
+                    $("#orgId").val(item.id);
+                }else{
+                	$("#orgId").val("");
+                }
+            }
+        });
+    });
+    //初始化页面
+    function InitialPage() {
+        //resize重设(表格、树形)宽高
+        $(window).resize(function (e) {
+            window.setTimeout(function () {
+                $('#gridTable').setGridWidth(($('.gridPanel').width()));
+                $("#gridTable").setGridHeight($(window).height() - 136.5);
+            }, 200);
+            e.stopPropagation();
+        });
+        //
+        //点击时间范围（今天、近7天、近一个月、近三个月）
+        $("#time_horizon a.btn-default").click(function () {
+            $("#time_horizon a.btn-default").removeClass("active");
+            $(this).addClass("active");
+            var st = _now;
+            switch ($(this).attr('data-value')) {
+                case "1"://本月
+                	st = _now;
+                	$("#EndTime").val(_now);
+                    break;
+                case "2"://本年
+                	st = _nowDate.getFullYear();
+                	$("#EndTime").val(st);
+                    break;
+                default:break;
+            }
+            $("#StartTime").val(st);
+            $("#SelectedStartTime").html($("#StartTime").val());
+            $("#SelectedEndTime").html($("#EndTime").val());
+            SearchEvent();
+        });
+        //日志分类点击事件（登录日志、访问日志、操作日志）
+        $("#SystemLogType li").click(function () {
+            $("#SystemLogType li").removeClass("active");
+            $(this).addClass("active");
+            SearchEvent();
+        });
+        //查询点击事件
+        $("#btn_Search").click(function () {
+            SearchEvent();
+            $(".ui-filter-text").trigger("click");
+            $("#SelectedStartTime").html($("#StartTime").val());
+            $("#SelectedEndTime").html($("#EndTime").val());
+        });
+    }
+    //
+    //查询表格函数
+    function SearchEvent() {
+        var queryJson = $("#filter-form").GetWebControls();
+        $("#gridTable").jqGrid('setGridParam', {
+        	postData: { st: queryJson.StartTime,
+            	et: queryJson.EndTime,
+            	deptId: queryJson.deptId,
+            	orgId: queryJson.orgId,
+            	lock: queryJson.lock,
+            },
+            page: 1
+        }).trigger('reloadGrid');
+    }
+    //加载表格
+    function GetGrid() {
+    	var queryJson = $("#filter-form").GetWebControls();
+        var selectedRowIndex = 0;
+        var $gridTable = $('#gridTable');
+        $gridTable.jqGrid({
+            url: "${ctx.contextPath}/yb/pjybData",
+            postData: { st: queryJson.StartTime,
+            	et: queryJson.EndTime,
+            	lrymc: queryJson.lrymc,
+            	zdzz: queryJson.zdzz,
+            	},
+            datatype: "json",
+            mtype:"POST",
+            prmNames:{rows:"pS"},
+            jsonReader : {total: "pages",records: "total"},
+            height: $(window).height() - 140.5,
+            autowidth: true,
+            multiselect: true,
+            //
+            colModel: [
+                { label: '主键', name: 'xh', hidden: true },
+                { label: '状态', name: 'zt', width: 40, align: 'center',sortable:false,
+                	formatter: function (cellvalue, options, rowObject) {
+                		var re = "";
+                		if (cellvalue == 1) {re = '<i class="fa fa-unlock fa-lg"></i>';} else if (cellvalue == 2) {re = '<i class="fa fa-lock fa-lg"></i>';}
+                		return re;
+                    }
+                },
+                { label: '收费日期', name: 'sfrq', index: 'sfrq', width: 80, align: 'center',
+                	formatter: function (cellvalue, options, rowObject) {
+                        return cellvalue==null?"":formatDate(new Date(cellvalue), 'yyyy-MM');
+                    }
+                },
+                { label: '站点名称', name: 'zdmc', index: 'zdmc', width: 100, align: 'left' },
+                { label: '征收科微机票据本月领入', name: 'zskbylr1', index: 'zskbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '征收科微机票据本月耗用', name: 'zskbyhy1', index: 'zskbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '征收科微机票据实际结存', name: 'zskbyjc1', index: 'zskbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '征收科伍元定额票本月领入', name: 'zskbylr2', index: 'zskbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '征收科伍元定额票本月耗用', name: 'zskbyhy2', index: 'zskbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '征收科伍元定额票实际结存', name: 'zskbyjc2', index: 'zskbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '征收科拾元定额票本月领入', name: 'zskbylr3', index: 'zskbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '征收科拾元定额票本月耗用', name: 'zskbyhy3', index: 'zskbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '征收科拾元定额票实际结存', name: 'zskbyjc3', index: 'zskbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '征收科贰拾元定额票本月领入', name: 'zskbylr4', index: 'zskbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '征收科贰拾元定额票本月耗用', name: 'zskbyhy4', index: 'zskbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '征收科贰拾元定额票实际结存', name: 'zskbyjc4', index: 'zskbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '征收科伍拾元定额票本月领入', name: 'zskbylr5', index: 'zskbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '征收科伍拾元定额票本月耗用', name: 'zskbyhy5', index: 'zskbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '征收科伍拾元定额票实际结存', name: 'zskbyjc5', index: 'zskbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '征收科微机票据本月领入金额', name: 'zskbylrje1', index: 'zskbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '征收科微机票据本月耗用金额', name: 'zskbyhyje1', index: 'zskbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '征收科微机票据实际结存金额', name: 'zskbyjcje1', index: 'zskbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '征收科伍元定额票本月领入金额', name: 'zskbylrje2', index: 'zskbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '征收科伍元定额票本月耗用金额', name: 'zskbyhyje2', index: 'zskbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '征收科伍元定额票实际结存金额', name: 'zskbyjcje2', index: 'zskbyjc2je', width: 120, align: 'left',sortable:false },
+                { label: '征收科拾元定额票本月领入金额', name: 'zskbylrje3', index: 'zskbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '征收科拾元定额票本月耗用金额', name: 'zskbyhyje3', index: 'zskbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '征收科拾元定额票实际结存金额', name: 'zskbyjcje3', index: 'zskbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '征收科贰拾元定额票本月领入金额', name: 'zskbylrje4', index: 'zskbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '征收科贰拾元定额票本月耗用金额', name: 'zskbyhyje4', index: 'zskbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '征收科贰拾元定额票实际结存金额', name: 'zskbyjcje4', index: 'zskbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '征收科伍拾元定额票本月领入金额', name: 'zskbylrje5', index: 'zskbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '征收科伍拾元定额票本月耗用金额', name: 'zskbyhyje5', index: 'zskbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '征收科伍拾元定额票实际结存金额', name: 'zskbyjcje5', index: 'zskbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站微机票据本月领入', name: 'llbylr1', index: 'llbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '洛龙收费站微机票据本月耗用', name: 'llbyhy1', index: 'llbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站微机票据实际结存', name: 'llbyjc1', index: 'llbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站伍元定额票本月领入', name: 'llbylr2', index: 'llbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '洛龙收费站伍元定额票本月耗用', name: 'llbyhy2', index: 'llbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站伍元定额票实际结存', name: 'llbyjc2', index: 'llbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站拾元定额票本月领入', name: 'llbylr3', index: 'llbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '洛龙收费站拾元定额票本月耗用', name: 'llbyhy3', index: 'llbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站拾元定额票实际结存', name: 'llbyjc3', index: 'llbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站贰拾元定额票本月领入', name: 'llbylr4', index: 'llbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '洛龙收费站贰拾元定额票本月耗用', name: 'llbyhy4', index: 'llbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站贰拾元定额票实际结存', name: 'llbyjc4', index: 'llbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站伍拾元定额票本月领入', name: 'llbylr5', index: 'llbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '洛龙收费站伍拾元定额票本月耗用', name: 'llbyhy5', index: 'llbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站伍拾元定额票实际结存', name: 'llbyjc5', index: 'llbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站微机票据本月领入金额', name: 'llbylrje1', index: 'llbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '洛龙收费站微机票据本月耗用金额', name: 'llbyhyje1', index: 'llbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站微机票据实际结存金额', name: 'llbyjcje1', index: 'llbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站伍元定额票本月领入金额', name: 'llbylrje2', index: 'llbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '洛龙收费站伍元定额票本月耗用金额', name: 'llbyhyje2', index: 'llbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站伍元定额票实际结存金额', name: 'llbyjcje2', index: 'llbyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站拾元定额票本月领入金额', name: 'llbylrje3', index: 'llbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '洛龙收费站拾元定额票本月耗用金额', name: 'llbyhyje3', index: 'llbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站拾元定额票实际结存金额', name: 'llbyjcje3', index: 'llbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站贰拾元定额票本月领入金额', name: 'llbylrje4', index: 'llbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '洛龙收费站贰拾元定额票本月耗用金额', name: 'llbyhyje4', index: 'llbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站贰拾元定额票实际结存金额', name: 'llbyjcje4', index: 'llbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站伍拾元定额票本月领入金额', name: 'llbylrje5', index: 'llbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '洛龙收费站伍拾元定额票本月耗用金额', name: 'llbyhyje5', index: 'llbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '洛龙收费站伍拾元定额票实际结存金额', name: 'llbyjcje5', index: 'llbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站微机票据本月领入', name: 'ycxbylr1', index: 'ycxbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '伊川西收费站微机票据本月耗用', name: 'ycxbyhy1', index: 'ycxbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站微机票据实际结存', name: 'ycxbyjc1', index: 'ycxbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站伍元定额票本月领入', name: 'ycxbylr2', index: 'ycxbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '伊川西收费站伍元定额票本月耗用', name: 'ycxbyhy2', index: 'ycxbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站伍元定额票实际结存', name: 'ycxbyjc2', index: 'ycxbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站拾元定额票本月领入', name: 'ycxbylr3', index: 'ycxbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '伊川西收费站拾元定额票本月耗用', name: 'ycxbyhy3', index: 'ycxbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站拾元定额票实际结存', name: 'ycxbyjc3', index: 'ycxbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站贰拾元定额票本月领入', name: 'ycxbylr4', index: 'ycxbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '伊川西收费站贰拾元定额票本月耗用', name: 'ycxbyhy4', index: 'ycxbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站贰拾元定额票实际结存', name: 'ycxbyjc4', index: 'ycxbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站伍拾元定额票本月领入', name: 'ycxbylr5', index: 'ycxbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '伊川西收费站伍拾元定额票本月耗用', name: 'ycxbyhy5', index: 'ycxbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站伍拾元定额票实际结存', name: 'ycxbyjc5', index: 'ycxbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站微机票据本月领入金额', name: 'ycxbylrje1', index: 'ycxbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '伊川西收费站微机票据本月耗用金额', name: 'ycxbyhyje1', index: 'ycxbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站微机票据实际结存金额', name: 'ycxbyjcje1', index: 'ycxbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站伍元定额票本月领入金额', name: 'ycxbylrje2', index: 'ycxbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '伊川西收费站伍元定额票本月耗用金额', name: 'ycxbyhyje2', index: 'ycxbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站伍元定额票实际结存金额', name: 'ycxbyjcje2', index: 'ycxbyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站拾元定额票本月领入金额', name: 'ycxbylrje3', index: 'ycxbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '伊川西收费站拾元定额票本月耗用金额', name: 'ycxbyhyje3', index: 'ycxbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站拾元定额票实际结存金额', name: 'ycxbyjcje3', index: 'ycxbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站贰拾元定额票本月领入金额', name: 'ycxbylrje4', index: 'ycxbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '伊川西收费站贰拾元定额票本月耗用金额', name: 'ycxbyhyje4', index: 'ycxbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站贰拾元定额票实际结存金额', name: 'ycxbyjcje4', index: 'ycxbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站伍拾元定额票本月领入金额', name: 'ycxbylrje5', index: 'ycxbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '伊川西收费站伍拾元定额票本月耗用金额', name: 'ycxbyhyje5', index: 'ycxbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '伊川西收费站伍拾元定额票实际结存金额', name: 'ycxbyjcje5', index: 'ycxbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站微机票据本月领入', name: 'scjbylr1', index: 'scjbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县产业聚集区收费站微机票据本月耗用', name: 'scjbyhy1', index: 'scjbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站微机票据实际结存', name: 'scjbyjc1', index: 'scjbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站伍元定额票本月领入', name: 'scjbylr2', index: 'scjbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县产业聚集区收费站伍元定额票本月耗用', name: 'scjbyhy2', index: 'scjbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站伍元定额票实际结存', name: 'scjbyjc2', index: 'scjbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站拾元定额票本月领入', name: 'scjbylr3', index: 'scjbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县产业聚集区收费站拾元定额票本月耗用', name: 'scjbyhy3', index: 'scjbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站拾元定额票实际结存', name: 'scjbyjc3', index: 'scjbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站贰拾元定额票本月领入', name: 'scjbylr4', index: 'scjbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县产业聚集区收费站贰拾元定额票本月耗用', name: 'scjbyhy4', index: 'scjbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站贰拾元定额票实际结存', name: 'scjbyjc4', index: 'scjbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站伍拾元定额票本月领入', name: 'scjbylr5', index: 'scjbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县产业聚集区收费站伍拾元定额票本月耗用', name: 'scjbyhy5', index: 'scjbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站伍拾元定额票实际结存', name: 'scjbyjc5', index: 'scjbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站微机票据本月领入金额', name: 'scjbylrje1', index: 'scjbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县产业聚集区收费站微机票据本月耗用金额', name: 'scjbyhyje1', index: 'scjbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站微机票据实际结存金额', name: 'scjbyjcje1', index: 'scjbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站伍元定额票本月领入金额', name: 'scjbylrje2', index: 'scjbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县产业聚集区收费站伍元定额票本月耗用金额', name: 'scjbyhyje2', index: 'scjbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站伍元定额票实际结存金额', name: 'scjbyjcje2', index: 'scjbyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站拾元定额票本月领入金额', name: 'scjbylrje3', index: 'scjbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县产业聚集区收费站拾元定额票本月耗用金额', name: 'scjbyhyje3', index: 'scjbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站拾元定额票实际结存金额', name: 'scjbyjcje3', index: 'scjbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站贰拾元定额票本月领入金额', name: 'scjbylrje4', index: 'scjbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县产业聚集区收费站贰拾元定额票本月耗用金额', name: 'scjbyhyje4', index: 'scjbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站贰拾元定额票实际结存金额', name: 'scjbyjcje4', index: 'scjbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站伍拾元定额票本月领入金额', name: 'scjbylrje5', index: 'scjbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县产业聚集区收费站伍拾元定额票本月耗用金额', name: 'scjbyhyje5', index: 'scjbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '嵩县产业聚集区收费站伍拾元定额票实际结存金额', name: 'scjbyjcje5', index: 'scjbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站微机票据本月领入', name: 'sxbylr1', index: 'sxbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县收费站微机票据本月耗用', name: 'sxbyhy1', index: 'sxbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站微机票据实际结存', name: 'sxbyjc1', index: 'sxbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站伍元定额票本月领入', name: 'sxbylr2', index: 'sxbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县收费站伍元定额票本月耗用', name: 'sxbyhy2', index: 'sxbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站伍元定额票实际结存', name: 'sxbyjc2', index: 'sxbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站拾元定额票本月领入', name: 'sxbylr3', index: 'sxbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县收费站拾元定额票本月耗用', name: 'sxbyhy3', index: 'sxbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站拾元定额票实际结存', name: 'sxbyjc3', index: 'sxbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站贰拾元定额票本月领入', name: 'sxbylr4', index: 'sxbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县收费站贰拾元定额票本月耗用', name: 'sxbyhy4', index: 'sxbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站贰拾元定额票实际结存', name: 'sxbyjc4', index: 'sxbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站伍拾元定额票本月领入', name: 'sxbylr5', index: 'sxbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县收费站伍拾元定额票本月耗用', name: 'sxbyhy5', index: 'sxbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站伍拾元定额票实际结存', name: 'sxbyjc5', index: 'sxbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站微机票据本月领入金额', name: 'sxbylrje1', index: 'sxbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县收费站微机票据本月耗用金额', name: 'sxbyhyje1', index: 'sxbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站微机票据实际结存金额', name: 'sxbyjcje1', index: 'sxbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站伍元定额票本月领入金额', name: 'sxbylrje2', index: 'sxbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县收费站伍元定额票本月耗用金额', name: 'sxbyhyje2', index: 'sxbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站伍元定额票实际结存金额', name: 'sxbyjcje2', index: 'sxbyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站拾元定额票本月领入金额', name: 'sxbylrje3', index: 'sxbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县收费站拾元定额票本月耗用金额', name: 'sxbyhyje3', index: 'sxbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站拾元定额票实际结存金额', name: 'sxbyjcje3', index: 'sxbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站贰拾元定额票本月领入金额', name: 'sxbylrje4', index: 'sxbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县收费站贰拾元定额票本月耗用金额', name: 'sxbyhyje4', index: 'sxbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站贰拾元定额票实际结存金额', name: 'sxbyjcje4', index: 'sxbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站伍拾元定额票本月领入金额', name: 'sxbylrje5', index: 'sxbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩县收费站伍拾元定额票本月耗用金额', name: 'sxbyhyje5', index: 'sxbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '嵩县收费站伍拾元定额票实际结存金额', name: 'sxbyjcje5', index: 'sxbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段微机票据本月领入', name: 'lsxjbylr1', index: 'lsxjbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '洛嵩段微机票据本月耗用', name: 'lsxjbyhy1', index: 'lsxjbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段微机票据实际结存', name: 'lsxjbyjc1', index: 'lsxjbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段伍元定额票本月领入', name: 'lsxjbylr2', index: 'lsxjbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '洛嵩段伍元定额票本月耗用', name: 'lsxjbyhy2', index: 'lsxjbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段伍元定额票实际结存', name: 'lsxjbyjc2', index: 'lsxjbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段拾元定额票本月领入', name: 'lsxjbylr3', index: 'lsxjbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '洛嵩段拾元定额票本月耗用', name: 'lsxjbyhy3', index: 'lsxjbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段拾元定额票实际结存', name: 'lsxjbyjc3', index: 'lsxjbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段贰拾元定额票本月领入', name: 'lsxjbylr4', index: 'lsxjbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '洛嵩段贰拾元定额票本月耗用', name: 'lsxjbyhy4', index: 'lsxjbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段贰拾元定额票实际结存', name: 'lsxjbyjc4', index: 'lsxjbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段伍拾元定额票本月领入', name: 'lsxjbylr5', index: 'lsxjbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '洛嵩段伍拾元定额票本月耗用', name: 'lsxjbyhy5', index: 'lsxjbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段伍拾元定额票实际结存', name: 'lsxjbyjc5', index: 'lsxjbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段微机票据本月领入金额', name: 'lsxjbylrje1', index: 'lsxjbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '洛嵩段微机票据本月耗用金额', name: 'lsxjbyhyje1', index: 'lsxjbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段微机票据实际结存金额', name: 'lsxjbyjcje1', index: 'lsxjbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段伍元定额票本月领入金额', name: 'lsxjbylrje2', index: 'lsxjbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '洛嵩段伍元定额票本月耗用金额', name: 'lsxjbyhyje2', index: 'lsxjbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段伍元定额票实际结存金额', name: 'lsxjbyjcje2', index: 'lsxjbyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段拾元定额票本月领入金额', name: 'lsxjbylrje3', index: 'lsxjbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '洛嵩段拾元定额票本月耗用金额', name: 'lsxjbyhyje3', index: 'lsxjbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段拾元定额票实际结存金额', name: 'lsxjbyjcje3', index: 'lsxjbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段贰拾元定额票本月领入金额', name: 'lsxjbylrje4', index: 'lsxjbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '洛嵩段贰拾元定额票本月耗用金额', name: 'lsxjbyhyje4', index: 'lsxjbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段贰拾元定额票实际结存金额', name: 'lsxjbyjcje4', index: 'lsxjbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段伍拾元定额票本月领入金额', name: 'lsxjbylrje5', index: 'lsxjbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '洛嵩段伍拾元定额票本月耗用金额', name: 'lsxjbyhyje5', index: 'lsxjbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '洛嵩段伍拾元定额票实际结存金额', name: 'lsxjbyjcje5', index: 'lsxjbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站微机票据本月领入', name: 'jxbylr1', index: 'jxbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '旧县收费站微机票据本月耗用', name: 'jxbyhy1', index: 'jxbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站微机票据实际结存', name: 'jxbyjc1', index: 'jxbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站伍元定额票本月领入', name: 'jxbylr2', index: 'jxbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '旧县收费站伍元定额票本月耗用', name: 'jxbyhy2', index: 'jxbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站伍元定额票实际结存', name: 'jxbyjc2', index: 'jxbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站拾元定额票本月领入', name: 'jxbylr3', index: 'jxbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '旧县收费站拾元定额票本月耗用', name: 'jxbyhy3', index: 'jxbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站拾元定额票实际结存', name: 'jxbyjc3', index: 'jxbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站贰拾元定额票本月领入', name: 'jxbylr4', index: 'jxbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '旧县收费站贰拾元定额票本月耗用', name: 'jxbyhy4', index: 'jxbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站贰拾元定额票实际结存', name: 'jxbyjc4', index: 'jxbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站伍拾元定额票本月领入', name: 'jxbylr5', index: 'jxbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '旧县收费站伍拾元定额票本月耗用', name: 'jxbyhy5', index: 'jxbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站伍拾元定额票实际结存', name: 'jxbyjc5', index: 'jxbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站微机票据本月领入金额', name: 'jxbylrje1', index: 'jxbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '旧县收费站微机票据本月耗用金额', name: 'jxbyhyje1', index: 'jxbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站微机票据实际结存金额', name: 'jxbyjcje1', index: 'jxbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站伍元定额票本月领入金额', name: 'jxbylrje2', index: 'jxbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '旧县收费站伍元定额票本月耗用金额', name: 'jxbyhyje2', index: 'jxbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站伍元定额票实际结存金额', name: 'jxbyjcje2', index: 'jxbyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站拾元定额票本月领入金额', name: 'jxbylrje3', index: 'jxbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '旧县收费站拾元定额票本月耗用金额', name: 'jxbyhyje3', index: 'jxbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站拾元定额票实际结存金额', name: 'jxbyjcje3', index: 'jxbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站贰拾元定额票本月领入金额', name: 'jxbylrje4', index: 'jxbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '旧县收费站贰拾元定额票本月耗用金额', name: 'jxbyhyje4', index: 'jxbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站贰拾元定额票实际结存金额', name: 'jxbyjcje4', index: 'jxbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站伍拾元定额票本月领入金额', name: 'jxbylrje5', index: 'jxbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '旧县收费站伍拾元定额票本月耗用金额', name: 'jxbyhyje5', index: 'jxbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '旧县收费站伍拾元定额票实际结存金额', name: 'jxbyjcje5', index: 'jxbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站微机票据本月领入', name: 'jlsbylr1', index: 'jlsbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '九龙山收费站微机票据本月耗用', name: 'jlsbyhy1', index: 'jlsbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站微机票据实际结存', name: 'jlsbyjc1', index: 'jlsbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站伍元定额票本月领入', name: 'jlsbylr2', index: 'jlsbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '九龙山收费站伍元定额票本月耗用', name: 'jlsbyhy2', index: 'jlsbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站伍元定额票实际结存', name: 'jlsbyjc2', index: 'jlsbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站拾元定额票本月领入', name: 'jlsbylr3', index: 'jlsbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '九龙山收费站拾元定额票本月耗用', name: 'jlsbyhy3', index: 'jlsbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站拾元定额票实际结存', name: 'jlsbyjc3', index: 'jlsbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站贰拾元定额票本月领入', name: 'jlsbylr4', index: 'jlsbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '九龙山收费站贰拾元定额票本月耗用', name: 'jlsbyhy4', index: 'jlsbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站贰拾元定额票实际结存', name: 'jlsbyjc4', index: 'jlsbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站伍拾元定额票本月领入', name: 'jlsbylr5', index: 'jlsbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '九龙山收费站伍拾元定额票本月耗用', name: 'jlsbyhy5', index: 'jlsbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站伍拾元定额票实际结存', name: 'jlsbyjc5', index: 'jlsbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站微机票据本月领入金额', name: 'jlsbylrje1', index: 'jlsbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '九龙山收费站微机票据本月耗用金额', name: 'jlsbyhyje1', index: 'jlsbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站微机票据实际结存金额', name: 'jlsbyjcje1', index: 'jlsbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站伍元定额票本月领入金额', name: 'jlsbylrje2', index: 'jlsbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '九龙山收费站伍元定额票本月耗用金额', name: 'jlsbyhyje2', index: 'jlsbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站伍元定额票实际结存金额', name: 'jlsbyjcje2', index: 'jlsbyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站拾元定额票本月领入金额', name: 'jlsbylrje3', index: 'jlsbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '九龙山收费站拾元定额票本月耗用金额', name: 'jlsbyhyje3', index: 'jlsbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站拾元定额票实际结存金额', name: 'jlsbyjcje3', index: 'jlsbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站贰拾元定额票本月领入金额', name: 'jlsbylrje4', index: 'jlsbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '九龙山收费站贰拾元定额票本月耗用金额', name: 'jlsbyhyje4', index: 'jlsbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站贰拾元定额票实际结存金额', name: 'jlsbyjcje4', index: 'jlsbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站伍拾元定额票本月领入金额', name: 'jlsbylrje5', index: 'jlsbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '九龙山收费站伍拾元定额票本月耗用金额', name: 'jlsbyhyje5', index: 'jlsbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '九龙山收费站伍拾元定额票实际结存金额', name: 'jlsbyjcje5', index: 'jlsbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站微机票据本月领入', name: 'jdgbylr1', index: 'jdgbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '重渡沟收费站微机票据本月耗用', name: 'jdgbyhy1', index: 'jdgbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站微机票据实际结存', name: 'jdgbyjc1', index: 'jdgbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站伍元定额票本月领入', name: 'jdgbylr2', index: 'jdgbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '重渡沟收费站伍元定额票本月耗用', name: 'jdgbyhy2', index: 'jdgbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站伍元定额票实际结存', name: 'jdgbyjc2', index: 'jdgbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站拾元定额票本月领入', name: 'jdgbylr3', index: 'jdgbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '重渡沟收费站拾元定额票本月耗用', name: 'jdgbyhy3', index: 'jdgbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站拾元定额票实际结存', name: 'jdgbyjc3', index: 'jdgbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站贰拾元定额票本月领入', name: 'jdgbylr4', index: 'jdgbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '重渡沟收费站贰拾元定额票本月耗用', name: 'jdgbyhy4', index: 'jdgbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站贰拾元定额票实际结存', name: 'jdgbyjc4', index: 'jdgbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站伍拾元定额票本月领入', name: 'jdgbylr5', index: 'jdgbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '重渡沟收费站伍拾元定额票本月耗用', name: 'jdgbyhy5', index: 'jdgbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站伍拾元定额票实际结存', name: 'jdgbyjc5', index: 'jdgbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站微机票据本月领入金额', name: 'jdgbylrje1', index: 'jdgbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '重渡沟收费站微机票据本月耗用金额', name: 'jdgbyhyje1', index: 'jdgbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站微机票据实际结存金额', name: 'jdgbyjcje1', index: 'jdgbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站伍元定额票本月领入金额', name: 'jdgbylrje2', index: 'jdgbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '重渡沟收费站伍元定额票本月耗用金额', name: 'jdgbyhyje2', index: 'jdgbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站伍元定额票实际结存金额', name: 'jdgbyjcje2', index: 'jdgbyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站拾元定额票本月领入金额', name: 'jdgbylrje3', index: 'jdgbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '重渡沟收费站拾元定额票本月耗用金额', name: 'jdgbyhyje3', index: 'jdgbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站拾元定额票实际结存金额', name: 'jdgbyjcje3', index: 'jdgbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站贰拾元定额票本月领入金额', name: 'jdgbylrje4', index: 'jdgbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '重渡沟收费站贰拾元定额票本月耗用金额', name: 'jdgbyhyje4', index: 'jdgbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站贰拾元定额票实际结存金额', name: 'jdgbyjcje4', index: 'jdgbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站伍拾元定额票本月领入金额', name: 'jdgbylrje5', index: 'jdgbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '重渡沟收费站伍拾元定额票本月耗用金额', name: 'jdgbyhyje5', index: 'jdgbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '重渡沟收费站伍拾元定额票实际结存金额', name: 'jdgbyjcje5', index: 'jdgbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站微机票据本月领入', name: 'lcbylr1', index: 'lcbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '栾川收费站微机票据本月耗用', name: 'lcbyhy1', index: 'lcbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站微机票据实际结存', name: 'lcbyjc1', index: 'lcbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站伍元定额票本月领入', name: 'lcbylr2', index: 'lcbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '栾川收费站伍元定额票本月耗用', name: 'lcbyhy2', index: 'lcbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站伍元定额票实际结存', name: 'lcbyjc2', index: 'lcbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站拾元定额票本月领入', name: 'lcbylr3', index: 'lcbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '栾川收费站拾元定额票本月耗用', name: 'lcbyhy3', index: 'lcbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站拾元定额票实际结存', name: 'lcbyjc3', index: 'lcbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站贰拾元定额票本月领入', name: 'lcbylr4', index: 'lcbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '栾川收费站贰拾元定额票本月耗用', name: 'lcbyhy4', index: 'lcbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站贰拾元定额票实际结存', name: 'lcbyjc4', index: 'lcbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站伍拾元定额票本月领入', name: 'lcbylr5', index: 'lcbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '栾川收费站伍拾元定额票本月耗用', name: 'lcbyhy5', index: 'lcbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站伍拾元定额票实际结存', name: 'lcbyjc5', index: 'lcbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站微机票据本月领入金额', name: 'lcbylrje1', index: 'lcbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '栾川收费站微机票据本月耗用金额', name: 'lcbyhyje1', index: 'lcbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站微机票据实际结存金额', name: 'lcbyjcje1', index: 'lcbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站伍元定额票本月领入金额', name: 'lcbylrje2', index: 'lcbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '栾川收费站伍元定额票本月耗用金额', name: 'lcbyhyje2', index: 'lcbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站伍元定额票实际结存金额', name: 'lcbyjcje2', index: 'lcbyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站拾元定额票本月领入金额', name: 'lcbylrje3', index: 'lcbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '栾川收费站拾元定额票本月耗用金额', name: 'lcbyhyje3', index: 'lcbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站拾元定额票实际结存金额', name: 'lcbyjcje3', index: 'lcbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站贰拾元定额票本月领入金额', name: 'lcbylrje4', index: 'lcbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '栾川收费站贰拾元定额票本月耗用金额', name: 'lcbyhyje4', index: 'lcbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站贰拾元定额票实际结存金额', name: 'lcbyjcje4', index: 'lcbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站伍拾元定额票本月领入金额', name: 'lcbylrje5', index: 'lcbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '栾川收费站伍拾元定额票本月耗用金额', name: 'lcbyhyje5', index: 'lcbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '栾川收费站伍拾元定额票实际结存金额', name: 'lcbyjcje5', index: 'lcbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计微机票据本月领入', name: 'slxjbylr1', index: 'slxjbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩栾段小计微机票据本月耗用', name: 'slxjbyhy1', index: 'slxjbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计微机票据实际结存', name: 'slxjbyjc1', index: 'slxjbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计伍元定额票本月领入', name: 'slxjbylr2', index: 'slxjbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩栾段小计伍元定额票本月耗用', name: 'slxjbyhy2', index: 'slxjbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计伍元定额票实际结存', name: 'slxjbyjc2', index: 'slxjbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计拾元定额票本月领入', name: 'slxjbylr3', index: 'slxjbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩栾段小计拾元定额票本月耗用', name: 'slxjbyhy3', index: 'slxjbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计拾元定额票实际结存', name: 'slxjbyjc3', index: 'slxjbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计贰拾元定额票本月领入', name: 'slxjbylr4', index: 'slxjbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩栾段小计贰拾元定额票本月耗用', name: 'slxjbyhy4', index: 'slxjbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计贰拾元定额票实际结存', name: 'slxjbyjc4', index: 'slxjbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计伍拾元定额票本月领入', name: 'slxjbylr5', index: 'slxjbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩栾段小计伍拾元定额票本月耗用', name: 'slxjbyhy5', index: 'slxjbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计伍拾元定额票实际结存', name: 'slxjbyjc5', index: 'slxjbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计微机票据本月领入金额', name: 'slxjbylrje1', index: 'slxjbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩栾段小计微机票据本月耗用金额', name: 'slxjbyhyje1', index: 'slxjbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计微机票据实际结存金额', name: 'slxjbyjcje1', index: 'slxjbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计伍元定额票本月领入金额', name: 'slxjbylrje2', index: 'slxjbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩栾段小计伍元定额票本月耗用金额', name: 'slxjbyhyje2', index: 'slxjbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计伍元定额票实际结存金额', name: 'slxjbyjcje2', index: 'slxjbyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计拾元定额票本月领入金额', name: 'slxjbylrje3', index: 'slxjbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩栾段小计拾元定额票本月耗用金额', name: 'slxjbyhyje3', index: 'slxjbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计拾元定额票实际结存金额', name: 'slxjbyjcje3', index: 'slxjbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计贰拾元定额票本月领入金额', name: 'slxjbylrje4', index: 'slxjbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩栾段小计贰拾元定额票本月耗用金额', name: 'slxjbyhyje4', index: 'slxjbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计贰拾元定额票实际结存金额', name: 'slxjbyjcje4', index: 'slxjbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计伍拾元定额票本月领入金额', name: 'slxjbylrje5', index: 'slxjbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '嵩栾段小计伍拾元定额票本月耗用金额', name: 'slxjbyhyje5', index: 'slxjbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '嵩栾段小计伍拾元定额票实际结存金额', name: 'slxjbyjcje5', index: 'slxjbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站微机票据本月领入', name: 'zsbylr1', index: 'zsbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '周山收费站微机票据本月耗用', name: 'zsbyhy1', index: 'zsbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站微机票据实际结存', name: 'zsbyjc1', index: 'zsbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站伍元定额票本月领入', name: 'zsbylr2', index: 'zsbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '周山收费站伍元定额票本月耗用', name: 'zsbyhy2', index: 'zsbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站伍元定额票实际结存', name: 'zsbyjc2', index: 'zsbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站拾元定额票本月领入', name: 'zsbylr3', index: 'zsbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '周山收费站拾元定额票本月耗用', name: 'zsbyhy3', index: 'zsbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站拾元定额票实际结存', name: 'zsbyjc3', index: 'zsbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站贰拾元定额票本月领入', name: 'zsbylr4', index: 'zsbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '周山收费站贰拾元定额票本月耗用', name: 'zsbyhy4', index: 'zsbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站贰拾元定额票实际结存', name: 'zsbyjc4', index: 'zsbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站伍拾元定额票本月领入', name: 'zsbylr5', index: 'zsbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '周山收费站伍拾元定额票本月耗用', name: 'zsbyhy5', index: 'zsbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站伍拾元定额票实际结存', name: 'zsbyjc5', index: 'zsbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站微机票据本月领入金额', name: 'zsbylrje1', index: 'zsbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '周山收费站微机票据本月耗用金额', name: 'zsbyhyje1', index: 'zsbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站微机票据实际结存金额', name: 'zsbyjcje1', index: 'zsbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站伍元定额票本月领入金额', name: 'zsbylrje2', index: 'zsbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '周山收费站伍元定额票本月耗用金额', name: 'zsbyhyje2', index: 'zsbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站伍元定额票实际结存金额', name: 'zsbyjcje2', index: 'zsbyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站拾元定额票本月领入金额', name: 'zsbylrje3', index: 'zsbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '周山收费站拾元定额票本月耗用金额', name: 'zsbyhyje3', index: 'zsbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站拾元定额票实际结存金额', name: 'zsbyjcje3', index: 'zsbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站贰拾元定额票本月领入金额', name: 'zsbylrje4', index: 'zsbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '周山收费站贰拾元定额票本月耗用金额', name: 'zsbyhyje4', index: 'zsbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站贰拾元定额票实际结存金额', name: 'zsbyjcje4', index: 'zsbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站伍拾元定额票本月领入金额', name: 'zsbylrje5', index: 'zsbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '周山收费站伍拾元定额票本月耗用金额', name: 'zsbyhyje5', index: 'zsbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '周山收费站伍拾元定额票实际结存金额', name: 'zsbyjcje5', index: 'zsbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站微机票据本月领入', name: 'yybylr1', index: 'yybylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '宜阳收费站微机票据本月耗用', name: 'yybyhy1', index: 'yybyhy1', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站微机票据实际结存', name: 'yybyjc1', index: 'yybyjc1', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站伍元定额票本月领入', name: 'yybylr2', index: 'yybylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '宜阳收费站伍元定额票本月耗用', name: 'yybyhy2', index: 'yybyhy2', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站伍元定额票实际结存', name: 'yybyjc2', index: 'yybyjc2', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站拾元定额票本月领入', name: 'yybylr3', index: 'yybylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '宜阳收费站拾元定额票本月耗用', name: 'yybyhy3', index: 'yybyhy3', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站拾元定额票实际结存', name: 'yybyjc3', index: 'yybyjc3', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站贰拾元定额票本月领入', name: 'yybylr4', index: 'yybylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '宜阳收费站贰拾元定额票本月耗用', name: 'yybyhy4', index: 'yybyhy4', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站贰拾元定额票实际结存', name: 'yybyjc4', index: 'yybyjc4', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站伍拾元定额票本月领入', name: 'yybylr5', index: 'yybylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '宜阳收费站伍拾元定额票本月耗用', name: 'yybyhy5', index: 'yybyhy5', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站伍拾元定额票实际结存', name: 'yybyjc5', index: 'yybyjc5', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站微机票据本月领入金额', name: 'yybylrje1', index: 'yybylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '宜阳收费站微机票据本月耗用金额', name: 'yybyhyje1', index: 'yybyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站微机票据实际结存金额', name: 'yybyjcje1', index: 'yybyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站伍元定额票本月领入金额', name: 'yybylrje2', index: 'yybylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '宜阳收费站伍元定额票本月耗用金额', name: 'yybyhyje2', index: 'yybyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站伍元定额票实际结存金额', name: 'yybyjcje2', index: 'yybyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站拾元定额票本月领入金额', name: 'yybylrje3', index: 'yybylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '宜阳收费站拾元定额票本月耗用金额', name: 'yybyhyje3', index: 'yybyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站拾元定额票实际结存金额', name: 'yybyjcje3', index: 'yybyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站贰拾元定额票本月领入金额', name: 'yybylrje4', index: 'yybylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '宜阳收费站贰拾元定额票本月耗用金额', name: 'yybyhyje4', index: 'yybyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站贰拾元定额票实际结存金额', name: 'yybyjcje4', index: 'yybyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站伍拾元定额票本月领入金额', name: 'yybylrje5', index: 'yybylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '宜阳收费站伍拾元定额票本月耗用金额', name: 'yybyhyje5', index: 'yybyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '宜阳收费站伍拾元定额票实际结存金额', name: 'yybyjcje5', index: 'yybyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站微机票据本月领入', name: 'hcbylr1', index: 'hcbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '韩城收费站微机票据本月耗用', name: 'hcbyhy1', index: 'hcbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站微机票据实际结存', name: 'hcbyjc1', index: 'hcbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站伍元定额票本月领入', name: 'hcbylr2', index: 'hcbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '韩城收费站伍元定额票本月耗用', name: 'hcbyhy2', index: 'hcbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站伍元定额票实际结存', name: 'hcbyjc2', index: 'hcbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站拾元定额票本月领入', name: 'hcbylr3', index: 'hcbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '韩城收费站拾元定额票本月耗用', name: 'hcbyhy3', index: 'hcbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站拾元定额票实际结存', name: 'hcbyjc3', index: 'hcbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站贰拾元定额票本月领入', name: 'hcbylr4', index: 'hcbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '韩城收费站贰拾元定额票本月耗用', name: 'hcbyhy4', index: 'hcbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站贰拾元定额票实际结存', name: 'hcbyjc4', index: 'hcbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站伍拾元定额票本月领入', name: 'hcbylr5', index: 'hcbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '韩城收费站伍拾元定额票本月耗用', name: 'hcbyhy5', index: 'hcbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站伍拾元定额票实际结存', name: 'hcbyjc5', index: 'hcbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站微机票据本月领入金额', name: 'hcbylrje1', index: 'hcbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '韩城收费站微机票据本月耗用金额', name: 'hcbyhyje1', index: 'hcbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站微机票据实际结存金额', name: 'hcbyjcje1', index: 'hcbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站伍元定额票本月领入金额', name: 'hcbylrje2', index: 'hcbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '韩城收费站伍元定额票本月耗用金额', name: 'hcbyhyje2', index: 'hcbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站伍元定额票实际结存金额', name: 'hcbyjcje2', index: 'hcbyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站拾元定额票本月领入金额', name: 'hcbylrje3', index: 'hcbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '韩城收费站拾元定额票本月耗用金额', name: 'hcbyhyje3', index: 'hcbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站拾元定额票实际结存金额', name: 'hcbyjcje3', index: 'hcbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站贰拾元定额票本月领入金额', name: 'hcbylrje4', index: 'hcbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '韩城收费站贰拾元定额票本月耗用金额', name: 'hcbyhyje4', index: 'hcbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站贰拾元定额票实际结存金额', name: 'hcbyjcje4', index: 'hcbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站伍拾元定额票本月领入金额', name: 'hcbylrje5', index: 'hcbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '韩城收费站伍拾元定额票本月耗用金额', name: 'hcbyhyje5', index: 'hcbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '韩城收费站伍拾元定额票实际结存金额', name: 'hcbyjcje5', index: 'hcbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站微机票据本月领入', name: 'lnbylr1', index: 'lnbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁收费站微机票据本月耗用', name: 'lnbyhy1', index: 'lnbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站微机票据实际结存', name: 'lnbyjc1', index: 'lnbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站伍元定额票本月领入', name: 'lnbylr2', index: 'lnbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁收费站伍元定额票本月耗用', name: 'lnbyhy2', index: 'lnbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站伍元定额票实际结存', name: 'lnbyjc2', index: 'lnbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站拾元定额票本月领入', name: 'lnbylr3', index: 'lnbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁收费站拾元定额票本月耗用', name: 'lnbyhy3', index: 'lnbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站拾元定额票实际结存', name: 'lnbyjc3', index: 'lnbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站贰拾元定额票本月领入', name: 'lnbylr4', index: 'lnbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁收费站贰拾元定额票本月耗用', name: 'lnbyhy4', index: 'lnbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站贰拾元定额票实际结存', name: 'lnbyjc4', index: 'lnbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站伍拾元定额票本月领入', name: 'lnbylr5', index: 'lnbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁收费站伍拾元定额票本月耗用', name: 'lnbyhy5', index: 'lnbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站伍拾元定额票实际结存', name: 'lnbyjc5', index: 'lnbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站微机票据本月领入金额', name: 'lnbylrje1', index: 'lnbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁收费站微机票据本月耗用金额', name: 'lnbyhyje1', index: 'lnbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站微机票据实际结存金额', name: 'lnbyjcje1', index: 'lnbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站伍元定额票本月领入金额', name: 'lnbylrje2', index: 'lnbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁收费站伍元定额票本月耗用金额', name: 'lnbyhyje2', index: 'lnbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站伍元定额票实际结存金额', name: 'lnbyjcje2', index: 'lnbyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站拾元定额票本月领入金额', name: 'lnbylrje3', index: 'lnbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁收费站拾元定额票本月耗用金额', name: 'lnbyhyje3', index: 'lnbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站拾元定额票实际结存金额', name: 'lnbyjcje3', index: 'lnbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站贰拾元定额票本月领入金额', name: 'lnbylrje4', index: 'lnbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁收费站贰拾元定额票本月耗用金额', name: 'lnbyhyje4', index: 'lnbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站贰拾元定额票实际结存金额', name: 'lnbyjcje4', index: 'lnbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站伍拾元定额票本月领入金额', name: 'lnbylrje5', index: 'lnbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁收费站伍拾元定额票本月耗用金额', name: 'lnbyhyje5', index: 'lnbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '洛宁收费站伍拾元定额票实际结存金额', name: 'lnbyjcje5', index: 'lnbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计微机票据本月领入', name: 'lnxjbylr1', index: 'lnxjbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁段小计微机票据本月耗用', name: 'lnxjbyhy1', index: 'lnxjbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计微机票据实际结存', name: 'lnxjbyjc1', index: 'lnxjbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计伍元定额票本月领入', name: 'lnxjbylr2', index: 'lnxjbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁段小计伍元定额票本月耗用', name: 'lnxjbyhy2', index: 'lnxjbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计伍元定额票实际结存', name: 'lnxjbyjc2', index: 'lnxjbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计拾元定额票本月领入', name: 'lnxjbylr3', index: 'lnxjbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁段小计拾元定额票本月耗用', name: 'lnxjbyhy3', index: 'lnxjbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计拾元定额票实际结存', name: 'lnxjbyjc3', index: 'lnxjbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计贰拾元定额票本月领入', name: 'lnxjbylr4', index: 'lnxjbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁段小计贰拾元定额票本月耗用', name: 'lnxjbyhy4', index: 'lnxjbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计贰拾元定额票实际结存', name: 'lnxjbyjc4', index: 'lnxjbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计伍拾元定额票本月领入', name: 'lnxjbylr5', index: 'lnxjbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁段小计伍拾元定额票本月耗用', name: 'lnxjbyhy5', index: 'lnxjbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计伍拾元定额票实际结存', name: 'lnxjbyjc5', index: 'lnxjbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计微机票据本月领入金额', name: 'lnxjbylrje1', index: 'lnxjbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁段小计微机票据本月耗用金额', name: 'lnxjbyhyje1', index: 'lnxjbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计微机票据实际结存金额', name: 'lnxjbyjcje1', index: 'lnxjbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计伍元定额票本月领入金额', name: 'lnxjbylrje2', index: 'lnxjbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁段小计伍元定额票本月耗用金额', name: 'lnxjbyhyje2', index: 'lnxjbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计伍元定额票实际结存金额', name: 'lnxjbyjcje2', index: 'lnxjbyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计拾元定额票本月领入金额', name: 'lnxjbylrje3', index: 'lnxjbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁段小计拾元定额票本月耗用金额', name: 'lnxjbyhyje3', index: 'lnxjbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计拾元定额票实际结存金额', name: 'lnxjbyjcje3', index: 'lnxjbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计贰拾元定额票本月领入金额', name: 'lnxjbylrje4', index: 'lnxjbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁段小计贰拾元定额票本月耗用金额', name: 'lnxjbyhyje4', index: 'lnxjbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计贰拾元定额票实际结存金额', name: 'lnxjbyjcje4', index: 'lnxjbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计伍拾元定额票本月领入金额', name: 'lnxjbylrje5', index: 'lnxjbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁段小计伍拾元定额票本月耗用金额', name: 'lnxjbyhyje5', index: 'lnxjbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '洛宁段小计伍拾元定额票实际结存金额', name: 'lnxjbyjcje5', index: 'lnxjbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站微机票据本月领入', name: 'lnxbylr1', index: 'lnxbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁西收费站微机票据本月耗用', name: 'lnxbyhy1', index: 'lnxbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站微机票据实际结存', name: 'lnxbyjc1', index: 'lnxbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站伍元定额票本月领入', name: 'lnxbylr2', index: 'lnxbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁西收费站伍元定额票本月耗用', name: 'lnxbyhy2', index: 'lnxbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站伍元定额票实际结存', name: 'lnxbyjc2', index: 'lnxbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站拾元定额票本月领入', name: 'lnxbylr3', index: 'lnxbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁西收费站拾元定额票本月耗用', name: 'lnxbyhy3', index: 'lnxbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站拾元定额票实际结存', name: 'lnxbyjc3', index: 'lnxbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站贰拾元定额票本月领入', name: 'lnxbylr4', index: 'lnxbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁西收费站贰拾元定额票本月耗用', name: 'lnxbyhy4', index: 'lnxbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站贰拾元定额票实际结存', name: 'lnxbyjc4', index: 'lnxbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站伍拾元定额票本月领入', name: 'lnxbylr5', index: 'lnxbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁西收费站伍拾元定额票本月耗用', name: 'lnxbyhy5', index: 'lnxbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站伍拾元定额票实际结存', name: 'lnxbyjc5', index: 'lnxbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站微机票据本月领入金额', name: 'lnxbylrje1', index: 'lnxbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁西收费站微机票据本月耗用金额', name: 'lnxbyhyje1', index: 'lnxbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站微机票据实际结存金额', name: 'lnxbyjcje1', index: 'lnxbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站伍元定额票本月领入金额', name: 'lnxbylrje2', index: 'lnxbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁西收费站伍元定额票本月耗用金额', name: 'lnxbyhyje2', index: 'lnxbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站伍元定额票实际结存金额', name: 'lnxbyjcje2', index: 'lnxbyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站拾元定额票本月领入金额', name: 'lnxbylrje3', index: 'lnxbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁西收费站拾元定额票本月耗用金额', name: 'lnxbyhyje3', index: 'lnxbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站拾元定额票实际结存金额', name: 'lnxbyjcje3', index: 'lnxbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站贰拾元定额票本月领入金额', name: 'lnxbylrje4', index: 'lnxbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁西收费站贰拾元定额票本月耗用金额', name: 'lnxbyhyje4', index: 'lnxbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站贰拾元定额票实际结存金额', name: 'lnxbyjcje4', index: 'lnxbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站伍拾元定额票本月领入金额', name: 'lnxbylrje5', index: 'lnxbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '洛宁西收费站伍拾元定额票本月耗用金额', name: 'lnxbyhyje5', index: 'lnxbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '洛宁西收费站伍拾元定额票实际结存金额', name: 'lnxbyjcje5', index: 'lnxbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站微机票据本月领入', name: 'csbylr1', index: 'csbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '长水收费站微机票据本月耗用', name: 'csbyhy1', index: 'csbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站微机票据实际结存', name: 'csbyjc1', index: 'csbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站伍元定额票本月领入', name: 'csbylr2', index: 'csbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '长水收费站伍元定额票本月耗用', name: 'csbyhy2', index: 'csbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站伍元定额票实际结存', name: 'csbyjc2', index: 'csbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站拾元定额票本月领入', name: 'csbylr3', index: 'csbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '长水收费站拾元定额票本月耗用', name: 'csbyhy3', index: 'csbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站拾元定额票实际结存', name: 'csbyjc3', index: 'csbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站贰拾元定额票本月领入', name: 'csbylr4', index: 'csbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '长水收费站贰拾元定额票本月耗用', name: 'csbyhy4', index: 'csbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站贰拾元定额票实际结存', name: 'csbyjc4', index: 'csbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站伍拾元定额票本月领入', name: 'csbylr5', index: 'csbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '长水收费站伍拾元定额票本月耗用', name: 'csbyhy5', index: 'csbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站伍拾元定额票实际结存', name: 'csbyjc5', index: 'csbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站微机票据本月领入金额', name: 'csbylrje1', index: 'csbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '长水收费站微机票据本月耗用金额', name: 'csbyhyje1', index: 'csbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站微机票据实际结存金额', name: 'csbyjcje1', index: 'csbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站伍元定额票本月领入金额', name: 'csbylrje2', index: 'csbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '长水收费站伍元定额票本月耗用金额', name: 'csbyhyje2', index: 'csbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站伍元定额票实际结存金额', name: 'csbyjcje2', index: 'csbyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站拾元定额票本月领入金额', name: 'csbylrje3', index: 'csbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '长水收费站拾元定额票本月耗用金额', name: 'csbyhyje3', index: 'csbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站拾元定额票实际结存金额', name: 'csbyjcje3', index: 'csbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站贰拾元定额票本月领入金额', name: 'csbylrje4', index: 'csbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '长水收费站贰拾元定额票本月耗用金额', name: 'csbyhyje4', index: 'csbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站贰拾元定额票实际结存金额', name: 'csbyjcje4', index: 'csbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站伍拾元定额票本月领入金额', name: 'csbylrje5', index: 'csbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '长水收费站伍拾元定额票本月耗用金额', name: 'csbyhyje5', index: 'csbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '长水收费站伍拾元定额票实际结存金额', name: 'csbyjcje5', index: 'csbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站微机票据本月领入', name: 'sgbylr1', index: 'sgbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '上戈收费站微机票据本月耗用', name: 'sgbyhy1', index: 'sgbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站微机票据实际结存', name: 'sgbyjc1', index: 'sgbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站伍元定额票本月领入', name: 'sgbylr2', index: 'sgbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '上戈收费站伍元定额票本月耗用', name: 'sgbyhy2', index: 'sgbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站伍元定额票实际结存', name: 'sgbyjc2', index: 'sgbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站拾元定额票本月领入', name: 'sgbylr3', index: 'sgbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '上戈收费站拾元定额票本月耗用', name: 'sgbyhy3', index: 'sgbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站拾元定额票实际结存', name: 'sgbyjc3', index: 'sgbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站贰拾元定额票本月领入', name: 'sgbylr4', index: 'sgbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '上戈收费站贰拾元定额票本月耗用', name: 'sgbyhy4', index: 'sgbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站贰拾元定额票实际结存', name: 'sgbyjc4', index: 'sgbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站伍拾元定额票本月领入', name: 'sgbylr5', index: 'sgbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '上戈收费站伍拾元定额票本月耗用', name: 'sgbyhy5', index: 'sgbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站伍拾元定额票实际结存', name: 'sgbyjc5', index: 'sgbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站微机票据本月领入金额', name: 'sgbylrje1', index: 'sgbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '上戈收费站微机票据本月耗用金额', name: 'sgbyhyje1', index: 'sgbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站微机票据实际结存金额', name: 'sgbyjcje1', index: 'sgbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站伍元定额票本月领入金额', name: 'sgbylrje2', index: 'sgbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '上戈收费站伍元定额票本月耗用金额', name: 'sgbyhyje2', index: 'sgbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站伍元定额票实际结存金额', name: 'sgbyjcje2', index: 'sgbyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站拾元定额票本月领入金额', name: 'sgbylrje3', index: 'sgbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '上戈收费站拾元定额票本月耗用金额', name: 'sgbyhyje3', index: 'sgbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站拾元定额票实际结存金额', name: 'sgbyjcje3', index: 'sgbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站贰拾元定额票本月领入金额', name: 'sgbylrje4', index: 'sgbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '上戈收费站贰拾元定额票本月耗用金额', name: 'sgbyhyje4', index: 'sgbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站贰拾元定额票实际结存金额', name: 'sgbyjcje4', index: 'sgbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站伍拾元定额票本月领入金额', name: 'sgbylrje5', index: 'sgbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '上戈收费站伍拾元定额票本月耗用金额', name: 'sgbyhyje5', index: 'sgbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '上戈收费站伍拾元定额票实际结存金额', name: 'sgbyjcje5', index: 'sgbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计微机票据本月领入', name: 'nlxjbylr1', index: 'nlxjbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '宁卢段小计微机票据本月耗用', name: 'nlxjbyhy1', index: 'nlxjbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计微机票据实际结存', name: 'nlxjbyjc1', index: 'nlxjbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计伍元定额票本月领入', name: 'nlxjbylr2', index: 'nlxjbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '宁卢段小计伍元定额票本月耗用', name: 'nlxjbyhy2', index: 'nlxjbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计伍元定额票实际结存', name: 'nlxjbyjc2', index: 'nlxjbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计拾元定额票本月领入', name: 'nlxjbylr3', index: 'nlxjbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '宁卢段小计拾元定额票本月耗用', name: 'nlxjbyhy3', index: 'nlxjbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计拾元定额票实际结存', name: 'nlxjbyjc3', index: 'nlxjbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计贰拾元定额票本月领入', name: 'nlxjbylr4', index: 'nlxjbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '宁卢段小计贰拾元定额票本月耗用', name: 'nlxjbyhy4', index: 'nlxjbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计贰拾元定额票实际结存', name: 'nlxjbyjc4', index: 'nlxjbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计伍拾元定额票本月领入', name: 'nlxjbylr5', index: 'nlxjbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '宁卢段小计伍拾元定额票本月耗用', name: 'nlxjbyhy5', index: 'nlxjbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计伍拾元定额票实际结存', name: 'nlxjbyjc5', index: 'nlxjbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计微机票据本月领入金额', name: 'nlxjbylrje1', index: 'nlxjbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '宁卢段小计微机票据本月耗用金额', name: 'nlxjbyhyje1', index: 'nlxjbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计微机票据实际结存金额', name: 'nlxjbyjcje1', index: 'nlxjbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计伍元定额票本月领入金额', name: 'nlxjbylrje2', index: 'nlxjbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '宁卢段小计伍元定额票本月耗用金额', name: 'nlxjbyhyje2', index: 'nlxjbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计伍元定额票实际结存金额', name: 'nlxjbyjcje2', index: 'nlxjbyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计拾元定额票本月领入金额', name: 'nlxjbylrje3', index: 'nlxjbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '宁卢段小计拾元定额票本月耗用金额', name: 'nlxjbyhyje3', index: 'nlxjbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计拾元定额票实际结存金额', name: 'nlxjbyjcje3', index: 'nlxjbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计贰拾元定额票本月领入金额', name: 'nlxjbylrje4', index: 'nlxjbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '宁卢段小计贰拾元定额票本月耗用金额', name: 'nlxjbyhyje4', index: 'nlxjbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计贰拾元定额票实际结存金额', name: 'nlxjbyjcje4', index: 'nlxjbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计伍拾元定额票本月领入金额', name: 'nlxjbylrje5', index: 'nlxjbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '宁卢段小计伍拾元定额票本月耗用金额', name: 'nlxjbyhyje5', index: 'nlxjbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '宁卢段小计伍拾元定额票实际结存金额', name: 'nlxjbyjcje5', index: 'nlxjbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '合计微机票据本月领入', name: 'hjbylr1', index: 'hjbylr1', width: 120, align: 'left' ,sortable:false},
+                { label: '合计微机票据本月耗用', name: 'hjbyhy1', index: 'hjbyhy1', width: 120, align: 'left',sortable:false },
+                { label: '合计微机票据实际结存', name: 'hjbyjc1', index: 'hjbyjc1', width: 120, align: 'left',sortable:false },
+                { label: '合计伍元定额票本月领入', name: 'hjbylr2', index: 'hjbylr2', width: 120, align: 'left' ,sortable:false},
+                { label: '合计伍元定额票本月耗用', name: 'hjbyhy2', index: 'hjbyhy2', width: 120, align: 'left',sortable:false },
+                { label: '合计伍元定额票实际结存', name: 'hjbyjc2', index: 'hjbyjc2', width: 120, align: 'left',sortable:false },
+                { label: '合计拾元定额票本月领入', name: 'hjbylr3', index: 'hjbylr3', width: 120, align: 'left' ,sortable:false},
+                { label: '合计拾元定额票本月耗用', name: 'hjbyhy3', index: 'hjbyhy3', width: 120, align: 'left',sortable:false },
+                { label: '合计拾元定额票实际结存', name: 'hjbyjc3', index: 'hjbyjc3', width: 120, align: 'left',sortable:false },
+                { label: '合计贰拾元定额票本月领入', name: 'hjbylr4', index: 'hjbylr4', width: 120, align: 'left' ,sortable:false},
+                { label: '合计贰拾元定额票本月耗用', name: 'hjbyhy4', index: 'hjbyhy4', width: 120, align: 'left',sortable:false },
+                { label: '合计贰拾元定额票实际结存', name: 'hjbyjc4', index: 'hjbyjc4', width: 120, align: 'left',sortable:false },
+                { label: '合计伍拾元定额票本月领入', name: 'hjbylr5', index: 'hjbylr5', width: 120, align: 'left' ,sortable:false},
+                { label: '合计伍拾元定额票本月耗用', name: 'hjbyhy5', index: 'hjbyhy5', width: 120, align: 'left',sortable:false },
+                { label: '合计伍拾元定额票实际结存', name: 'hjbyjc5', index: 'hjbyjc5', width: 120, align: 'left',sortable:false },
+                { label: '合计微机票据本月领入金额', name: 'hjbylrje1', index: 'hjbylrje1', width: 120, align: 'left' ,sortable:false},
+                { label: '合计微机票据本月耗用金额', name: 'hjbyhyje1', index: 'hjbyhyje1', width: 120, align: 'left',sortable:false },
+                { label: '合计微机票据实际结存金额', name: 'hjbyjcje1', index: 'hjbyjcje1', width: 120, align: 'left',sortable:false },
+                { label: '合计伍元定额票本月领入金额', name: 'hjbylrje2', index: 'hjbylrje2', width: 120, align: 'left' ,sortable:false},
+                { label: '合计伍元定额票本月耗用金额', name: 'hjbyhyje2', index: 'hjbyhyje2', width: 120, align: 'left',sortable:false },
+                { label: '合计伍元定额票实际结存金额', name: 'hjbyjcje2', index: 'hjbyjcje2', width: 120, align: 'left',sortable:false },
+                { label: '合计拾元定额票本月领入金额', name: 'hjbylrje3', index: 'hjbylrje3', width: 120, align: 'left' ,sortable:false},
+                { label: '合计拾元定额票本月耗用金额', name: 'hjbyhyje3', index: 'hjbyhyje3', width: 120, align: 'left',sortable:false },
+                { label: '合计拾元定额票实际结存金额', name: 'hjbyjcje3', index: 'hjbyjcje3', width: 120, align: 'left',sortable:false },
+                { label: '合计贰拾元定额票本月领入金额', name: 'hjbylrje4', index: 'hjbylrje4', width: 120, align: 'left' ,sortable:false},
+                { label: '合计贰拾元定额票本月耗用金额', name: 'hjbyhyje4', index: 'hjbyhyje4', width: 120, align: 'left',sortable:false },
+                { label: '合计贰拾元定额票实际结存金额', name: 'hjbyjcje4', index: 'hjbyjcje4', width: 120, align: 'left',sortable:false },
+                { label: '合计伍拾元定额票本月领入金额', name: 'hjbylrje5', index: 'hjbylrje5', width: 120, align: 'left' ,sortable:false},
+                { label: '合计伍拾元定额票本月耗用金额', name: 'hjbyhyje5', index: 'hjbyhyje5', width: 120, align: 'left',sortable:false },
+                { label: '合计伍拾元定额票实际结存金额', name: 'hjbyjcje5', index: 'hjbyjcje5', width: 120, align: 'left',sortable:false },
+                { label: '录入人员', name: 'lrymc', index: 'lrymc', width: 80, align: 'center' ,sortable:false},
+                { label: '操作时间', name: 'lrsj', index: 'lrsj', width: 150, align: 'center',sortable:false,
+                	formatter: function (cellvalue, options, rowObject) {
+                    return cellvalue==null?"":formatDate(new Date(cellvalue), 'yyyy-MM-dd hh:mm:ss');
+                }},
+                { label: "备注信息", name: "bz", index: "bz", width: 200, align: "left" ,sortable:false}
+            ],
+            viewrecords: true,
+            rowNum: 20,
+            rowList: [20, 50, 100,1000,10000],
+            pager: "#gridPager",
+            shrinkToFit: false,
+            gridview: true,
+            onSelectRow: function () {
+                selectedRowIndex = $("#" + this.id).getGridParam('selrow');
+            },
+            loadComplete: function() {
+                $("tr.jqgrow:odd").addClass('rowOdd');
+            },
+            gridComplete: function () {
+            	//_gridHj();
+            },ondblClickRow:function(rowid,iRow,iCol,e){
+            	if(!rowid || rowid==0)return;
+            	btn_detail($gridTable.getRowData(rowid).xh);
+            }
+        });
+        //$gridTable.authorizeColModel()
+        $("#btn_Reset").click(function () {
+        	 $("#deptId").ComboBoxTreeSetValue("");
+        	 $("#lock").val("");
+        });
+        //查询回车
+        $('#txt_Keyword').bind('keypress', function (event) {
+            if (event.keyCode == "13") {
+                $('#btn_Search').trigger("click");
+            }
+        });
+    }
+    _gridHj=function(){
+    	var $gridTable = $('#gridTable');
+    	//判断是否空行
+    	if($gridTable.getGridParam("reccount")<1){return;}
+    	
+        var chzcsrje = $gridTable.getCol("chzcsrje", false, "sum");
+        var chjzjsje = $gridTable.getCol("chjzjsje", false, "sum");
+        var chckje = $gridTable.getCol("chckje", false, "sum");
+        var chjskje = $gridTable.getCol("chjskje", false, "sum");
+        var chetcje = $gridTable.getCol("chetcje", false, "sum");
+        var chhj = $gridTable.getCol("chhj", false, "sum");
+        var json = {
+                "zdmc": "合计：",
+                "chzcsrje": parseFloat(chzcsrje).toFixed(2),
+                "chjzjsje": parseFloat(chjzjsje).toFixed(2),
+                "chckje": parseFloat(chckje).toFixed(2),
+                "chjskje": parseFloat(chjskje).toFixed(2),
+                "chetcje": parseFloat(chetcje).toFixed(2),
+                "chhj": parseFloat(chhj).toFixed(2),
+            };
+     	$gridTable.jqGrid("addRowData",0,json,"last","",true);// addRowData
+     	//
+     	$("tr[id='0']",$gridTable).css({"background":"#dadada"});
+    }
+    //新增
+    function btn_add() {
+        dialogOpen({
+            id: "Form",
+            title: '拆后数据月报',
+            url: "${ctx.contextPath}/yb/pjybForm",
+            width: "1050px",
+            height: "600px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].AcceptClick();
+            }
+        });
+    };
+    //编辑
+    function btn_edit() {
+        var keyValue = $("#gridTable").jqGridRowValue("xh");
+        if (checkedRow(keyValue)) {
+        	 var zt = $("#gridTable").jqGridRowValue("zt");
+ 	        //判断是否锁定
+ 	        if(zt.indexOf("-lock")>0){dialogMsg('数据已锁定无法修改，请联系中心管理员！',-1);return;}
+            dialogOpen({
+                id: "Form",
+                title: '拆后数据月报--修改',
+                url: "${ctx.contextPath}/yb/pjybForm?keyValue="+keyValue,
+                width: "1050px",
+                height: "600px",
+                callBack: function (iframeId) {
+                    top.frames[iframeId].AcceptClick();
+                }
+            });
+        }
+    }
+    //删除
+    function btn_delete() {
+        var keyValue = $("#gridTable").jqGridRowValue("xh");
+        if (checkedRow(keyValue)) {
+            $.RemoveForm({
+                url: "${ctx.contextPath}/yb/delPjyb",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#gridTable").trigger("reloadGrid");
+                }
+            })
+        } else {
+            dialogMsg('请选择需要删除的数据行！', 0);
+        }
+    }
+    //详细
+    function btn_detail(keyValue) {
+        //var keyValue = $("#gridTable").jqGridRowValue("xh");
+        dialogOpen({
+            id: "Detail",
+            title: '拆后数据月报--详细信息',
+            url: "${ctx.contextPath}/yb/pjybForm?detail=1&keyValue="+keyValue,
+            width: "1050px",
+            height: "600px",
+            btn: null
+        });
+    }
+    //数据锁定
+    function btn_lock(){
+    	var xhs = $('#gridTable').jqGridRowValue("xh");
+    	if(xhs.length<1 || xhs==','){//
+    		dialogMsg('请选择需要锁定的数据行！', 0);
+    		return;
+    	}//数据锁定
+    	$.ConfirmAjax({
+    		msg:"数据锁定后将无法修改，是否继续提交？",
+            url: "${ctx.contextPath}/yb/pjybLock",
+            param: { xhs: xhs },
+            success: function (data) {
+                $("#gridTable").trigger("reloadGrid");
+            }
+        });
+    }
+</script>
+
+<div class="titlePanel">
+    <div class="title-search">
+        <table>
+            <tr>
+               <td>查询条件</td>
+               <td style="padding-left: 10px;">
+                   <div class="ui-filter" style="width: 150px;">
+                       <div class="ui-filter-text">
+                           <strong id="SelectedStartTime"></strong> 至 <strong id="SelectedEndTime"></strong>
+                       </div>
+                       <div class="ui-filter-list" style="width: 300px;">
+                           <table class="form" id="filter-form">
+                           <input id="orgId" type="hidden" class="form-control" value="">
+                               <tr>
+                                   <th class="formTitle">录入时间：</th>
+                                   <td class="formValue">
+                                       <div style="float: left; width: 45%;">
+                                           <input id="StartTime" readonly type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'%y-%M'})">
+                                       </div>
+                                       <div style="float: left; width: 10%; text-align: center;">至</div>
+                                       <div style="float: left; width: 45%;">
+                                           <input id="EndTime" readonly type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'%y-%M'})">
+                                       </div>
+                                   </td>
+                               </tr>
+                               <tr>
+                                 <td class="formTitle">站点：</td>
+                                   <td class="formValue">
+                                       <div id="deptId" type="selectTree" class="ui-select"></div>
+                                   </td>
+                               </tr>
+                               <tr>
+                                   <td class="formTitle">状态：</td>
+                                   <td class="formValue">
+                                       <select style="width:183px;" id="lock">
+                                       	<option value="">==全部==</option>
+                                       	<option value="1">未锁定</option>
+                                       	<option value="2">已锁定</option>
+                                       </select>
+                                   </td>
+                               </tr>
+                           </table>
+                           <div class="ui-filter-list-bottom">
+                               <a id="btn_Reset" class="btn btn-default">&nbsp;重&nbsp;&nbsp;置</a>
+                               <a id="btn_Search" class="btn btn-primary">&nbsp;查&nbsp;&nbsp;询</a>
+                           </div>
+                       </div>
+                   </div>
+               </td>
+               <td style="padding-left: 10px;">
+                   <div id="time_horizon" class="btn-group">
+                       <a class="btn btn-default" data-value="1">本月</a>
+                       <a class="btn btn-default active" data-value="2">本年</a>
+                   </div>
+               </td>
+           </tr>
+        </table>
+    </div>
+    <div class="toolbar">
+        <div class="btn-group">
+            <a id="b-ref" class="btn btn-default" onclick="reload();"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
+            <a id="b-add" class="btn btn-default" onclick="btn_add()"><i class="fa fa-plus"></i>&nbsp;新增</a>
+            <a id="b-edit" class="btn btn-default" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑</a>
+            <a id="b-delete" class="btn btn-default" onclick="btn_delete()"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+            </div>
+        <div class="btn-group">
+            <a id="b-lock" class="btn btn-default" onclick="btn_lock()"><i class="fa fa-lock"></i>&nbsp;数据锁定</a>
+        </div>
+        <script>$('.toolbar').authorizeButton()</script>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridTable"></table>
+    <div id="gridPager"></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="content-type" content="text/html; charset=UTF-8">
+<title>通行费收入及票据</title>
+<link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+<link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet">
+<link href="${ctx.contextPath}/res/wdTree/tree.css" rel="stylesheet"/>
+<script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+<script src="${ctx.contextPath}/res/datepicker/WdatePicker.js"></script>
+<script src="${ctx.contextPath}/res/wdTree/tree.js"></script>
+<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+<#include "/WEB-INF/t/report/reportJS.html"/>
+</head>
+<body style="margin: 10px;margin-bottom: 0px;">
+<div id="ajaxLoader" style="cursor: progress; position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: #f1f1f1; z-index: 10000; overflow: hidden;"></div>
+<script type="text/javascript">
+var Installed = Install_Detect();
+</script>
+<div class="ui-report" style="margin-top:-20px;">
+    <div class="titlePanel">
+        <div class="title-search">
+         <table>
+            <tr>
+                <td> 统计时间：</td>
+                   <td class="formValue">
+                   <td><input id="StartTime" readonly type="text" value="" class="form-control input-wdatepicker" style="width:130px;"></td>
+                   <td>至</td>
+                   <td><input id="EndTime" readonly type="text" value="" class="form-control input-wdatepicker" style="width:130px;"></td>
+                   </td>
+                <td style="padding-left: 5px;">
+                	<input id="orgId" type="hidden" value=""/>
+                	<a id="btn_Reset" class="btn btn-default">&nbsp;重&nbsp;&nbsp;置</a>
+                    <a id="btn_Search" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp;查询</a>
+                </td>
+            </tr>
+        </table>
+        </div>
+        <div class="toolbar">
+            <div class="btn-group">
+                <a id="b-replace" class="btn btn-default" onclick="reload();"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
+            </div>
+        </div>
+    </div>
+<div class="gridPanel" id="gridPanel" style="border:1px solid #ccc;">
+	<script language="javascript">
+		CreateDisplayViewer("${ctx.contextPath}/res/grf/5etctxfr.grf?t=${.now?string('yyyyMMddhhmmss')}",""); 
+	</script>
+</div>
+</div>
+<script type="text/javascript">
+var _now = "${.now?string('yyyy-MM-dd')}";
+var _nowDate = new Date(Date.parse("${.now}".replace(/-/g, "/").replace("T", " ").split(".")[0]));
+var reportViewer;
+__reportInit=function(){//报表初始化隐藏
+	reportViewer=document.getElementById("ReportViewer");
+	if(reportViewer && reportViewer.UpdateToolbar){
+		reportViewer.RemoveToolbarControl(6);
+		reportViewer.RemoveToolbarControl(8);
+		reportViewer.RemoveToolbarControl(9);
+		reportViewer.RemoveToolbarControl(10);
+		reportViewer.UpdateToolbar();
+	}
+}
+$(function () {
+	__reportInit();
+	//
+    var st = formatDate(_nowDate.DateAdd('d',-7),'yyyy-MM-dd');
+	$("#StartTime").val(st);
+    $("#EndTime").val(_now);
+    $("#SelectedStartTime").html($("#StartTime").val());
+    $("#SelectedEndTime").html($("#EndTime").val());
+    $("#StartTime").bind("click",function(){
+        WdatePicker({isShowClear:false,dateFmt:'yyyy-MM-dd',autoPickDate:true,maxDate:'#F{$dp.$D(\'EndTime\')||\'%y-%M-%d\'}',onpicked:function(){EndTime.click();}});
+    });
+    $("#EndTime").bind("click",function(){
+        WdatePicker({isShowClear:false,minDate:'#F{$dp.$D(\'StartTime\')}',maxDate:'%y-%M-%d',dateFmt:'yyyy-MM-dd',autoPickDate:true});
+    });
+	 $("#ajaxLoader").fadeOut()
+    InitialPage();
+	//中心/站点
+   	$("#deptId").ComboBoxTree({
+   		url: "${ctx.contextPath}/sys/dept/deptTree",
+         description: "==请选择==",
+         height: "180px",
+         click: function (item) {
+             if (item.sort == 'org') {
+                $("#orgId").val(item.id);
+             }else{
+             	$("#orgId").val("");
+             }
+         }
+     });
+});
+
+//初始化
+function InitialPage() {
+	$('#gridPanel').height($(window).height() - 80);
+    $(window).resize(function (e) {
+        window.setTimeout(function () {
+            $('#gridPanel').height($(window).height() - 80);
+        }, 200);
+        e.stopPropagation();
+    });
+}
+$("#btn_Reset").click(function () {
+	 $("#deptId").ComboBoxTreeSetValue("");
+	 $("#orgId").val("");
+	 $("#SelectedStartTime").html($("#StartTime").val());
+
+});
+$("#btn_Search").click(function Search(){
+$.ajax({url:"${ctx.contextPath}/yhreport/5etctxfyData",
+	data:{st:$("#StartTime").val(),et:$("#EndTime").val(),deptId:$("#deptId").attr('data-value'),orgId:$("#orgId").val()},dataType:"text",
+	success:function(datax) {
+		reportViewer.Stop();
+		var report = reportViewer.Report;
+		report.LoadDataFromXML(datax);		
+		reportViewer.Start();
+	},error:function(data){}
+});
+});
+</script>
+</body></html>

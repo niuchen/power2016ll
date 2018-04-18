@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.FxLtsjMapper">
+  <resultMap id="BaseResultMap" type="com.power.common.entity.FxLtsj">
+    <id column="xh" jdbcType="BIGINT" property="xh" />
+    <result column="sszd" jdbcType="VARCHAR" property="sszd" />
+    <result column="zdmc" jdbcType="VARCHAR" property="zdmc" />
+    <result column="zdzz" jdbcType="VARCHAR" property="zdzz" />
+    <result column="zt" jdbcType="INTEGER" property="zt" />
+    <result column="bz" jdbcType="VARCHAR" property="bz" />
+    <result column="sfrq" jdbcType="TIMESTAMP" property="sfrq" />
+    <result column="lryxh" jdbcType="VARCHAR" property="lryxh" />
+    <result column="lrymc" jdbcType="VARCHAR" property="lrymc" />
+    <result column="lrsj" jdbcType="TIMESTAMP" property="lrsj" />
+    <result column="ltc1" jdbcType="INTEGER" property="ltc1" />
+    <result column="ltcje1" jdbcType="DECIMAL" property="ltcje1" />
+    <result column="ltc2" jdbcType="INTEGER" property="ltc2" />
+    <result column="ltcje2" jdbcType="DECIMAL" property="ltcje2" />
+    <result column="ltc3" jdbcType="INTEGER" property="ltc3" />
+    <result column="ltcje3" jdbcType="DECIMAL" property="ltcje3" />
+    <result column="ltc4" jdbcType="INTEGER" property="ltc4" />
+    <result column="ltcje4" jdbcType="DECIMAL" property="ltcje4" />
+    <result column="ltc5" jdbcType="INTEGER" property="ltc5" />
+    <result column="ltcje5" jdbcType="DECIMAL" property="ltcje5" />
+    <result column="ltc6" jdbcType="INTEGER" property="ltc6" />
+    <result column="ltcje6" jdbcType="DECIMAL" property="ltcje6" />
+    <result column="ltchj" jdbcType="INTEGER" property="ltchj" />
+    <result column="ltcjehj" jdbcType="DECIMAL" property="ltcjehj" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    xh, sszd, zdmc, zdzz, zt, bz, sfrq, lryxh, lrymc, lrsj, ltc1, ltcje1, ltc2, ltcje2, 
+    ltc3, ltcje3, ltc4, ltcje4, ltc5, ltcje5, ltc6, ltcje6, ltchj, ltcjehj
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fx_ltsj
+    where xh = #{xh,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from fx_ltsj
+    where xh = #{xh,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.FxLtsj">
+    <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_ltsj (sszd, zdmc, zdzz, 
+      zt, bz, sfrq, lryxh, 
+      lrymc, lrsj, ltc1, 
+      ltcje1, ltc2, ltcje2, 
+      ltc3, ltcje3, ltc4, 
+      ltcje4, ltc5, ltcje5, 
+      ltc6, ltcje6, ltchj, 
+      ltcjehj)
+    values (#{sszd,jdbcType=VARCHAR}, #{zdmc,jdbcType=VARCHAR}, #{zdzz,jdbcType=VARCHAR}, 
+      #{zt,jdbcType=INTEGER}, #{bz,jdbcType=VARCHAR}, #{sfrq,jdbcType=TIMESTAMP}, #{lryxh,jdbcType=VARCHAR}, 
+      #{lrymc,jdbcType=VARCHAR}, #{lrsj,jdbcType=TIMESTAMP}, #{ltc1,jdbcType=INTEGER}, 
+      #{ltcje1,jdbcType=DECIMAL}, #{ltc2,jdbcType=INTEGER}, #{ltcje2,jdbcType=DECIMAL}, 
+      #{ltc3,jdbcType=INTEGER}, #{ltcje3,jdbcType=DECIMAL}, #{ltc4,jdbcType=INTEGER}, 
+      #{ltcje4,jdbcType=DECIMAL}, #{ltc5,jdbcType=INTEGER}, #{ltcje5,jdbcType=DECIMAL}, 
+      #{ltc6,jdbcType=INTEGER}, #{ltcje6,jdbcType=DECIMAL}, #{ltchj,jdbcType=INTEGER}, 
+      #{ltcjehj,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.FxLtsj">
+    <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_ltsj
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sszd != null">
+        sszd,
+      </if>
+      <if test="zdmc != null">
+        zdmc,
+      </if>
+      <if test="zdzz != null">
+        zdzz,
+      </if>
+      <if test="zt != null">
+        zt,
+      </if>
+      <if test="bz != null">
+        bz,
+      </if>
+      <if test="sfrq != null">
+        sfrq,
+      </if>
+      <if test="lryxh != null">
+        lryxh,
+      </if>
+      <if test="lrymc != null">
+        lrymc,
+      </if>
+      <if test="lrsj != null">
+        lrsj,
+      </if>
+      <if test="ltc1 != null">
+        ltc1,
+      </if>
+      <if test="ltcje1 != null">
+        ltcje1,
+      </if>
+      <if test="ltc2 != null">
+        ltc2,
+      </if>
+      <if test="ltcje2 != null">
+        ltcje2,
+      </if>
+      <if test="ltc3 != null">
+        ltc3,
+      </if>
+      <if test="ltcje3 != null">
+        ltcje3,
+      </if>
+      <if test="ltc4 != null">
+        ltc4,
+      </if>
+      <if test="ltcje4 != null">
+        ltcje4,
+      </if>
+      <if test="ltc5 != null">
+        ltc5,
+      </if>
+      <if test="ltcje5 != null">
+        ltcje5,
+      </if>
+      <if test="ltc6 != null">
+        ltc6,
+      </if>
+      <if test="ltcje6 != null">
+        ltcje6,
+      </if>
+      <if test="ltchj != null">
+        ltchj,
+      </if>
+      <if test="ltcjehj != null">
+        ltcjehj,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sszd != null">
+        #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null">
+        #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null">
+        #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null">
+        #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null">
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null">
+        #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null">
+        #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null">
+        #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null">
+        #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ltc1 != null">
+        #{ltc1,jdbcType=INTEGER},
+      </if>
+      <if test="ltcje1 != null">
+        #{ltcje1,jdbcType=DECIMAL},
+      </if>
+      <if test="ltc2 != null">
+        #{ltc2,jdbcType=INTEGER},
+      </if>
+      <if test="ltcje2 != null">
+        #{ltcje2,jdbcType=DECIMAL},
+      </if>
+      <if test="ltc3 != null">
+        #{ltc3,jdbcType=INTEGER},
+      </if>
+      <if test="ltcje3 != null">
+        #{ltcje3,jdbcType=DECIMAL},
+      </if>
+      <if test="ltc4 != null">
+        #{ltc4,jdbcType=INTEGER},
+      </if>
+      <if test="ltcje4 != null">
+        #{ltcje4,jdbcType=DECIMAL},
+      </if>
+      <if test="ltc5 != null">
+        #{ltc5,jdbcType=INTEGER},
+      </if>
+      <if test="ltcje5 != null">
+        #{ltcje5,jdbcType=DECIMAL},
+      </if>
+      <if test="ltc6 != null">
+        #{ltc6,jdbcType=INTEGER},
+      </if>
+      <if test="ltcje6 != null">
+        #{ltcje6,jdbcType=DECIMAL},
+      </if>
+      <if test="ltchj != null">
+        #{ltchj,jdbcType=INTEGER},
+      </if>
+      <if test="ltcjehj != null">
+        #{ltcjehj,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.FxLtsj">
+    update fx_ltsj
+    <set>
+      <if test="sszd != null">
+        sszd = #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null">
+        zdmc = #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null">
+        zdzz = #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null">
+        zt = #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null">
+        bz = #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null">
+        sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null">
+        lryxh = #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null">
+        lrymc = #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null">
+        lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ltc1 != null">
+        ltc1 = #{ltc1,jdbcType=INTEGER},
+      </if>
+      <if test="ltcje1 != null">
+        ltcje1 = #{ltcje1,jdbcType=DECIMAL},
+      </if>
+      <if test="ltc2 != null">
+        ltc2 = #{ltc2,jdbcType=INTEGER},
+      </if>
+      <if test="ltcje2 != null">
+        ltcje2 = #{ltcje2,jdbcType=DECIMAL},
+      </if>
+      <if test="ltc3 != null">
+        ltc3 = #{ltc3,jdbcType=INTEGER},
+      </if>
+      <if test="ltcje3 != null">
+        ltcje3 = #{ltcje3,jdbcType=DECIMAL},
+      </if>
+      <if test="ltc4 != null">
+        ltc4 = #{ltc4,jdbcType=INTEGER},
+      </if>
+      <if test="ltcje4 != null">
+        ltcje4 = #{ltcje4,jdbcType=DECIMAL},
+      </if>
+      <if test="ltc5 != null">
+        ltc5 = #{ltc5,jdbcType=INTEGER},
+      </if>
+      <if test="ltcje5 != null">
+        ltcje5 = #{ltcje5,jdbcType=DECIMAL},
+      </if>
+      <if test="ltc6 != null">
+        ltc6 = #{ltc6,jdbcType=INTEGER},
+      </if>
+      <if test="ltcje6 != null">
+        ltcje6 = #{ltcje6,jdbcType=DECIMAL},
+      </if>
+      <if test="ltchj != null">
+        ltchj = #{ltchj,jdbcType=INTEGER},
+      </if>
+      <if test="ltcjehj != null">
+        ltcjehj = #{ltcjehj,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.FxLtsj">
+    update fx_ltsj
+    set sszd = #{sszd,jdbcType=VARCHAR},
+      zdmc = #{zdmc,jdbcType=VARCHAR},
+      zdzz = #{zdzz,jdbcType=VARCHAR},
+      zt = #{zt,jdbcType=INTEGER},
+      bz = #{bz,jdbcType=VARCHAR},
+      sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      lryxh = #{lryxh,jdbcType=VARCHAR},
+      lrymc = #{lrymc,jdbcType=VARCHAR},
+      lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      ltc1 = #{ltc1,jdbcType=INTEGER},
+      ltcje1 = #{ltcje1,jdbcType=DECIMAL},
+      ltc2 = #{ltc2,jdbcType=INTEGER},
+      ltcje2 = #{ltcje2,jdbcType=DECIMAL},
+      ltc3 = #{ltc3,jdbcType=INTEGER},
+      ltcje3 = #{ltcje3,jdbcType=DECIMAL},
+      ltc4 = #{ltc4,jdbcType=INTEGER},
+      ltcje4 = #{ltcje4,jdbcType=DECIMAL},
+      ltc5 = #{ltc5,jdbcType=INTEGER},
+      ltcje5 = #{ltcje5,jdbcType=DECIMAL},
+      ltc6 = #{ltc6,jdbcType=INTEGER},
+      ltcje6 = #{ltcje6,jdbcType=DECIMAL},
+      ltchj = #{ltchj,jdbcType=INTEGER},
+      ltcjehj = #{ltcjehj,jdbcType=DECIMAL}
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  
+ 
+   <!-- getLtsjData -->
+  <select id="getLtsjData" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fx_ltsj LEFT JOIN sys_department dept on sszd = dept.departmentid
+    <where>
+    	<if test="lock !=null">and zt = #{lock} </if>
+	   	<if test="st!=null and et==null">and substring(sfrq,1,length(#{st}))&gt;=#{st}</if>
+	   	<if test="et!=null and st==null">and substring(sfrq,1,length(#{et}))&lt;=#{et}</if>
+	   	<if test="st!=null and et!=null">and substring(sfrq,1,length(#{st})) between #{st} and #{et}</if>
+	   	<if test="lrymc!=null">and lrymc like concat('%',#{lrymc},'%')</if>
+	   	<if test="zdzz!=null">and zdzz like concat('%',#{zdzz},'%')</if>
+	   	<if test="depts != null">and sszd in (${depts})</if>
+   	</where>
+   	<if test="order != null">order by ${order}</if>
+   	<if test="order == null">order by sfrq desc </if>
+   		,dept.sortcode asc
+  </select>
+  <!-- getCanDel -->
+  <select id="getCanDel" parameterType="map" resultType="int">
+  	SELECT count(*) FROM fx_ltsj where zt = 1
+  	<if test="sfrq!=null">and substring(sfrq,1,length(#{sfrq}))=#{sfrq}</if>
+  	<if test="xh!=null">and xh!=#{xh}</if>
+  	<if test="sszd!=null">and sszd = #{sszd}</if>
+  </select>
+  
+  
+  
+</mapper>

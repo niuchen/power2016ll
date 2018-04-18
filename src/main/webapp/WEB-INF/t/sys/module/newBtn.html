@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html><head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>添加按钮</title>
+	<script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet" />
+    <link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.extension.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+    <link href="${ctx.contextPath}/res/wdTree/tree.css" rel="stylesheet"/>
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet"/>
+    <script src="${ctx.contextPath}/res/wdTree/tree.js"></script>
+	<script src="${ctx.contextPath}/res/jquery/validator.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+	
+
+</head>
+<body>
+<div class="ui-select-option" id="F_ParentId-option">
+<div class="ui-select-option-content bbit-tree" style="max-height: 150px; height: 150px; overflow: auto;" id="bbtree1476754528054">
+<div class="bbit-tree-bwrap">
+<div class="bbit-tree-body bbtree1476754528054">
+<ul class="bbit-tree-root bbit-tree-arrows"></ul>
+</div></div></div></div>
+    <form id="form1">
+        
+<script type="text/javascript">
+    var parentId = request('parentId');//btn pid
+    var moduleButtonId = request('buttonId');//修改时候， btn主键
+    var moduleId = request('moduleId');//模块id
+    $(function () {
+        initControl();
+    })
+    var dataJson = top.__Form.buttonJson;
+    //初始化控件
+    function initControl() {
+        //上级
+        $("#parentid").ComboBoxTree({
+            url: "${ctx.contextPath}/sys/module/btnListToTreeJson",
+            param: { moduleButtonJson: JSON.stringify(dataJson) },
+            method: "post",
+            description: "==请选择==",
+            height: "150px"
+        });
+        if (!!moduleButtonId) {
+            $.each(dataJson, function (i) {
+                var row = dataJson[i];
+                if (row.buttonid == moduleButtonId) {
+                    $("#form1").SetWebControls(row);
+                }
+            });
+        } else {
+            $("#moduleid").val(moduleId);
+            if (!!parentId) {
+                $("#parentid").ComboBoxTreeSetValue(parentId);
+            } else {
+                $("#parentid").ComboBoxTreeSetValue(0);
+            }
+        }
+    }
+    //保存表单
+    function AcceptClick(callback) {
+        if (!$('#form1').Validform()) {
+            return false;
+        }
+        var data = $("#form1").GetWebControls(moduleButtonId);
+        if (data["parentid"] == "") {
+            data["parentid"] = 0;
+        }
+        callback(data);
+        dialogClose();
+    }
+</script>
+<div style="margin-top: 10px; margin-right: 30px;">
+    <input id="buttonid" type="hidden" value="${buttonId}">
+    <input id="moduleid" type="hidden" value="${moduleId}">
+    <table class="form">
+        <tbody><tr>
+            <th class="formTitle">上级</th>
+            <td class="formValue">
+                <div id="parentid" type="selectTree" class="ui-select"/>
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">编号<font face="宋体">*</font></th>
+            <td class="formValue">
+                <input id="code" type="text" class="form-control" placeholder="请输入编号" isvalid="yes" checkexpession="NotNull">
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">名称<font face="宋体">*</font></th>
+            <td class="formValue">
+                <input id="fullname" type="text" class="form-control" placeholder="请输入名称" isvalid="yes" checkexpession="NotNull">
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">排序<font face="宋体">*</font></th>
+            <td class="formValue">
+                <input id="sortcode" type="text" class="form-control" placeholder="请输入排序" isvalid="yes" checkexpession="Num">
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">地址</th>
+            <td class="formValue">
+                <input id="actionaddress" type="text" class="form-control">
+            </td>
+        </tr>
+    </tbody></table>
+</div>
+    </form>
+</body></html>

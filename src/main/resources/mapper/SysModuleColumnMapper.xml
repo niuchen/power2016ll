@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.SysModuleColumnMapper">
+  <resultMap id="BaseResultMap" type="com.power.common.entity.SysModuleColumn">
+    <id column="columnid" jdbcType="VARCHAR" property="columnid" />
+    <result column="moduleid" jdbcType="VARCHAR" property="moduleid" />
+    <result column="parentid" jdbcType="VARCHAR" property="parentid" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="fullname" jdbcType="VARCHAR" property="fullname" />
+    <result column="sortcode" jdbcType="INTEGER" property="sortcode" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    columnid, moduleid, parentid, code, fullname, sortcode, description
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_modulecolumn
+    where columnid = #{columnid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_modulecolumn
+    where columnid = #{columnid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.SysModuleColumn">
+    insert into sys_modulecolumn (columnid, moduleid, parentid, 
+      code, fullname, sortcode, 
+      description)
+    values (#{columnid,jdbcType=VARCHAR}, #{moduleid,jdbcType=VARCHAR}, #{parentid,jdbcType=VARCHAR}, 
+      #{code,jdbcType=VARCHAR}, #{fullname,jdbcType=VARCHAR}, #{sortcode,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.SysModuleColumn">
+    insert into sys_modulecolumn
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="columnid != null">
+        columnid,
+      </if>
+      <if test="moduleid != null">
+        moduleid,
+      </if>
+      <if test="parentid != null">
+        parentid,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="fullname != null">
+        fullname,
+      </if>
+      <if test="sortcode != null">
+        sortcode,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="columnid != null">
+        #{columnid,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleid != null">
+        #{moduleid,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="fullname != null">
+        #{fullname,jdbcType=VARCHAR},
+      </if>
+      <if test="sortcode != null">
+        #{sortcode,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.SysModuleColumn">
+    update sys_modulecolumn
+    <set>
+      <if test="moduleid != null">
+        moduleid = #{moduleid,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        parentid = #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="fullname != null">
+        fullname = #{fullname,jdbcType=VARCHAR},
+      </if>
+      <if test="sortcode != null">
+        sortcode = #{sortcode,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where columnid = #{columnid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.SysModuleColumn">
+    update sys_modulecolumn
+    set moduleid = #{moduleid,jdbcType=VARCHAR},
+      parentid = #{parentid,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      fullname = #{fullname,jdbcType=VARCHAR},
+      sortcode = #{sortcode,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR}
+    where columnid = #{columnid,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>记重车辆月报数据</title>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.extension.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet"/>
+	<script src="${ctx.contextPath}/res/ui/validator.js"></script>
+	<script src="${ctx.contextPath}/res/datepicker/WdatePicker.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+	<style type="text/css">
+	.tdTitle {
+	    position: relative;
+	    left: 0px;
+	    text-align: right;
+	    white-space: nowrap;
+	    font-weight: normal;
+	    width: 180px;
+	    padding-right: 10px;
+	}
+	.numberTxt{
+		border:none;
+		border:1px;
+		text-align:right;
+		border-bottom-style:solid;
+		font-weight: bold;
+		font-size: 16px;
+		color:blue;
+		padding-right: 5px;
+	}
+	.moneyTxt{
+		border:none;
+		border:1px;
+		text-align:right;
+		border-bottom-style:solid;
+		font-weight: bold;
+		font-size: 16px;
+		color:red;
+		padding-right: 5px;
+	}
+	.alldata{
+	text-align:right;
+	font-size: 14px;
+	}
+	</style>
+</head>
+<body>
+    <form id="form1">
+<div style="margin-left: 10px; margin-right: 10px;">
+    <div class="tab-content" style="padding-top: 10px;">
+    <input id="xh" name="xh" type="hidden" value=""/>
+            <table class="form">
+            <input id="xh" name="xh" type="hidden" value=""/>
+        <tr height="5px">
+                    <td class="formTitle">所属站别<font face="宋体">*</font></td>
+                    <td class="formValue">
+                    	<span style="font-weight: bold;font-size: 14px;color: green;">${user.deptName} </span>
+                        <input id="sszd" type="hidden" value="${user.deptId}"/>
+                        <input id="zdmc" type="hidden" value="${user.deptName}"/>
+                        <input id="lryxh" type="hidden" value="${user.uid}"/>
+                        <input id="lrymc" type="hidden" value="${user.realName}"/>
+                    </td>
+                    <td class="formTitle">上报年月<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <input id="sfrq" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'%y-%M'})" value="${.now?string('yyyy-MM')}"/>
+                    </td>
+                    <td class="formTitle">值班站长<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <div id=zdzz type="select" class="ui-select" isvalid="yes" checkexpession="NotNull"></div>
+                    </td>
+               
+               
+                 
+                
+                 <td class="formTitle">录入人员<font face="宋体">*</font></td>
+                 <td class="formValue">
+                	<span style="font-weight: bold;font-size: 14px;color: green;">${user.realName} </span>
+                	</td>
+                	 </tr>
+                	<tr>
+                    <th class="formTitle" valign="top" style="padding-top: 4px;">备注信息</th>
+                    <td class="formValue" colspan="5">
+                        <textarea id="bz" class="form-control" style="height: 50px;"></textarea>
+                    </td>
+                </tr>
+                 </table>
+                 <header>免费车辆信息合计</header>
+                  <table class="form">
+                  <tr style="margin-bottom: 20px;">
+                    <td style ="width: 95px" class="tdTitle">免费车减免总额(元):</td>
+                    <td style ="width: 100px" class="formValue">
+                        <input id="mfcljmze" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                    </tr>
+                    <tr>
+                    <td style ="width: 95px" class="tdTitle">免费车辆出入口总计:</td>
+                    <td style ="width: 100px" class="formValue">
+                        <input id="mfclcrkzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td style ="width: 95px" class="tdTitle">免费车辆入口总计:</td>
+                    <td style ="width: 100px" class="formValue">
+                        <input id="mfclrkzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td style ="width: 95px" class="tdTitle">免费车辆出口总计:</td>
+                    <td style ="width: 100px" class="formValue">
+                        <input id="mfclckzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                </tr>   
+            </table>
+         <header>免费车辆详细信息</header>
+              <table class="form">
+                <tr class="keyRow">
+                 <td style ="width: 120px"class="tdTitle">军车出入口合计:</td>
+                    <td style ="width: 100px" class="formValue">
+                        <input id="jccrzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td style ="width: 80px" class="tdTitle">军车(入):</td>
+                    <td  style ="width: 100px" class="formValue">
+                        <input id="jcr" type="text" class="form-control numberTxt jchj mfclrkzj"  />
+                    </td>
+                     <td style ="width: 80px" class="tdTitle">军车(出):</td>
+                    <td style ="width: 100px" class="formValue">
+                        <input id="jcc" type="text" class="form-control numberTxt jchj mfclckzj"  />
+                    </td>
+                    <td style ="width: 80px" class="tdTitle">军车(元):</td>
+                    <td style ="width: 100px" class="formValue">
+                        <input id="jcje" type="text" class="form-control moneyTxt"  />
+                    </td>
+                </tr>   
+                 <tr class="keyRow">
+                 <td class="tdTitle">警车出入口合计:</td>
+                    <td class="formValue">
+                        <input id="jingccrzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td class="tdTitle">警车(入):</td>
+                    <td class="formValue">
+                        <input id="jingcr" type="text" class="form-control numberTxt jingchj mfclrkzj"  />
+                    </td>
+                     <td class="tdTitle">警车(出):</td>
+                    <td class="formValue">
+                        <input id="jingcc" type="text" class="form-control numberTxt jingchj mfclckzj"  />
+                    </td>
+                    <td class="tdTitle">警车(元):</td>
+                    <td class="formValue">
+                        <input id="jingcje" type="text" class="form-control moneyTxt"  />
+                    </td>
+                </tr>   
+                <tr class="keyRow">
+                 <td class="tdTitle">公务出入口合计:</td>
+                    <td class="formValue">
+                        <input id="gwcrzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td class="tdTitle">公务(入):</td>
+                    <td class="formValue">
+                        <input id="gwr" type="text" class="form-control numberTxt gwhj mfclrkzj"  />
+                    </td>
+                     <td class="tdTitle">公务(出):</td>
+                    <td class="formValue">
+                        <input id="gwc" type="text" class="form-control numberTxt gwhj mfclckzj"  />
+                    </td>
+                    <td class="tdTitle">公务(元):</td>
+                    <td class="formValue">
+                        <input id="gwje" type="text" class="form-control moneyTxt"  />
+                    </td>
+                </tr>   
+                <tr class="keyRow">
+                 <td class="tdTitle">行政免费出入口合计:</td>
+                    <td class="formValue">
+                        <input id="xzmfcrzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td class="tdTitle">行政免费(入):</td>
+                    <td class="formValue">
+                        <input id="xzmfr" type="text" class="form-control numberTxt xzmfhj mfclrkzj"  />
+                    </td>
+                     <td class="tdTitle">行政免费(出):</td>
+                    <td class="formValue">
+                        <input id="xzmfc" type="text" class="form-control numberTxt xzmfhj mfclckzj"  />
+                    </td>
+                    <td class="tdTitle">行政免费(元):</td>
+                    <td class="formValue">
+                        <input id="xzmfje" type="text" class="form-control moneyTxt"  />
+                    </td>
+                </tr>   
+                <tr class="keyRow">
+                 <td class="tdTitle">紧急出入口合计:</td>
+                    <td class="formValue">
+                        <input id="jjmfcrzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td class="tdTitle">紧急(入):</td>
+                    <td class="formValue">
+                        <input id="jjmfr" type="text" class="form-control numberTxt jjhj mfclrkzj"  />
+                    </td>
+                     <td class="tdTitle">紧急(出):</td>
+                    <td class="formValue">
+                        <input id="jjmfc" type="text" class="form-control numberTxt jjhj mfclckzj"  />
+                    </td>
+                    <td class="tdTitle">紧急(元):</td>
+                    <td class="formValue">
+                        <input id="jjmfje" type="text" class="form-control moneyTxt"  />
+                    </td>
+                </tr>   
+                <tr class="keyRow">
+                 <td class="tdTitle">防汛救灾出入口合计:</td>
+                    <td class="formValue">
+                        <input id="fxjzcrzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td class="tdTitle">防汛救灾(入):</td>
+                    <td class="formValue">
+                        <input id="fxjzr" type="text" class="form-control numberTxt fxhj mfclrkzj"  />
+                    </td>
+                     <td class="tdTitle">防汛救灾(出):</td>
+                    <td class="formValue">
+                        <input id="fxjzc" type="text" class="form-control numberTxt fxhj mfclckzj"  />
+                    </td>
+                    <td class="tdTitle">防汛救灾(元):</td>
+                    <td class="formValue">
+                        <input id="fxjzje" type="text" class="form-control moneyTxt"  />
+                    </td>
+                </tr>   
+                <tr class="keyRow">
+                 <td class="tdTitle">国安出入口合计:</td>
+                    <td class="formValue">
+                        <input id="gacrzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td class="tdTitle">国安(入):</td>
+                    <td class="formValue">
+                        <input id="gar" type="text" class="form-control numberTxt gahj mfclrkzj"  />
+                    </td>
+                     <td class="tdTitle">国安(出):</td>
+                    <td class="formValue">
+                        <input id="gac" type="text" class="form-control numberTxt gahj mfclckzj"  />
+                    </td>
+                    <td class="tdTitle">国安(元):</td>
+                    <td class="formValue">
+                        <input id="gaje" type="text" class="form-control moneyTxt"  />
+                    </td>
+                </tr>   
+                <tr class="keyRow">
+                 <td class="tdTitle">消防出入口合计:</td>
+                    <td class="formValue">
+                        <input id="xfcrzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td class="tdTitle">消防(入):</td>
+                    <td class="formValue">
+                        <input id="xfr" type="text" class="form-control numberTxt xfhj mfclrkzj"  />
+                    </td>
+                     <td class="tdTitle">消防(出):</td>
+                    <td class="formValue">
+                        <input id="xfc" type="text" class="form-control numberTxt xfhj mfclckzj"  />
+                    </td>
+                    <td class="tdTitle">消防(元):</td>
+                    <td class="formValue">
+                        <input id="xfje" type="text" class="form-control moneyTxt"  />
+                    </td>
+                </tr>   
+                <tr class="keyRow">
+                 <td class="tdTitle">救护车出入口合计:</td>
+                    <td class="formValue">
+                        <input id="jhcrzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td class="tdTitle">救护(入):</td>
+                    <td class="formValue">
+                        <input id="jhr" type="text" class="form-control numberTxt jhhj mfclrkzj"  />
+                    </td>
+                     <td class="tdTitle">救护(出):</td>
+                    <td class="formValue">
+                        <input id="jhc" type="text" class="form-control numberTxt jhhj mfclckzj"  />
+                    </td>
+                    <td class="tdTitle">救护(元):</td>
+                    <td class="formValue">
+                        <input id="jhje" type="text" class="form-control moneyTxt"  />
+                    </td>
+                </tr>   
+                <tr class="keyRow">
+                <td></td>
+                <td></td>
+                <td class="tdTitle">绿通(入):</td>
+                    <td class="formValue">
+                        <input id="ltr" type="text" class="form-control numberTxt"  />
+                     <td class="tdTitle">绿通(出):</td>
+                    <td class="formValue">
+                        <input id="ltc" type="text" class="form-control numberTxt mfclckzj"  />
+                    </td>
+                    <td class="tdTitle">绿通(元):</td>
+                    <td class="formValue">
+                        <input id="ltje" type="text" class="form-control moneyTxt"  />
+                    </td>
+                </tr>   
+                <tr class="keyRow">
+                 <td class="tdTitle">跨区机出入口合计:</td>
+                    <td class="formValue">
+                        <input id="kqjcrzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td class="tdTitle">跨区机(入):</td>
+                    <td class="formValue">
+                        <input id="kqjr" type="text" class="form-control numberTxt kqhj mfclrkzj"  />
+                    </td>
+                     <td class="tdTitle">跨区机(出):</td>
+                    <td class="formValue">
+                        <input id="kqjc" type="text" class="form-control numberTxt kqhj mfclckzj"  />
+                    </td>
+                    <td class="tdTitle">跨区机(元):</td>
+                    <td class="formValue">
+                        <input id="kqjje" type="text" class="form-control moneyTxt"  />
+                    </td>
+                </tr>   
+                <tr class="keyRow">
+                 <td class="tdTitle">其他免费出入口合计:</td>
+                    <td class="formValue">
+                        <input id="qtmfcrzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td class="tdTitle">其他免费(入):</td>
+                    <td class="formValue">
+                        <input id="qtmfr" type="text" class="form-control numberTxt qthj mfclrkzj"  />
+                    </td>
+                     <td class="tdTitle">其他免费(出):</td>
+                    <td class="formValue">
+                        <input id="qtmfc" type="text" class="form-control numberTxt qthj mfclckzj"  />
+                    </td>
+                    <td class="tdTitle">其他免费(元):</td>
+                    <td class="formValue">
+                        <input id="qtmfje" type="text" class="form-control moneyTxt"  />
+                    </td>
+                </tr>   
+                <tr class="keyRow">
+                 <td class="tdTitle">ETC争议出入口合计:</td>
+                    <td class="formValue">
+                        <input id="etczycrzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td class="tdTitle">ETC争议(入):</td>
+                    <td class="formValue">
+                        <input id="etczyr" type="text" class="form-control numberTxt etczyhj mfclrkzj"  />
+                    </td>
+                     <td class="tdTitle">ETC争议(出):</td>
+                    <td class="formValue">
+                        <input id="etczyc" type="text" class="form-control numberTxt etczyhj mfclckzj"  />
+                    </td>
+                    <td class="tdTitle">ETC争议(元):</td>
+                    <td class="formValue">
+                        <input id="etczyje" type="text" class="form-control moneyTxt"  />
+                    </td>
+                </tr>   
+                <tr class="keyRow">
+                 <td class="tdTitle">ETC免费出入口合计:</td>
+                    <td class="formValue">
+                        <input id="etcmfcrzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td class="tdTitle">ETC免费(入):</td>
+                    <td class="formValue">
+                        <input id="etcmfr" type="text" class="form-control numberTxt etcmfhj mfclrkzj"  />
+                    </td>
+                     <td class="tdTitle">ETC免费(出):</td>
+                    <td class="formValue">
+                        <input id="etcmfc" type="text" class="form-control numberTxt etcmfhj mfclckzj"  />
+                    </td>
+                    <td class="tdTitle">ETC免费(元):</td>
+                    <td class="formValue">
+                        <input id="etcmfje" type="text" class="form-control moneyTxt"  />
+                    </td>
+                </tr>   
+                 <tr class="keyRow">
+                 <td class="tdTitle">车队出入口合计:</td>
+                    <td class="formValue">
+                        <input id="cdcrzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td class="tdTitle">车队(入):</td>
+                    <td class="formValue">
+                        <input id="cdr" type="text" class="form-control numberTxt cdhj mfclrkzj" />
+                    </td>
+                     <td class="tdTitle">车队(出):</td>
+                    <td class="formValue">
+                        <input id="cdc" type="text" class="form-control numberTxt cdhj mfclckzj"  "/>
+                    </td>
+                </tr>  
+                  <tr class="keyRow">
+                 <td class="tdTitle">闯关出入口合计:</td>
+                    <td class="formValue">
+                        <input id="cgcrzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td class="tdTitle">闯关车(入):</td>
+                    <td class="formValue">
+                        <input id="cgr" type="text" class="form-control numberTxt cghj mfclrkzj"  "/>
+                    </td>
+                     <td class="tdTitle">闯关车(出):</td>
+                    <td class="formValue">
+                        <input id="cgc" type="text" class="form-control numberTxt cghj mfclckzj"  "/>
+                    </td>
+                </tr>   
+                <tr class="keyRow">
+                 <td class="tdTitle">春节免征出入口合计:</td>
+                    <td class="formValue">
+                        <input id="cjmzcrkzj" type="text" class="form-control  alldata"  readonly="readonly"/>
+                    </td>
+                     <td class="tdTitle">春节免征(入):</td>
+                    <td class="formValue">
+                        <input id="cjmzr" type="text" class="form-control numberTxt cjmzcrkzj mfclrkzj"  />
+                    </td>
+                     <td class="tdTitle">春节免征(出):</td>
+                    <td class="formValue">
+                        <input id="cjmzc" type="text" class="form-control numberTxt cjmzcrkzj mfclckzj"  />
+                    </td>
+                    <td class="tdTitle">春节免征(元):</td>
+                    <td class="formValue">
+                        <input id="cjmzje" type="text" class="form-control moneyTxt"  />
+                    </td>
+                </tr>   
+                 <tr class="keyRow">
+                 <td class="tdTitle">清明免征出入口合计:</td>
+                    <td class="formValue">
+                        <input id="qmmzcrkzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td class="tdTitle">清明免征(入):</td>
+                    <td class="formValue">
+                        <input id="qmmzr" type="text" class="form-control numberTxt qmmzcrkzj mfclrkzj"  />
+                    </td>
+                     <td class="tdTitle">清明免征(出):</td>
+                    <td class="formValue">
+                        <input id="qmmzc" type="text" class="form-control numberTxt qmmzcrkzj mfclckzj"  />
+                    </td>
+                    <td class="tdTitle">清明免征(元):</td>
+                    <td class="formValue">
+                        <input id="qmmzje" type="text" class="form-control moneyTxt"  />
+                    </td>
+                </tr>   
+                 <tr class="keyRow">
+                 <td class="tdTitle">五一免征出入口合计:</td>
+                    <td class="formValue">
+                        <input id="wymzcrkzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td class="tdTitle">五一免征(入):</td>
+                    <td class="formValue">
+                        <input id="wymzr" type="text" class="form-control numberTxt wymzcrkzj mfclrkzj"  />
+                    </td>
+                     <td class="tdTitle">五一免征(出):</td>
+                    <td class="formValue">
+                        <input id="wymzc" type="text" class="form-control numberTxt wymzcrkzj mfclckzj"  />
+                    </td>
+                    <td class="tdTitle">五一免征(元):</td>
+                    <td class="formValue">
+                        <input id="wymzje" type="text" class="form-control moneyTxt"  />
+                    </td>
+                </tr>   
+                 <tr class="keyRow">
+                 <td class="tdTitle">国庆免征出入口合计:</td>
+                    <td class="formValue">
+                        <input id="gqmzcrkzj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                     <td class="tdTitle">国庆免征(入):</td>
+                    <td class="formValue">
+                        <input id="gqmzr" type="text" class="form-control numberTxt gqmzcrkzj mfclrkzj"  />
+                    </td>
+                     <td class="tdTitle">国庆免征(出):</td>
+                    <td class="formValue">
+                        <input id="gqmzc" type="text" class="form-control numberTxt gqmzcrkzj mfclckzj"  />
+                    </td>
+                    <td class="tdTitle">国庆免征(元):</td>
+                    <td class="formValue">
+                        <input id="gqmzje" type="text" class="form-control moneyTxt"  />
+                    </td>
+                </tr>   
+           </table>
+    </div>
+</div>
+    </form>
+<script>
+var keyValue = request('keyValue');
+$(function () {
+    initControl();
+})
+//初始化控件
+function initControl() {
+    //获取表单
+    if (!!keyValue) {
+    	$.SetForm({
+            url: "${ctx.contextPath}/yb/getMfclYbFormJson",
+            param: { keyValue: keyValue },
+            success: function (data) {
+                $("#form1").SetWebControls(data);
+                $("#zdmc").text(data.zdmc);
+                $("#lrymc").text(data.lrymc);
+                var zdzz = top.clientuserData[data.zdzz] == null ? "" : top.clientuserData[data.zdzz].realname;//站点站长
+                $("#zdzz").text(zdzz);
+                $("#sfrq").val(formatDate(new Date(data.sfrq), "yyyy-MM"));
+                $("#form1").find('.form-control,.ui-select,input').attr('disabled', 'disabled');
+            }
+        });
+    }
+}
+</script>
+</body>
+</html>

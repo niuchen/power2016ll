@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.AppMapper">
+  
+  <!--查询全部子部门 -->
+  <select id="getAllDept" resultType="com.power.common.entity.SysDepartment">
+    select departmentid, organizeid, parentid, code, fullname
+    from sys_department
+    where deletemark = 0 and nature='103001'
+    order by sortcode
+  </select>
+  <!-- 年度指标查询 -->
+  <select id="getNzsrw" parameterType="map" resultType="com.power.base.sys.entity.KeyValue">
+  SELECT year(lrsj) AS id, sum(rwz)as name from fx_zbgl 
+  WHERE YEAR(lrsj) =#{rw}
+  <if test="orgId!=null">and sszd in ('${orgId}')</if>
+  <if test="deptId!=null">and sszd in ('${deptId}')</if>
+  GROUP BY id
+  </select>
+  <!-- z征收完成情况  -->
+  <select id="getZswcqk" parameterType="map" resultType="com.power.base.sys.entity.KeyValue">
+  	SELECT year(sfrq) AS id,sum(chhj)AS name
+	FROM fx_chsjyb
+	WHERE YEAR(sfrq) =#{year} and zt>0
+	<if test="depts!=null">and sszd in (${depts})</if>
+	GROUP BY id
+	UNION
+	SELECT date_format(sfrq, '%Y%m') AS id,sum(chhj)AS name
+	FROM fx_chsjyb
+	WHERE date_format(sfrq, '%Y%m') in (#{preYearMonth},#{preMonth},#{yearMonth},#{preYear}) and zt>0
+	<if test="depts!=null">and sszd in (${depts})</if>
+	GROUP BY id
+  </select>
+  <!-- etc/mtc 收费情况  /上月拆后  -->
+  <select id="getEtcData" parameterType="map" resultType="com.power.app.entity.EtcVO">
+  	SELECT temp1.*,temp2.* from  
+	(SELECT SUM(chetcje) etcAfter,SUM(chhj-chetcje) as mtcAfter from fx_chsjyb
+	where zt>0 and date_format(DATE_ADD(sfrq,INTERVAL 1 MONTH),'%Y%m')=#{rq}
+	<if test="depts!=null">and sszd in (${depts})</if>
+	) temp1,
+	(SELECT sum(etccq) as etcBefore,SUM(xjhj) as mtcBefore from fx_rcsj
+	where zt>0 and date_format(sfrq, '%Y%m')=#{rq}
+	<if test="depts!=null">and sszd in (${depts})</if>
+	) temp2
+  </select>
+  <!-- 绿通出/金额 -->
+  <select id="getLtData" parameterType="map" resultType="com.power.app.entity.LtsjVO">
+	SELECT sum(ltchj) as ltchj,SUM(ltcjehj) as ltcjehj,sszd 
+	FROM fx_ltsj WHERE zt >0
+	and date_format(sfrq, '%Y%m')=#{rq}
+	<if test="depts!=null">and sszd in (${depts})</if>	
+	group by sszd
+  </select>
+  <!-- 银行日缴数据 -->
+  <select id="getYhData" parameterType="map" resultType="com.power.app.entity.YhsjVO">
+  	SELECT sum(yjje1) as yjje1,sum(yjje2) as yjje2,sum(sjje1) as sjje1,sum(sjje2) as sjje2,
+	sum(yjjehj) as yjjehj,sum(sjjehj) sjjehj
+	from fx_yhsj 
+	where zt>0
+	<if test="rq!=null">and date_format(sfrq, '%Y-%m-%d') =#{rq}</if>
+	<if test="depts!=null">and sszd in (${depts})</if>
+  </select>
+  
+  <!-- 征收走势 -->
+  <select id="getzstsData" parameterType="map" resultType="com.power.base.sys.entity.KeyValue">
+  	SELECT tt.y as id ,GROUP_CONCAT(tt.m,":",tt.name) as name from (
+	SELECT YEAR(sfrq) y,MONTH(sfrq) as m,sum(sfhj) AS name
+	FROM fx_rcsj
+	WHERE zt>0 AND YEAR(sfrq) IN(#{y},#{y1},#{y2})
+	<if test="depts!=null">and sszd in (${depts})</if> 
+	group by y,m
+	) tt
+	GROUP BY tt.y
+  </select>
+   <!-- 拆后走势 -->
+  <select id="getchsrzsData" parameterType="map" resultType="com.power.base.sys.entity.KeyValue">
+  	SELECT tt.y as id ,GROUP_CONCAT(tt.m,":",tt.name) as name from (
+	SELECT YEAR(sfrq) y,MONTH(sfrq) as m,sum(chhj) AS name
+	FROM fx_chsjyb
+	WHERE zt>0 AND YEAR(sfrq) IN(#{y},#{y1},#{y2})
+	<if test="depts!=null">and sszd in (${depts})</if> 
+	group by y,m
+	) tt
+	GROUP BY tt.y
+  </select>
+  <!-- 绿通车次走势 -->
+  <select id="getcctsData" parameterType="map" resultType="com.power.base.sys.entity.KeyValue">
+  	SELECT tt.y as id ,GROUP_CONCAT(tt.m,":",tt.name) as name from (
+	SELECT MONTH(sfrq) as m,YEAR(sfrq) as y,sum(mfclcrkzj)AS name
+	FROM fx_mfclyb
+	WHERE zt>0 AND YEAR(sfrq) IN(#{y},#{y1})
+	group by y,m
+	) tt
+	GROUP BY tt.y
+  </select>
+  <!-- 费用占比 -->
+  <select id="getFyzbData" parameterType="map" resultType="com.power.app.entity.FyzbVO">
+  	SELECT MONTH(sfrq) as month,sum(sfhj)AS sfhj,sum(etccq) as etc,sum(xjhj) as mtc,sum(mzcrkhj) as mzcrkhj,
+	sum(kccrkhj)AS kccrkhj,sum(kcsrzj) as kcsrzj,sum(hccrkhj) as hccrkhj,sum(hcsrzj) as hcsrzj,SUM(crkllhj) crkllhj
+	FROM v_rcsj
+	WHERE zt>0 and YEAR(sfrq)= YEAR(NOW())
+	<if test="depts!=null">and sszd in (${depts})</if>  
+	group by month order by month
+	<!--  SELECT MONTH(a.sfrq) as month,sum(a.sfhj)AS sfhj,sum(a.etccq) as etc,sum(a.xjhj) as mtc,sum(b.mzcrkhj) as mzcrkhj,
+	sum(b.kccrkhj)AS kccrkhj,sum(a.kcsrzj) as kcsrzj,sum(b.hccrkhj) as hccrkhj,sum(a.hcsrzj) as hcsrzj,SUM(b.crkllhj) crkllhj
+	FROM fx_rcsj a LEFT JOIN fx_rcclhz b ON a.sfrq = b.sfrq
+	WHERE a.zt>0 and b.zt and YEAR(a.sfrq)= YEAR(NOW())
+	
+	SELECT MONTH(sfrq) as month,sum(sfhj)AS sfhj,sum(etccq) as etc,sum(xjhj) as mtc,sum(mzcrkhj) as mzcrkhj,
+	sum(kccrkhj)AS kccrkhj,sum(kcsrzj) as kcsrzj,sum(hccrkhj) as hccrkhj,sum(hcsrzj) as hcsrzj,SUM(crkllhj) crkllhj
+	FROM fx_rcsj 
+	WHERE zt>0 and YEAR(sfrq)= YEAR(NOW()) -->
+  </select>
+  <!-- 客货车类型 -->
+  <select id="getKhLxData" parameterType="map" resultType="com.power.app.entity.KhlxVO">
+  	SELECT sum(kccrhj1)AS kccrhj1,sum(kccrhj2)AS kccrhj2,sum(kccrhj3) as kccrhj3,sum(kccrhj4) as kccrhj4,
+	sum(hccrhj1) as hccrhj1,sum(hccrhj2) as hccrhj2,sum(hccrhj3) as hccrhj3,sum(hccrhj4) as hccrhj4,sum(hccrhj5) as hccrhj5,sum(hccrhj6) as hccrhj6
+	FROM fx_rcsj
+	WHERE zt>0 and YEAR(sfrq)= YEAR(NOW()) AND MONTH(sfrq)= MONTH(NOW()) 
+	<if test="depts!=null">and sszd in (${depts})</if> 
+	group by MONTH(sfrq) limit 1
+  </select>
+  <!-- 站 流量/费用 -->
+  <select id="getLLFY" parameterType="map" resultType="com.power.app.entity.LlfyVO">
+  	SELECT zdmc,sum(crkllhj) as crkllhj,sum(sfhj) as sfhj 
+	from fx_rcsj 
+	where zt>0 and YEAR(sfrq)= YEAR(NOW()) AND MONTH(sfrq)= MONTH(NOW())
+	<if test="depts!=null">and sszd in (${depts})</if>  
+	GROUP BY zdmc
+  </select>
+  
+  <!-- user 通讯录 -->
+  <select id="getUserList" resultType="com.power.base.sys.entity.AuthUserVO">
+	SELECT t3.organizeid as orgId,t3.fullname as orgName,t2.departmentid as deptId,t2.fullname as deptName,t1.userid as uid,
+	t3.nature as enabledmark,t1.realName,t1.account as loginName,t1.mobile
+	FROM sys_user t1 LEFT JOIN sys_department t2 ON t1.departmentid = t2.departmentid 
+	LEFT JOIN sys_organize t3 ON t1.organizeid = t3.organizeid 
+	WHERE t1.deletemark=0 
+	order by t1.sortcode
+	limit 15
+  </select>
+  
+  <!-- 节假日流量统计 -->
+  <select id="getJjrData" parameterType="map" resultType="com.power.base.sys.entity.KeyValue">
+	SELECT CONCAT(jjr.nf,'_0')as id ,SUM(crkllhj) name from fx_rcsj sj,sz_jjr jjr
+	WHERE sj.sfrq BETWEEN jjr.cj AND jjr.cjz
+	AND YEAR(sj.sfrq) = jjr.nf
+	AND jjr.nf in (#{y},#{y1},#{y2})
+	UNION
+	SELECT CONCAT(jjr.nf,'_1')as id ,SUM(crkllhj) name from fx_rcsj sj,sz_jjr jjr
+	WHERE sj.sfrq BETWEEN jjr.qm AND jjr.qmz
+	AND YEAR(sj.sfrq) = jjr.nf
+	AND jjr.nf in (#{y},#{y1},#{y2})
+	UNION
+	SELECT CONCAT(jjr.nf,'_2')as id ,SUM(crkllhj) name from fx_rcsj sj,sz_jjr jjr
+	WHERE sj.sfrq BETWEEN jjr.wy AND jjr.wyz
+	AND YEAR(sj.sfrq) = jjr.nf
+	AND jjr.nf in (#{y},#{y1},#{y2})
+	UNION
+	SELECT CONCAT(jjr.nf,'_3')as id ,SUM(crkllhj) name from fx_rcsj sj,sz_jjr jjr
+	WHERE sj.sfrq BETWEEN jjr.sy AND jjr.syz
+	AND YEAR(sj.sfrq) = jjr.nf
+	AND jjr.nf in (#{y},#{y1},#{y2})
+  </select>
+  
+  <!-- 年度预测 -->
+  <select id="getZdYc" parameterType="string" resultType="BigDecimal">
+  	select rwz from fx_zbgl where sszd = #{value} limit 1
+  </select>
+</mapper>

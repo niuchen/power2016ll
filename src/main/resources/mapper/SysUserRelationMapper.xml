@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.SysUserRelationMapper">
+  <resultMap id="BaseResultMap" type="com.power.common.entity.SysUserRelation">
+    <id column="userid" jdbcType="VARCHAR" property="userid" />
+    <id column="category" jdbcType="INTEGER" property="category" />
+    <id column="objectid" jdbcType="VARCHAR" property="objectid" />
+    <result column="isdefault" jdbcType="INTEGER" property="isdefault" />
+    <result column="createdate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="createuserid" jdbcType="VARCHAR" property="createuserid" />
+    <result column="createusername" jdbcType="VARCHAR" property="createusername" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    userid, category, objectid, isdefault, createdate, createuserid, createusername
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.power.common.entity.SysUserRelationKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_userrelation
+    where userid = #{userid,jdbcType=VARCHAR}
+      and category = #{category,jdbcType=INTEGER}
+      and objectid = #{objectid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.power.common.entity.SysUserRelationKey">
+    delete from sys_userrelation
+    where userid = #{userid,jdbcType=VARCHAR}
+      and category = #{category,jdbcType=INTEGER}
+      and objectid = #{objectid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.SysUserRelation">
+    insert into sys_userrelation (userid, category, objectid, 
+      isdefault, createdate, createuserid, 
+      createusername)
+    values (#{userid,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, #{objectid,jdbcType=VARCHAR}, 
+      #{isdefault,jdbcType=INTEGER}, #{createdate,jdbcType=TIMESTAMP}, #{createuserid,jdbcType=VARCHAR}, 
+      #{createusername,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.SysUserRelation">
+    insert into sys_userrelation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="objectid != null">
+        objectid,
+      </if>
+      <if test="isdefault != null">
+        isdefault,
+      </if>
+      <if test="createdate != null">
+        createdate,
+      </if>
+      <if test="createuserid != null">
+        createuserid,
+      </if>
+      <if test="createusername != null">
+        createusername,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=INTEGER},
+      </if>
+      <if test="objectid != null">
+        #{objectid,jdbcType=VARCHAR},
+      </if>
+      <if test="isdefault != null">
+        #{isdefault,jdbcType=INTEGER},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuserid != null">
+        #{createuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="createusername != null">
+        #{createusername,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.SysUserRelation">
+    update sys_userrelation
+    <set>
+      <if test="isdefault != null">
+        isdefault = #{isdefault,jdbcType=INTEGER},
+      </if>
+      <if test="createdate != null">
+        createdate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuserid != null">
+        createuserid = #{createuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="createusername != null">
+        createusername = #{createusername,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where userid = #{userid,jdbcType=VARCHAR}
+      and category = #{category,jdbcType=INTEGER}
+      and objectid = #{objectid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.SysUserRelation">
+    update sys_userrelation
+    set isdefault = #{isdefault,jdbcType=INTEGER},
+      createdate = #{createdate,jdbcType=TIMESTAMP},
+      createuserid = #{createuserid,jdbcType=VARCHAR},
+      createusername = #{createusername,jdbcType=VARCHAR}
+    where userid = #{userid,jdbcType=VARCHAR}
+      and category = #{category,jdbcType=INTEGER}
+      and objectid = #{objectid,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <!-- delRoleMember -->
+  <delete id="delUserRelation" parameterType="map">
+   	delete from sys_userrelation
+   	<where>
+   		<if test="category!=null">and category = #{category}</if>
+   		<if test="objectid!=null">and objectid = #{objectid}</if>
+   		<if test="userid!=null">and userid = #{userid}</if>
+   	</where>
+  
+  </delete>
+  <!-- 查询角色 用户 对应关系 -->
+  <select id="getRoleUser" parameterType="map" resultType="com.power.base.sys.entity.AuthUserVO">
+  SELECT t1.departmentid as deptId,t1.userid as uid,t1.account as loginName,t1.realName,t1.gender,IFNULL(t2.category,0) as enabledmark,t1.postid as orgId
+	FROM sys_user t1 LEFT JOIN sys_userrelation t2 ON (t2.category=2 and t2.objectid=#{roleId} and t1.userid = t2.userid)
+	WHERE t1.deletemark=0 
+	<if test="depts != null">and t1.departmentid in (${depts})</if>
+  </select>
+</mapper>

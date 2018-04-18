@@ -1,0 +1,659 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.SysUserMapper">
+  <resultMap id="BaseResultMap" type="com.power.common.entity.SysUser">
+    <id column="userid" jdbcType="VARCHAR" property="userid" />
+    <result column="organizeid" jdbcType="VARCHAR" property="organizeid" />
+    <result column="departmentid" jdbcType="VARCHAR" property="departmentid" />
+    <result column="account" jdbcType="VARCHAR" property="account" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="secretkey" jdbcType="VARCHAR" property="secretkey" />
+    <result column="realname" jdbcType="VARCHAR" property="realname" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="headicon" jdbcType="VARCHAR" property="headicon" />
+    <result column="quickquery" jdbcType="VARCHAR" property="quickquery" />
+    <result column="simplespelling" jdbcType="VARCHAR" property="simplespelling" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
+    <result column="birthday" jdbcType="TIMESTAMP" property="birthday" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="oicq" jdbcType="VARCHAR" property="oicq" />
+    <result column="wechat" jdbcType="VARCHAR" property="wechat" />
+    <result column="managerid" jdbcType="VARCHAR" property="managerid" />
+    <result column="manager" jdbcType="VARCHAR" property="manager" />
+    <result column="roleid" jdbcType="VARCHAR" property="roleid" />
+    <result column="dutyid" jdbcType="VARCHAR" property="dutyid" />
+    <result column="dutyname" jdbcType="VARCHAR" property="dutyname" />
+    <result column="postid" jdbcType="VARCHAR" property="postid" />
+    <result column="postname" jdbcType="VARCHAR" property="postname" />
+    <result column="workgroupid" jdbcType="VARCHAR" property="workgroupid" />
+    <result column="modifyuserid" jdbcType="VARCHAR" property="modifyuserid" />
+    <result column="useronline" jdbcType="INTEGER" property="useronline" />
+    <result column="openid" jdbcType="VARCHAR" property="openid" />
+    <result column="question" jdbcType="VARCHAR" property="question" />
+    <result column="answerquestion" jdbcType="VARCHAR" property="answerquestion" />
+    <result column="checkonline" jdbcType="INTEGER" property="checkonline" />
+    <result column="allowstarttime" jdbcType="TIMESTAMP" property="allowstarttime" />
+    <result column="allowendtime" jdbcType="TIMESTAMP" property="allowendtime" />
+    <result column="lockstartdate" jdbcType="TIMESTAMP" property="lockstartdate" />
+    <result column="lockenddate" jdbcType="TIMESTAMP" property="lockenddate" />
+    <result column="firstvisit" jdbcType="TIMESTAMP" property="firstvisit" />
+    <result column="previousvisit" jdbcType="TIMESTAMP" property="previousvisit" />
+    <result column="logoncount" jdbcType="INTEGER" property="logoncount" />
+    <result column="createusername" jdbcType="VARCHAR" property="createusername" />
+    <result column="securitylevel" jdbcType="INTEGER" property="securitylevel" />
+    <result column="modifyusername" jdbcType="VARCHAR" property="modifyusername" />
+    <result column="sortcode" jdbcType="INTEGER" property="sortcode" />
+    <result column="deletemark" jdbcType="INTEGER" property="deletemark" />
+    <result column="enabledmark" jdbcType="INTEGER" property="enabledmark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="createdate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="createuserid" jdbcType="VARCHAR" property="createuserid" />
+    <result column="modifydate" jdbcType="TIMESTAMP" property="modifydate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    userid, organizeid, departmentid, account, password, secretkey, realname, nickname, 
+    headicon, quickquery, simplespelling, gender, birthday, mobile, telephone, email, 
+    oicq, wechat, managerid, manager, roleid, dutyid, dutyname, postid, postname, workgroupid, 
+    modifyuserid, useronline, openid, question, answerquestion, checkonline, allowstarttime, 
+    allowendtime, lockstartdate, lockenddate, firstvisit, previousvisit, logoncount, 
+    createusername, securitylevel, modifyusername, sortcode, deletemark, enabledmark, 
+    description, createdate, createuserid, modifydate
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user
+    where userid = #{userid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_user
+    where userid = #{userid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.SysUser">
+    insert into sys_user (userid, organizeid, departmentid, 
+      account, password, secretkey, 
+      realname, nickname, headicon, 
+      quickquery, simplespelling, gender, 
+      birthday, mobile, telephone, 
+      email, oicq, wechat, 
+      managerid, manager, roleid, 
+      dutyid, dutyname, postid, 
+      postname, workgroupid, modifyuserid, 
+      useronline, openid, question, 
+      answerquestion, checkonline, allowstarttime, 
+      allowendtime, lockstartdate, lockenddate, 
+      firstvisit, previousvisit, logoncount, 
+      createusername, securitylevel, modifyusername, 
+      sortcode, deletemark, enabledmark, 
+      description, createdate, createuserid, 
+      modifydate)
+    values (#{userid,jdbcType=VARCHAR}, #{organizeid,jdbcType=VARCHAR}, #{departmentid,jdbcType=VARCHAR}, 
+      #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{secretkey,jdbcType=VARCHAR}, 
+      #{realname,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, #{headicon,jdbcType=VARCHAR}, 
+      #{quickquery,jdbcType=VARCHAR}, #{simplespelling,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, 
+      #{birthday,jdbcType=TIMESTAMP}, #{mobile,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{oicq,jdbcType=VARCHAR}, #{wechat,jdbcType=VARCHAR}, 
+      #{managerid,jdbcType=VARCHAR}, #{manager,jdbcType=VARCHAR}, #{roleid,jdbcType=VARCHAR}, 
+      #{dutyid,jdbcType=VARCHAR}, #{dutyname,jdbcType=VARCHAR}, #{postid,jdbcType=VARCHAR}, 
+      #{postname,jdbcType=VARCHAR}, #{workgroupid,jdbcType=VARCHAR}, #{modifyuserid,jdbcType=VARCHAR}, 
+      #{useronline,jdbcType=INTEGER}, #{openid,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, 
+      #{answerquestion,jdbcType=VARCHAR}, #{checkonline,jdbcType=INTEGER}, #{allowstarttime,jdbcType=TIMESTAMP}, 
+      #{allowendtime,jdbcType=TIMESTAMP}, #{lockstartdate,jdbcType=TIMESTAMP}, #{lockenddate,jdbcType=TIMESTAMP}, 
+      #{firstvisit,jdbcType=TIMESTAMP}, #{previousvisit,jdbcType=TIMESTAMP}, #{logoncount,jdbcType=INTEGER}, 
+      #{createusername,jdbcType=VARCHAR}, #{securitylevel,jdbcType=INTEGER}, #{modifyusername,jdbcType=VARCHAR}, 
+      #{sortcode,jdbcType=INTEGER}, #{deletemark,jdbcType=INTEGER}, #{enabledmark,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, #{createuserid,jdbcType=VARCHAR}, 
+      #{modifydate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.SysUser">
+    insert into sys_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        userid,
+      </if>
+      <if test="organizeid != null">
+        organizeid,
+      </if>
+      <if test="departmentid != null">
+        departmentid,
+      </if>
+      <if test="account != null">
+        account,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="secretkey != null">
+        secretkey,
+      </if>
+      <if test="realname != null">
+        realname,
+      </if>
+      <if test="nickname != null">
+        nickname,
+      </if>
+      <if test="headicon != null">
+        headicon,
+      </if>
+      <if test="quickquery != null">
+        quickquery,
+      </if>
+      <if test="simplespelling != null">
+        simplespelling,
+      </if>
+      <if test="gender != null">
+        gender,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="telephone != null">
+        telephone,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="oicq != null">
+        oicq,
+      </if>
+      <if test="wechat != null">
+        wechat,
+      </if>
+      <if test="managerid != null">
+        managerid,
+      </if>
+      <if test="manager != null">
+        manager,
+      </if>
+      <if test="roleid != null">
+        roleid,
+      </if>
+      <if test="dutyid != null">
+        dutyid,
+      </if>
+      <if test="dutyname != null">
+        dutyname,
+      </if>
+      <if test="postid != null">
+        postid,
+      </if>
+      <if test="postname != null">
+        postname,
+      </if>
+      <if test="workgroupid != null">
+        workgroupid,
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid,
+      </if>
+      <if test="useronline != null">
+        useronline,
+      </if>
+      <if test="openid != null">
+        openid,
+      </if>
+      <if test="question != null">
+        question,
+      </if>
+      <if test="answerquestion != null">
+        answerquestion,
+      </if>
+      <if test="checkonline != null">
+        checkonline,
+      </if>
+      <if test="allowstarttime != null">
+        allowstarttime,
+      </if>
+      <if test="allowendtime != null">
+        allowendtime,
+      </if>
+      <if test="lockstartdate != null">
+        lockstartdate,
+      </if>
+      <if test="lockenddate != null">
+        lockenddate,
+      </if>
+      <if test="firstvisit != null">
+        firstvisit,
+      </if>
+      <if test="previousvisit != null">
+        previousvisit,
+      </if>
+      <if test="logoncount != null">
+        logoncount,
+      </if>
+      <if test="createusername != null">
+        createusername,
+      </if>
+      <if test="securitylevel != null">
+        securitylevel,
+      </if>
+      <if test="modifyusername != null">
+        modifyusername,
+      </if>
+      <if test="sortcode != null">
+        sortcode,
+      </if>
+      <if test="deletemark != null">
+        deletemark,
+      </if>
+      <if test="enabledmark != null">
+        enabledmark,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="createdate != null">
+        createdate,
+      </if>
+      <if test="createuserid != null">
+        createuserid,
+      </if>
+      <if test="modifydate != null">
+        modifydate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userid != null">
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="organizeid != null">
+        #{organizeid,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentid != null">
+        #{departmentid,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="secretkey != null">
+        #{secretkey,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null">
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="headicon != null">
+        #{headicon,jdbcType=VARCHAR},
+      </if>
+      <if test="quickquery != null">
+        #{quickquery,jdbcType=VARCHAR},
+      </if>
+      <if test="simplespelling != null">
+        #{simplespelling,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="oicq != null">
+        #{oicq,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null">
+        #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="managerid != null">
+        #{managerid,jdbcType=VARCHAR},
+      </if>
+      <if test="manager != null">
+        #{manager,jdbcType=VARCHAR},
+      </if>
+      <if test="roleid != null">
+        #{roleid,jdbcType=VARCHAR},
+      </if>
+      <if test="dutyid != null">
+        #{dutyid,jdbcType=VARCHAR},
+      </if>
+      <if test="dutyname != null">
+        #{dutyname,jdbcType=VARCHAR},
+      </if>
+      <if test="postid != null">
+        #{postid,jdbcType=VARCHAR},
+      </if>
+      <if test="postname != null">
+        #{postname,jdbcType=VARCHAR},
+      </if>
+      <if test="workgroupid != null">
+        #{workgroupid,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyuserid != null">
+        #{modifyuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="useronline != null">
+        #{useronline,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null">
+        #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="question != null">
+        #{question,jdbcType=VARCHAR},
+      </if>
+      <if test="answerquestion != null">
+        #{answerquestion,jdbcType=VARCHAR},
+      </if>
+      <if test="checkonline != null">
+        #{checkonline,jdbcType=INTEGER},
+      </if>
+      <if test="allowstarttime != null">
+        #{allowstarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="allowendtime != null">
+        #{allowendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lockstartdate != null">
+        #{lockstartdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lockenddate != null">
+        #{lockenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="firstvisit != null">
+        #{firstvisit,jdbcType=TIMESTAMP},
+      </if>
+      <if test="previousvisit != null">
+        #{previousvisit,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logoncount != null">
+        #{logoncount,jdbcType=INTEGER},
+      </if>
+      <if test="createusername != null">
+        #{createusername,jdbcType=VARCHAR},
+      </if>
+      <if test="securitylevel != null">
+        #{securitylevel,jdbcType=INTEGER},
+      </if>
+      <if test="modifyusername != null">
+        #{modifyusername,jdbcType=VARCHAR},
+      </if>
+      <if test="sortcode != null">
+        #{sortcode,jdbcType=INTEGER},
+      </if>
+      <if test="deletemark != null">
+        #{deletemark,jdbcType=INTEGER},
+      </if>
+      <if test="enabledmark != null">
+        #{enabledmark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuserid != null">
+        #{createuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.SysUser">
+    update sys_user
+    <set>
+      <if test="organizeid != null">
+        organizeid = #{organizeid,jdbcType=VARCHAR},
+      </if>
+      <if test="departmentid != null">
+        departmentid = #{departmentid,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        account = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="secretkey != null">
+        secretkey = #{secretkey,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null">
+        realname = #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null">
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="headicon != null">
+        headicon = #{headicon,jdbcType=VARCHAR},
+      </if>
+      <if test="quickquery != null">
+        quickquery = #{quickquery,jdbcType=VARCHAR},
+      </if>
+      <if test="simplespelling != null">
+        simplespelling = #{simplespelling,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        gender = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="oicq != null">
+        oicq = #{oicq,jdbcType=VARCHAR},
+      </if>
+      <if test="wechat != null">
+        wechat = #{wechat,jdbcType=VARCHAR},
+      </if>
+      <if test="managerid != null">
+        managerid = #{managerid,jdbcType=VARCHAR},
+      </if>
+      <if test="manager != null">
+        manager = #{manager,jdbcType=VARCHAR},
+      </if>
+      <if test="roleid != null">
+        roleid = #{roleid,jdbcType=VARCHAR},
+      </if>
+      <if test="dutyid != null">
+        dutyid = #{dutyid,jdbcType=VARCHAR},
+      </if>
+      <if test="dutyname != null">
+        dutyname = #{dutyname,jdbcType=VARCHAR},
+      </if>
+      <if test="postid != null">
+        postid = #{postid,jdbcType=VARCHAR},
+      </if>
+      <if test="postname != null">
+        postname = #{postname,jdbcType=VARCHAR},
+      </if>
+      <if test="workgroupid != null">
+        workgroupid = #{workgroupid,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid = #{modifyuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="useronline != null">
+        useronline = #{useronline,jdbcType=INTEGER},
+      </if>
+      <if test="openid != null">
+        openid = #{openid,jdbcType=VARCHAR},
+      </if>
+      <if test="question != null">
+        question = #{question,jdbcType=VARCHAR},
+      </if>
+      <if test="answerquestion != null">
+        answerquestion = #{answerquestion,jdbcType=VARCHAR},
+      </if>
+      <if test="checkonline != null">
+        checkonline = #{checkonline,jdbcType=INTEGER},
+      </if>
+      <if test="allowstarttime != null">
+        allowstarttime = #{allowstarttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="allowendtime != null">
+        allowendtime = #{allowendtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lockstartdate != null">
+        lockstartdate = #{lockstartdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lockenddate != null">
+        lockenddate = #{lockenddate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="firstvisit != null">
+        firstvisit = #{firstvisit,jdbcType=TIMESTAMP},
+      </if>
+      <if test="previousvisit != null">
+        previousvisit = #{previousvisit,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logoncount != null">
+        logoncount = #{logoncount,jdbcType=INTEGER},
+      </if>
+      <if test="createusername != null">
+        createusername = #{createusername,jdbcType=VARCHAR},
+      </if>
+      <if test="securitylevel != null">
+        securitylevel = #{securitylevel,jdbcType=INTEGER},
+      </if>
+      <if test="modifyusername != null">
+        modifyusername = #{modifyusername,jdbcType=VARCHAR},
+      </if>
+      <if test="sortcode != null">
+        sortcode = #{sortcode,jdbcType=INTEGER},
+      </if>
+      <if test="deletemark != null">
+        deletemark = #{deletemark,jdbcType=INTEGER},
+      </if>
+      <if test="enabledmark != null">
+        enabledmark = #{enabledmark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        createdate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuserid != null">
+        createuserid = #{createuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        modifydate = #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where userid = #{userid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.SysUser">
+    update sys_user
+    set organizeid = #{organizeid,jdbcType=VARCHAR},
+      departmentid = #{departmentid,jdbcType=VARCHAR},
+      account = #{account,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      secretkey = #{secretkey,jdbcType=VARCHAR},
+      realname = #{realname,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      headicon = #{headicon,jdbcType=VARCHAR},
+      quickquery = #{quickquery,jdbcType=VARCHAR},
+      simplespelling = #{simplespelling,jdbcType=VARCHAR},
+      gender = #{gender,jdbcType=VARCHAR},
+      birthday = #{birthday,jdbcType=TIMESTAMP},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      telephone = #{telephone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      oicq = #{oicq,jdbcType=VARCHAR},
+      wechat = #{wechat,jdbcType=VARCHAR},
+      managerid = #{managerid,jdbcType=VARCHAR},
+      manager = #{manager,jdbcType=VARCHAR},
+      roleid = #{roleid,jdbcType=VARCHAR},
+      dutyid = #{dutyid,jdbcType=VARCHAR},
+      dutyname = #{dutyname,jdbcType=VARCHAR},
+      postid = #{postid,jdbcType=VARCHAR},
+      postname = #{postname,jdbcType=VARCHAR},
+      workgroupid = #{workgroupid,jdbcType=VARCHAR},
+      modifyuserid = #{modifyuserid,jdbcType=VARCHAR},
+      useronline = #{useronline,jdbcType=INTEGER},
+      openid = #{openid,jdbcType=VARCHAR},
+      question = #{question,jdbcType=VARCHAR},
+      answerquestion = #{answerquestion,jdbcType=VARCHAR},
+      checkonline = #{checkonline,jdbcType=INTEGER},
+      allowstarttime = #{allowstarttime,jdbcType=TIMESTAMP},
+      allowendtime = #{allowendtime,jdbcType=TIMESTAMP},
+      lockstartdate = #{lockstartdate,jdbcType=TIMESTAMP},
+      lockenddate = #{lockenddate,jdbcType=TIMESTAMP},
+      firstvisit = #{firstvisit,jdbcType=TIMESTAMP},
+      previousvisit = #{previousvisit,jdbcType=TIMESTAMP},
+      logoncount = #{logoncount,jdbcType=INTEGER},
+      createusername = #{createusername,jdbcType=VARCHAR},
+      securitylevel = #{securitylevel,jdbcType=INTEGER},
+      modifyusername = #{modifyusername,jdbcType=VARCHAR},
+      sortcode = #{sortcode,jdbcType=INTEGER},
+      deletemark = #{deletemark,jdbcType=INTEGER},
+      enabledmark = #{enabledmark,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      createdate = #{createdate,jdbcType=TIMESTAMP},
+      createuserid = #{createuserid,jdbcType=VARCHAR},
+      modifydate = #{modifydate,jdbcType=TIMESTAMP}
+    where userid = #{userid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 条件查询/全部查询 -->
+  <select id="showUser" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user
+    <where>
+      deletemark = 0
+      <if test="account != null">and account like concat('%',#{account,jdbcType=VARCHAR},'%')</if>
+      <if test="realname != null">and realname like concat('%',#{realname,jdbcType=VARCHAR},'%')</if>
+      <if test="mobile != null">and mobile like concat('%',#{mobile,jdbcType=VARCHAR},'%')</if>
+      <if test="depts != null">and departmentid in (${depts})</if>
+      <if test="orgs != null">and organizeid in (${orgs})</if>
+    </where>
+  </select>
+  
+  <!--查询全部用户-->
+   <select id="getAllUsers" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_user
+    where deletemark = 0
+  </select>
+  
+  <!-- 根据用户名查询用户 -->
+  <select id="getUserByAccount" parameterType="string" resultMap="BaseResultMap">
+   select
+   <include refid="Base_Column_List" />
+   from sys_user
+   where deletemark = 0 and account = #{account}
+  </select>
+  
+  <!-- getUser 首页全局参数 -->
+  <select id="getUser" resultType="com.power.common.entity.SysUser">
+    select userid, organizeid, departmentid, account, realname, nickname,headicon,quickquery from sys_user
+    where deletemark = 0
+    order by sortcode
+  </select>
+  <!-- 站长信息列表  105001 站长编号勿动-->
+  <select id="getZdzzJson" parameterType="string" resultType="com.power.base.sys.entity.KeyValue">
+  	select userid as id,realname as name from sys_user
+    where deletemark = 0 and departmentid = #{value}
+    and postid in (105001,105003)
+  </select>
+  
+  
+</mapper>

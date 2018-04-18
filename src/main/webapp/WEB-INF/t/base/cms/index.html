@@ -1,0 +1,134 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>内容信息管理</title>
+<link rel="stylesheet" type="text/css" href="${ctx.contextPath}/res/theme//style.css"/>
+<script type="text/javascript" src="${ctx.contextPath}/res/jquery/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/nflexigrid/jquery.flexigrid.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/js/commJS.js"></script>
+
+<script type="text/javascript">
+opr=function(f){
+	switch(f){
+		case 'add':
+			$("#listDiv").hide();
+			$("#oprDiv").show();
+			Loading(true);
+			$("#PageFrame").attr("src","new");
+		break;
+		case 'ref'://刷新 
+		    Loading(true);top.$('#' + Current_iframeID())[0].contentWindow.window.location.reload();return false;
+		    break;
+		case 'update':
+			var tr=$(".trSelected",$("#gridTab"));
+			if(!tr[0]){showTipsMsg("您当前未选中任何一行！", 4000, 3);return false;}
+			$("#listDiv").hide();
+			$("#oprDiv").show();
+			Loading(true);
+			$("#PageFrame").attr("src","eidtCms/"+tr.eq(0).attr("ch"));
+		break;
+		case 'del':
+			var tr=$(".trSelected",$("#gridTab"));
+			if(!tr[0]){showTipsMsg("您当前未选中任何一行！", 4000, 3);return false;}						
+			var xh = tr.eq(0).attr("ch");
+			if(xh > 0 && confirm("确定要删除？删除后可能无法恢复！")){
+				$.blockUI({message:'<h4>处理中请稍候...</h4>'});
+				$.ajax({type: "POST",dataType:"json",url: "${ctx.contextPath}/cms/del/"+xh,
+				   success: function(data){
+				   	showTipsMsg("已成功删除!", 4000, 4);
+		     		$("#gridTab").deleteRow(tr);
+		     		$.unblockUI();
+				   },error:function(xhr){
+				   	 showTipsMsg("操作失败!", 4000, 5);
+				   	 $.unblockUI();	   	 
+				   }
+				});
+			}
+		break;
+		default:break;
+	}
+};
+_gender = function(cv,pid) {
+var re="";
+switch(cv){
+	case "1": re="党建动态";break;
+	case "2": re="党建知识";break;
+}
+return re;
+}
+_notice=function(xh){
+top.$.dialog({id : "_noticeDiv",title : "详细信息",
+		content:"url:${ctx.contextPath}/cms/read?xh="+xh,
+		height : 320,width : 600,
+		min:false,max:false,lock:true
+	});
+}
+_href = function(cv,pid) {
+  return "<a href='javascript:void(0);' onclick='_notice("+cv+")' title='详细信息'>详细信息</a>";
+}
+$(document).ready(function(){
+	iframeresize();
+	//
+  	$("#gridTab").flexigrid({url:'${ctx.contextPath}/cms/getCmsDatas',
+        resizable:true,
+        showToggleBtn:false,
+        rowbinddata:"xh",        
+        colModel : [
+            {display: '模块名称', name : 'flmk', width : 120,  align: 'center',process:_gender},  
+            {display: '标题', name : 'bt',width :320, align: 'left'},
+            {display: '发布时间', name : 'sj', width : 120, align: 'center'},
+            {display: '浏览次数', name : 'llcs', width : 100,  align: 'center'},
+            {display: '详细信息', name : 'xh', width : 100,  align: 'center',process:_href}
+            ],
+        usepager: true,
+        pS:20,
+        width:$(".iframeContent").width(),
+        height:$(".iframeContent").height()-185
+        });
+});
+function ref(){//刷新页面。
+	$("#listDiv").show();
+	$("#oprDiv").hide();
+	$("#gridTab").flexReload();
+}
+
+</script>
+<style type="text/css">
+a:link{color:blue;}
+</style>
+</head><body>
+<div id="iframeMainContent">
+    <div class="iframeContent" id="listDiv">
+    	<div class="btnbartitle"><div>党建内容信息管理</div></div>
+    	<div class="tools_bar">
+			<a class="tools_btn" onclick="opr('ref');" title="刷新当前页面"><span class=""><b class="tools_btn_ref">刷新</b></span></a>
+			<div class="tools_separator"></div>
+			<a class="tools_btn" onclick="opr('add');" title=""><span class=""><b class="tools_btn_add">新增</b></span></a>
+			<a class="tools_btn" onclick="opr('edit');" title=""><span class=""><b class="tools_btn_edit">修改</b></span></a>
+			<a class="tools_btn" onclick="opr('del');" title=""><span class=""><b class="tools_btn_del">删除</b></span></a>
+			<div class="tools_separator"></div>
+			<a class="tools_btn" onclick="ThisCloseTab();" title="关闭当前窗口"><span class=""><b class="tools_btn_close">离开</b></span></a>
+		</div>
+    	<div style="margin-top: 1px; background: #fff" class="btnbarcontetn">
+            <div>
+                <table border="0" style="height: 45px;" class="frm-find">
+                    <tbody><tr>
+                        <th>时间：</th>
+                        <td>
+                    <input name="kssj" type="text" id="kssj" style="width:135px;"  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true})" readonly="readonly" class="Wdate"/>至
+					<input name="jssj" type="text" id="jssj" style="width:135px;"  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,minDate:'#F{$dp.$D(\'kssj\')}'})" readonly="readonly" class="Wdate"/>
+                        </td>
+                        <td>
+                            <input type="button" onclick="def();" value="搜 索" class="btnSearch" id="btnSearch">
+                        </td>
+                    </tr>
+                </tbody></table>
+            </div>
+        </div>
+        <table id="gridTab"></table>
+    </div>
+    <div id="oprDiv" style="display: none;width:100%;height: 100%;">
+  		<iframe frameborder="0" width="100%" height="100%" id="PageFrame" onload="javascript:$('#Loading').hide();"></iframe>
+	</div>
+</div>
+</body></html>

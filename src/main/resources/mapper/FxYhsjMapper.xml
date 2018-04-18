@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.FxYhsjMapper">
+  <resultMap id="BaseResultMap" type="com.power.common.entity.FxYhsj">
+    <id column="xh" jdbcType="BIGINT" property="xh" />
+    <result column="sszd" jdbcType="VARCHAR" property="sszd" />
+    <result column="zdmc" jdbcType="VARCHAR" property="zdmc" />
+    <result column="zdzz" jdbcType="VARCHAR" property="zdzz" />
+    <result column="zt" jdbcType="INTEGER" property="zt" />
+    <result column="bz" jdbcType="VARCHAR" property="bz" />
+    <result column="sfrq" jdbcType="TIMESTAMP" property="sfrq" />
+    <result column="lryxh" jdbcType="VARCHAR" property="lryxh" />
+    <result column="lrymc" jdbcType="VARCHAR" property="lrymc" />
+    <result column="lrsj" jdbcType="TIMESTAMP" property="lrsj" />
+    <result column="sjrq" jdbcType="TIMESTAMP" property="sjrq" />
+    <result column="bz1" jdbcType="VARCHAR" property="bz1" />
+    <result column="yjje1" jdbcType="DECIMAL" property="yjje1" />
+    <result column="sjje1" jdbcType="DECIMAL" property="sjje1" />
+    <result column="sjrq2" jdbcType="TIMESTAMP" property="sjrq2" />
+    <result column="bz2" jdbcType="VARCHAR" property="bz2" />
+    <result column="yjje2" jdbcType="DECIMAL" property="yjje2" />
+    <result column="sjje2" jdbcType="DECIMAL" property="sjje2" />
+    <result column="yjjehj" jdbcType="DECIMAL" property="yjjehj" />
+    <result column="sjjehj" jdbcType="DECIMAL" property="sjjehj" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    xh, sszd, zdmc, zdzz, zt, bz, sfrq, lryxh, lrymc, lrsj, sjrq, bz1, yjje1, sjje1, 
+    sjrq2, bz2, yjje2, sjje2, yjjehj, sjjehj
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fx_yhsj
+    where xh = #{xh,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from fx_yhsj
+    where xh = #{xh,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.FxYhsj">
+    <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_yhsj (sszd, zdmc, zdzz, 
+      zt, bz, sfrq, lryxh, 
+      lrymc, lrsj, sjrq, 
+      bz1, yjje1, sjje1, 
+      sjrq2, bz2, yjje2, 
+      sjje2, yjjehj, sjjehj
+      )
+    values (#{sszd,jdbcType=VARCHAR}, #{zdmc,jdbcType=VARCHAR}, #{zdzz,jdbcType=VARCHAR}, 
+      #{zt,jdbcType=INTEGER}, #{bz,jdbcType=VARCHAR}, #{sfrq,jdbcType=TIMESTAMP}, #{lryxh,jdbcType=VARCHAR}, 
+      #{lrymc,jdbcType=VARCHAR}, #{lrsj,jdbcType=TIMESTAMP}, #{sjrq,jdbcType=TIMESTAMP}, 
+      #{bz1,jdbcType=VARCHAR}, #{yjje1,jdbcType=DECIMAL}, #{sjje1,jdbcType=DECIMAL}, 
+      #{sjrq2,jdbcType=TIMESTAMP}, #{bz2,jdbcType=VARCHAR}, #{yjje2,jdbcType=DECIMAL}, 
+      #{sjje2,jdbcType=DECIMAL}, #{yjjehj,jdbcType=DECIMAL}, #{sjjehj,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.FxYhsj">
+    <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_yhsj
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sszd != null">
+        sszd,
+      </if>
+      <if test="zdmc != null">
+        zdmc,
+      </if>
+      <if test="zdzz != null">
+        zdzz,
+      </if>
+      <if test="zt != null">
+        zt,
+      </if>
+      <if test="bz != null">
+        bz,
+      </if>
+      <if test="sfrq != null">
+        sfrq,
+      </if>
+      <if test="lryxh != null">
+        lryxh,
+      </if>
+      <if test="lrymc != null">
+        lrymc,
+      </if>
+      <if test="lrsj != null">
+        lrsj,
+      </if>
+      <if test="sjrq != null">
+        sjrq,
+      </if>
+      <if test="bz1 != null">
+        bz1,
+      </if>
+      <if test="yjje1 != null">
+        yjje1,
+      </if>
+      <if test="sjje1 != null">
+        sjje1,
+      </if>
+      <if test="sjrq2 != null">
+        sjrq2,
+      </if>
+      <if test="bz2 != null">
+        bz2,
+      </if>
+      <if test="yjje2 != null">
+        yjje2,
+      </if>
+      <if test="sjje2 != null">
+        sjje2,
+      </if>
+      <if test="yjjehj != null">
+        yjjehj,
+      </if>
+      <if test="sjjehj != null">
+        sjjehj,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sszd != null">
+        #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null">
+        #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null">
+        #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null">
+        #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null">
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null">
+        #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null">
+        #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null">
+        #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null">
+        #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sjrq != null">
+        #{sjrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bz1 != null">
+        #{bz1,jdbcType=VARCHAR},
+      </if>
+      <if test="yjje1 != null">
+        #{yjje1,jdbcType=DECIMAL},
+      </if>
+      <if test="sjje1 != null">
+        #{sjje1,jdbcType=DECIMAL},
+      </if>
+      <if test="sjrq2 != null">
+        #{sjrq2,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bz2 != null">
+        #{bz2,jdbcType=VARCHAR},
+      </if>
+      <if test="yjje2 != null">
+        #{yjje2,jdbcType=DECIMAL},
+      </if>
+      <if test="sjje2 != null">
+        #{sjje2,jdbcType=DECIMAL},
+      </if>
+      <if test="yjjehj != null">
+        #{yjjehj,jdbcType=DECIMAL},
+      </if>
+      <if test="sjjehj != null">
+        #{sjjehj,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.FxYhsj">
+    update fx_yhsj
+    <set>
+      <if test="sszd != null">
+        sszd = #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null">
+        zdmc = #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null">
+        zdzz = #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null">
+        zt = #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null">
+        bz = #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null">
+        sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null">
+        lryxh = #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null">
+        lrymc = #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null">
+        lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sjrq != null">
+        sjrq = #{sjrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bz1 != null">
+        bz1 = #{bz1,jdbcType=VARCHAR},
+      </if>
+      <if test="yjje1 != null">
+        yjje1 = #{yjje1,jdbcType=DECIMAL},
+      </if>
+      <if test="sjje1 != null">
+        sjje1 = #{sjje1,jdbcType=DECIMAL},
+      </if>
+      <if test="sjrq2 != null">
+        sjrq2 = #{sjrq2,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bz2 != null">
+        bz2 = #{bz2,jdbcType=VARCHAR},
+      </if>
+      <if test="yjje2 != null">
+        yjje2 = #{yjje2,jdbcType=DECIMAL},
+      </if>
+      <if test="sjje2 != null">
+        sjje2 = #{sjje2,jdbcType=DECIMAL},
+      </if>
+      <if test="yjjehj != null">
+        yjjehj = #{yjjehj,jdbcType=DECIMAL},
+      </if>
+      <if test="sjjehj != null">
+        sjjehj = #{sjjehj,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.FxYhsj">
+    update fx_yhsj
+    set sszd = #{sszd,jdbcType=VARCHAR},
+      zdmc = #{zdmc,jdbcType=VARCHAR},
+      zdzz = #{zdzz,jdbcType=VARCHAR},
+      zt = #{zt,jdbcType=INTEGER},
+      bz = #{bz,jdbcType=VARCHAR},
+      sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      lryxh = #{lryxh,jdbcType=VARCHAR},
+      lrymc = #{lrymc,jdbcType=VARCHAR},
+      lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      sjrq = #{sjrq,jdbcType=TIMESTAMP},
+      bz1 = #{bz1,jdbcType=VARCHAR},
+      yjje1 = #{yjje1,jdbcType=DECIMAL},
+      sjje1 = #{sjje1,jdbcType=DECIMAL},
+      sjrq2 = #{sjrq2,jdbcType=TIMESTAMP},
+      bz2 = #{bz2,jdbcType=VARCHAR},
+      yjje2 = #{yjje2,jdbcType=DECIMAL},
+      sjje2 = #{sjje2,jdbcType=DECIMAL},
+      yjjehj = #{yjjehj,jdbcType=DECIMAL},
+      sjjehj = #{sjjehj,jdbcType=DECIMAL}
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  
+
+  
+  <!-- getYhsjData -->
+  <select id="getYhsjData" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fx_yhsj LEFT JOIN sys_department dept on sszd = dept.departmentid
+     <where>
+	   	<if test="lock !=null">and zt = #{lock} </if>
+	   	<if test="st!=null and et==null">and substring(sfrq,1,length(#{st}))&gt;=#{st}</if>
+	   	<if test="et!=null and st==null">and substring(sfrq,1,length(#{et}))&lt;=#{et}</if>
+	   	<if test="st!=null and et!=null">and substring(sfrq,1,length(#{st})) between #{st} and #{et}</if>
+	   	<if test="lrymc!=null">and lrymc like concat('%',#{lrymc},'%')</if>
+	   	<if test="zdzz!=null">and zdzz like concat('%',#{zdzz},'%')</if>
+	   	<if test="depts != null">and sszd in (${depts})</if>
+   	</where>
+   		<if test="order != null">order by ${order}</if>
+   	<if test="order == null">order by sfrq desc </if> 
+   		,dept.sortcode asc
+  </select>
+  <!-- getCanDel -->
+  <select id="getCanDel" parameterType="map" resultType="int">
+  	SELECT count(*) FROM fx_yhsj where zt = 1
+  	<if test="sfrq!=null">and substring(sfrq,1,length(#{sfrq}))=#{sfrq}</if>
+  	<if test="xh!=null">and xh!=#{xh}</if>
+  	<if test="sszd!=null">and sszd = #{sszd}</if>
+  </select>
+  
+</mapper>

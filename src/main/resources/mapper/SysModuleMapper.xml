@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.SysModuleMapper">
+  <resultMap id="BaseResultMap" type="com.power.common.entity.SysModule">
+    <id column="moduleid" jdbcType="VARCHAR" property="moduleid" />
+    <result column="parentid" jdbcType="VARCHAR" property="parentid" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="fullname" jdbcType="VARCHAR" property="fullname" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="urladdress" jdbcType="VARCHAR" property="urladdress" />
+    <result column="target" jdbcType="VARCHAR" property="target" />
+    <result column="ismenu" jdbcType="INTEGER" property="ismenu" />
+    <result column="allowexpand" jdbcType="INTEGER" property="allowexpand" />
+    <result column="ispublic" jdbcType="INTEGER" property="ispublic" />
+    <result column="allowedit" jdbcType="INTEGER" property="allowedit" />
+    <result column="allowdelete" jdbcType="INTEGER" property="allowdelete" />
+    <result column="sortcode" jdbcType="INTEGER" property="sortcode" />
+    <result column="deletemark" jdbcType="INTEGER" property="deletemark" />
+    <result column="enabledmark" jdbcType="INTEGER" property="enabledmark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="createdate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="createuserid" jdbcType="VARCHAR" property="createuserid" />
+    <result column="createusername" jdbcType="VARCHAR" property="createusername" />
+    <result column="modifydate" jdbcType="TIMESTAMP" property="modifydate" />
+    <result column="modifyuserid" jdbcType="VARCHAR" property="modifyuserid" />
+    <result column="modifyusername" jdbcType="VARCHAR" property="modifyusername" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    moduleid, parentid, code, fullname, icon, urladdress, target, ismenu, allowexpand, 
+    ispublic, allowedit, allowdelete, sortcode, deletemark, enabledmark, description, 
+    createdate, createuserid, createusername, modifydate, modifyuserid, modifyusername
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_module
+    where moduleid = #{moduleid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_module
+    where moduleid = #{moduleid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.SysModule">
+    insert into sys_module (moduleid, parentid, code, 
+      fullname, icon, urladdress, 
+      target, ismenu, allowexpand, 
+      ispublic, allowedit, allowdelete, 
+      sortcode, deletemark, enabledmark, 
+      description, createdate, createuserid, 
+      createusername, modifydate, modifyuserid, 
+      modifyusername)
+    values (#{moduleid,jdbcType=VARCHAR}, #{parentid,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{fullname,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{urladdress,jdbcType=VARCHAR}, 
+      #{target,jdbcType=VARCHAR}, #{ismenu,jdbcType=INTEGER}, #{allowexpand,jdbcType=INTEGER}, 
+      #{ispublic,jdbcType=INTEGER}, #{allowedit,jdbcType=INTEGER}, #{allowdelete,jdbcType=INTEGER}, 
+      #{sortcode,jdbcType=INTEGER}, #{deletemark,jdbcType=INTEGER}, #{enabledmark,jdbcType=INTEGER}, 
+      #{description,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, #{createuserid,jdbcType=VARCHAR}, 
+      #{createusername,jdbcType=VARCHAR}, #{modifydate,jdbcType=TIMESTAMP}, #{modifyuserid,jdbcType=VARCHAR}, 
+      #{modifyusername,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.SysModule">
+    insert into sys_module
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="moduleid != null">
+        moduleid,
+      </if>
+      <if test="parentid != null">
+        parentid,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="fullname != null">
+        fullname,
+      </if>
+      <if test="icon != null">
+        icon,
+      </if>
+      <if test="urladdress != null">
+        urladdress,
+      </if>
+      <if test="target != null">
+        target,
+      </if>
+      <if test="ismenu != null">
+        ismenu,
+      </if>
+      <if test="allowexpand != null">
+        allowexpand,
+      </if>
+      <if test="ispublic != null">
+        ispublic,
+      </if>
+      <if test="allowedit != null">
+        allowedit,
+      </if>
+      <if test="allowdelete != null">
+        allowdelete,
+      </if>
+      <if test="sortcode != null">
+        sortcode,
+      </if>
+      <if test="deletemark != null">
+        deletemark,
+      </if>
+      <if test="enabledmark != null">
+        enabledmark,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="createdate != null">
+        createdate,
+      </if>
+      <if test="createuserid != null">
+        createuserid,
+      </if>
+      <if test="createusername != null">
+        createusername,
+      </if>
+      <if test="modifydate != null">
+        modifydate,
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null">
+        modifyusername,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="moduleid != null">
+        #{moduleid,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="fullname != null">
+        #{fullname,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="urladdress != null">
+        #{urladdress,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null">
+        #{target,jdbcType=VARCHAR},
+      </if>
+      <if test="ismenu != null">
+        #{ismenu,jdbcType=INTEGER},
+      </if>
+      <if test="allowexpand != null">
+        #{allowexpand,jdbcType=INTEGER},
+      </if>
+      <if test="ispublic != null">
+        #{ispublic,jdbcType=INTEGER},
+      </if>
+      <if test="allowedit != null">
+        #{allowedit,jdbcType=INTEGER},
+      </if>
+      <if test="allowdelete != null">
+        #{allowdelete,jdbcType=INTEGER},
+      </if>
+      <if test="sortcode != null">
+        #{sortcode,jdbcType=INTEGER},
+      </if>
+      <if test="deletemark != null">
+        #{deletemark,jdbcType=INTEGER},
+      </if>
+      <if test="enabledmark != null">
+        #{enabledmark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuserid != null">
+        #{createuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="createusername != null">
+        #{createusername,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuserid != null">
+        #{modifyuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyusername != null">
+        #{modifyusername,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.SysModule">
+    update sys_module
+    <set>
+      <if test="parentid != null">
+        parentid = #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="fullname != null">
+        fullname = #{fullname,jdbcType=VARCHAR},
+      </if>
+      <if test="icon != null">
+        icon = #{icon,jdbcType=VARCHAR},
+      </if>
+      <if test="urladdress != null">
+        urladdress = #{urladdress,jdbcType=VARCHAR},
+      </if>
+      <if test="target != null">
+        target = #{target,jdbcType=VARCHAR},
+      </if>
+      <if test="ismenu != null">
+        ismenu = #{ismenu,jdbcType=INTEGER},
+      </if>
+      <if test="allowexpand != null">
+        allowexpand = #{allowexpand,jdbcType=INTEGER},
+      </if>
+      <if test="ispublic != null">
+        ispublic = #{ispublic,jdbcType=INTEGER},
+      </if>
+      <if test="allowedit != null">
+        allowedit = #{allowedit,jdbcType=INTEGER},
+      </if>
+      <if test="allowdelete != null">
+        allowdelete = #{allowdelete,jdbcType=INTEGER},
+      </if>
+      <if test="sortcode != null">
+        sortcode = #{sortcode,jdbcType=INTEGER},
+      </if>
+      <if test="deletemark != null">
+        deletemark = #{deletemark,jdbcType=INTEGER},
+      </if>
+      <if test="enabledmark != null">
+        enabledmark = #{enabledmark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        createdate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuserid != null">
+        createuserid = #{createuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="createusername != null">
+        createusername = #{createusername,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        modifydate = #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid = #{modifyuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyusername != null">
+        modifyusername = #{modifyusername,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where moduleid = #{moduleid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.SysModule">
+    update sys_module
+    set parentid = #{parentid,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      fullname = #{fullname,jdbcType=VARCHAR},
+      icon = #{icon,jdbcType=VARCHAR},
+      urladdress = #{urladdress,jdbcType=VARCHAR},
+      target = #{target,jdbcType=VARCHAR},
+      ismenu = #{ismenu,jdbcType=INTEGER},
+      allowexpand = #{allowexpand,jdbcType=INTEGER},
+      ispublic = #{ispublic,jdbcType=INTEGER},
+      allowedit = #{allowedit,jdbcType=INTEGER},
+      allowdelete = #{allowdelete,jdbcType=INTEGER},
+      sortcode = #{sortcode,jdbcType=INTEGER},
+      deletemark = #{deletemark,jdbcType=INTEGER},
+      enabledmark = #{enabledmark,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      createdate = #{createdate,jdbcType=TIMESTAMP},
+      createuserid = #{createuserid,jdbcType=VARCHAR},
+      createusername = #{createusername,jdbcType=VARCHAR},
+      modifydate = #{modifydate,jdbcType=TIMESTAMP},
+      modifyuserid = #{modifyuserid,jdbcType=VARCHAR},
+      modifyusername = #{modifyusername,jdbcType=VARCHAR}
+    where moduleid = #{moduleid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 条件查询 -->
+  <select id="getAllList" parameterType="map" resultType="com.power.common.entity.SysModule">
+    select moduleid, parentid, code, fullname, icon, urladdress, target, ismenu, allowexpand, 
+    ispublic, allowedit, allowdelete, sortcode, deletemark, enabledmark, description from sys_module 
+    <where>
+    	<if test="pid!=null">parentid = #{pid}</if>
+    	<if test="name!=null">fullname = #{name}</if>
+    </where>
+    order by sortcode
+  </select>
+  
+    <!-- 首页全局参数 -->
+  <select id="getAuthMenu" parameterType="string" resultType="com.power.common.entity.SysModule">
+    select DISTINCT tt.moduleid,tt.parentid,tt.fullname,tt.icon,tt.urladdress,tt.target from (
+	select t2.moduleid,parentid,fullname,icon,urladdress,target,t2.sortcode from sys_authorize t1 ,sys_module t2
+	where t1.category=6
+	and t1.itemtype=1 
+	and t1.itemid = t2.moduleid
+	and t2.enabledmark = 1
+	and t1.objectid=#{value}
+	UNION
+	select t2.moduleid,parentid,fullname,icon,urladdress,target,t2.sortcode from sys_userrelation t0,sys_authorize t1,sys_module t2
+	where t1.category=t0.category 
+	and t1.itemtype=1 
+	and t1.itemid = t2.moduleid
+	and t2.enabledmark = 1
+	AND t0.objectid = t1.objectid
+	and t0.userid=#{value}) tt
+	ORDER BY tt.sortcode
+  </select>
+  
+</mapper>

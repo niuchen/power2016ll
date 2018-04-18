@@ -1,0 +1,680 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.FxPjglMapper" >
+  <resultMap id="BaseResultMap" type="com.power.common.entity.FxPjgl" >
+    <id column="xh" property="xh" jdbcType="BIGINT" />
+    <result column="sszd" property="sszd" jdbcType="VARCHAR" />
+    <result column="zdmc" property="zdmc" jdbcType="VARCHAR" />
+    <result column="zdzz" property="zdzz" jdbcType="VARCHAR" />
+    <result column="zt" property="zt" jdbcType="INTEGER" />
+    <result column="bz" property="bz" jdbcType="VARCHAR" />
+    <result column="sfrq" property="sfrq" jdbcType="TIMESTAMP" />
+    <result column="lryxh" property="lryxh" jdbcType="VARCHAR" />
+    <result column="lrymc" property="lrymc" jdbcType="VARCHAR" />
+    <result column="lrsj" property="lrsj" jdbcType="TIMESTAMP" />
+    <result column="byjca" property="byjca" jdbcType="INTEGER" />
+    <result column="byjcb" property="byjcb" jdbcType="INTEGER" />
+    <result column="byjcc" property="byjcc" jdbcType="INTEGER" />
+    <result column="byjcd" property="byjcd" jdbcType="INTEGER" />
+    <result column="byjce" property="byjce" jdbcType="INTEGER" />
+    <result column="byjcf" property="byjcf" jdbcType="INTEGER" />
+    <result column="byjcg" property="byjcg" jdbcType="INTEGER" />
+    <result column="byjch" property="byjch" jdbcType="INTEGER" />
+    <result column="byjchj" property="byjchj" jdbcType="INTEGER" />
+    <result column="byjci" property="byjci" jdbcType="INTEGER" />
+    <result column="byhya" property="byhya" jdbcType="INTEGER" />
+    <result column="byhyb" property="byhyb" jdbcType="INTEGER" />
+    <result column="byhyc" property="byhyc" jdbcType="INTEGER" />
+    <result column="byhyd" property="byhyd" jdbcType="INTEGER" />
+    <result column="byhye" property="byhye" jdbcType="INTEGER" />
+    <result column="byhyf" property="byhyf" jdbcType="INTEGER" />
+    <result column="byhyg" property="byhyg" jdbcType="INTEGER" />
+    <result column="byhyh" property="byhyh" jdbcType="INTEGER" />
+    <result column="byhyhj" property="byhyhj" jdbcType="INTEGER" />
+    <result column="byhyi" property="byhyi" jdbcType="INTEGER" />
+    <result column="bylra" property="bylra" jdbcType="INTEGER" />
+    <result column="bylrb" property="bylrb" jdbcType="INTEGER" />
+    <result column="bylrc" property="bylrc" jdbcType="INTEGER" />
+    <result column="bylrd" property="bylrd" jdbcType="INTEGER" />
+    <result column="bylre" property="bylre" jdbcType="INTEGER" />
+    <result column="bylrf" property="bylrf" jdbcType="INTEGER" />
+    <result column="bylrg" property="bylrg" jdbcType="INTEGER" />
+    <result column="bylrh" property="bylrh" jdbcType="INTEGER" />
+    <result column="bylrhj" property="bylrhj" jdbcType="INTEGER" />
+    <result column="bylri" property="bylri" jdbcType="INTEGER" />
+    <result column="syjza" property="syjza" jdbcType="INTEGER" />
+    <result column="syjzb" property="syjzb" jdbcType="INTEGER" />
+    <result column="syjzc" property="syjzc" jdbcType="INTEGER" />
+    <result column="syjzd" property="syjzd" jdbcType="INTEGER" />
+    <result column="syjze" property="syjze" jdbcType="INTEGER" />
+    <result column="syjzf" property="syjzf" jdbcType="INTEGER" />
+    <result column="syjzg" property="syjzg" jdbcType="INTEGER" />
+    <result column="syjzh" property="syjzh" jdbcType="INTEGER" />
+    <result column="syjzhj" property="syjzhj" jdbcType="INTEGER" />
+    <result column="syjzi" property="syjzi" jdbcType="INTEGER" />
+    <result column="dk" property="dk" jdbcType="DECIMAL" />
+    <result column="bbs" property="bbs" jdbcType="INTEGER" />
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    xh, sszd, zdmc, zdzz, zt, bz, sfrq, lryxh, lrymc, lrsj, byjca, byjcb, byjcc, byjcd, 
+    byjce, byjcf, byjcg, byjch, byjchj, byjci, byhya, byhyb, byhyc, byhyd, byhye, byhyf, 
+    byhyg, byhyh, byhyhj, byhyi, bylra, bylrb, bylrc, bylrd, bylre, bylrf, bylrg, bylrh, 
+    bylrhj, bylri, syjza, syjzb, syjzc, syjzd, syjze, syjzf, syjzg, syjzh, syjzhj, syjzi, 
+    dk, bbs
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from fx_pjgl
+    where xh = #{xh,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from fx_pjgl
+    where xh = #{xh,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.FxPjgl" >
+   <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_pjgl ( sszd, zdmc, 
+      zdzz, zt, bz, sfrq, 
+      lryxh, lrymc, lrsj, 
+      byjca, byjcb, byjcc, 
+      byjcd, byjce, byjcf, 
+      byjcg, byjch, byjchj, 
+      byjci, byhya, byhyb, 
+      byhyc, byhyd, byhye, 
+      byhyf, byhyg, byhyh, 
+      byhyhj, byhyi, bylra, 
+      bylrb, bylrc, bylrd, 
+      bylre, bylrf, bylrg, 
+      bylrh, bylrhj, bylri, 
+      syjza, syjzb, syjzc, 
+      syjzd, syjze, syjzf, 
+      syjzg, syjzh, syjzhj, 
+      syjzi, dk, bbs
+      )
+    values ( #{sszd,jdbcType=VARCHAR}, #{zdmc,jdbcType=VARCHAR}, 
+      #{zdzz,jdbcType=VARCHAR}, #{zt,jdbcType=INTEGER}, #{bz,jdbcType=VARCHAR}, #{sfrq,jdbcType=TIMESTAMP}, 
+      #{lryxh,jdbcType=VARCHAR}, #{lrymc,jdbcType=VARCHAR}, #{lrsj,jdbcType=TIMESTAMP}, 
+      #{byjca,jdbcType=INTEGER}, #{byjcb,jdbcType=INTEGER}, #{byjcc,jdbcType=INTEGER}, 
+      #{byjcd,jdbcType=INTEGER}, #{byjce,jdbcType=INTEGER}, #{byjcf,jdbcType=INTEGER}, 
+      #{byjcg,jdbcType=INTEGER}, #{byjch,jdbcType=INTEGER}, #{byjchj,jdbcType=INTEGER}, 
+      #{byjci,jdbcType=INTEGER}, #{byhya,jdbcType=INTEGER}, #{byhyb,jdbcType=INTEGER}, 
+      #{byhyc,jdbcType=INTEGER}, #{byhyd,jdbcType=INTEGER}, #{byhye,jdbcType=INTEGER}, 
+      #{byhyf,jdbcType=INTEGER}, #{byhyg,jdbcType=INTEGER}, #{byhyh,jdbcType=INTEGER}, 
+      #{byhyhj,jdbcType=INTEGER}, #{byhyi,jdbcType=INTEGER}, #{bylra,jdbcType=INTEGER}, 
+      #{bylrb,jdbcType=INTEGER}, #{bylrc,jdbcType=INTEGER}, #{bylrd,jdbcType=INTEGER}, 
+      #{bylre,jdbcType=INTEGER}, #{bylrf,jdbcType=INTEGER}, #{bylrg,jdbcType=INTEGER}, 
+      #{bylrh,jdbcType=INTEGER}, #{bylrhj,jdbcType=INTEGER}, #{bylri,jdbcType=INTEGER}, 
+      #{syjza,jdbcType=INTEGER}, #{syjzb,jdbcType=INTEGER}, #{syjzc,jdbcType=INTEGER}, 
+      #{syjzd,jdbcType=INTEGER}, #{syjze,jdbcType=INTEGER}, #{syjzf,jdbcType=INTEGER}, 
+      #{syjzg,jdbcType=INTEGER}, #{syjzh,jdbcType=INTEGER}, #{syjzhj,jdbcType=INTEGER}, 
+      #{syjzi,jdbcType=INTEGER}, #{dk,jdbcType=DECIMAL}, #{bbs,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.FxPjgl" >
+   <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_pjgl
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sszd != null" >
+        sszd,
+      </if>
+      <if test="zdmc != null" >
+        zdmc,
+      </if>
+      <if test="zdzz != null" >
+        zdzz,
+      </if>
+      <if test="zt != null" >
+        zt,
+      </if>
+      <if test="bz != null" >
+        bz,
+      </if>
+      <if test="sfrq != null" >
+        sfrq,
+      </if>
+      <if test="lryxh != null" >
+        lryxh,
+      </if>
+      <if test="lrymc != null" >
+        lrymc,
+      </if>
+      <if test="lrsj != null" >
+        lrsj,
+      </if>
+      <if test="byjca != null" >
+        byjca,
+      </if>
+      <if test="byjcb != null" >
+        byjcb,
+      </if>
+      <if test="byjcc != null" >
+        byjcc,
+      </if>
+      <if test="byjcd != null" >
+        byjcd,
+      </if>
+      <if test="byjce != null" >
+        byjce,
+      </if>
+      <if test="byjcf != null" >
+        byjcf,
+      </if>
+      <if test="byjcg != null" >
+        byjcg,
+      </if>
+      <if test="byjch != null" >
+        byjch,
+      </if>
+      <if test="byjchj != null" >
+        byjchj,
+      </if>
+      <if test="byjci != null" >
+        byjci,
+      </if>
+      <if test="byhya != null" >
+        byhya,
+      </if>
+      <if test="byhyb != null" >
+        byhyb,
+      </if>
+      <if test="byhyc != null" >
+        byhyc,
+      </if>
+      <if test="byhyd != null" >
+        byhyd,
+      </if>
+      <if test="byhye != null" >
+        byhye,
+      </if>
+      <if test="byhyf != null" >
+        byhyf,
+      </if>
+      <if test="byhyg != null" >
+        byhyg,
+      </if>
+      <if test="byhyh != null" >
+        byhyh,
+      </if>
+      <if test="byhyhj != null" >
+        byhyhj,
+      </if>
+      <if test="byhyi != null" >
+        byhyi,
+      </if>
+      <if test="bylra != null" >
+        bylra,
+      </if>
+      <if test="bylrb != null" >
+        bylrb,
+      </if>
+      <if test="bylrc != null" >
+        bylrc,
+      </if>
+      <if test="bylrd != null" >
+        bylrd,
+      </if>
+      <if test="bylre != null" >
+        bylre,
+      </if>
+      <if test="bylrf != null" >
+        bylrf,
+      </if>
+      <if test="bylrg != null" >
+        bylrg,
+      </if>
+      <if test="bylrh != null" >
+        bylrh,
+      </if>
+      <if test="bylrhj != null" >
+        bylrhj,
+      </if>
+      <if test="bylri != null" >
+        bylri,
+      </if>
+      <if test="syjza != null" >
+        syjza,
+      </if>
+      <if test="syjzb != null" >
+        syjzb,
+      </if>
+      <if test="syjzc != null" >
+        syjzc,
+      </if>
+      <if test="syjzd != null" >
+        syjzd,
+      </if>
+      <if test="syjze != null" >
+        syjze,
+      </if>
+      <if test="syjzf != null" >
+        syjzf,
+      </if>
+      <if test="syjzg != null" >
+        syjzg,
+      </if>
+      <if test="syjzh != null" >
+        syjzh,
+      </if>
+      <if test="syjzhj != null" >
+        syjzhj,
+      </if>
+      <if test="syjzi != null" >
+        syjzi,
+      </if>
+      <if test="dk != null" >
+        dk,
+      </if>
+      <if test="bbs != null" >
+        bbs,
+      </if>
+      
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sszd != null" >
+        #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null" >
+        #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null" >
+        #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null" >
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null" >
+        #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null" >
+        #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null" >
+        #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null" >
+        #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="byjca != null" >
+        #{byjca,jdbcType=INTEGER},
+      </if>
+      <if test="byjcb != null" >
+        #{byjcb,jdbcType=INTEGER},
+      </if>
+      <if test="byjcc != null" >
+        #{byjcc,jdbcType=INTEGER},
+      </if>
+      <if test="byjcd != null" >
+        #{byjcd,jdbcType=INTEGER},
+      </if>
+      <if test="byjce != null" >
+        #{byjce,jdbcType=INTEGER},
+      </if>
+      <if test="byjcf != null" >
+        #{byjcf,jdbcType=INTEGER},
+      </if>
+      <if test="byjcg != null" >
+        #{byjcg,jdbcType=INTEGER},
+      </if>
+      <if test="byjch != null" >
+        #{byjch,jdbcType=INTEGER},
+      </if>
+      <if test="byjchj != null" >
+        #{byjchj,jdbcType=INTEGER},
+      </if>
+      <if test="byjci != null" >
+        #{byjci,jdbcType=INTEGER},
+      </if>
+      <if test="byhya != null" >
+        #{byhya,jdbcType=INTEGER},
+      </if>
+      <if test="byhyb != null" >
+        #{byhyb,jdbcType=INTEGER},
+      </if>
+      <if test="byhyc != null" >
+        #{byhyc,jdbcType=INTEGER},
+      </if>
+      <if test="byhyd != null" >
+        #{byhyd,jdbcType=INTEGER},
+      </if>
+      <if test="byhye != null" >
+        #{byhye,jdbcType=INTEGER},
+      </if>
+      <if test="byhyf != null" >
+        #{byhyf,jdbcType=INTEGER},
+      </if>
+      <if test="byhyg != null" >
+        #{byhyg,jdbcType=INTEGER},
+      </if>
+      <if test="byhyh != null" >
+        #{byhyh,jdbcType=INTEGER},
+      </if>
+      <if test="byhyhj != null" >
+        #{byhyhj,jdbcType=INTEGER},
+      </if>
+      <if test="byhyi != null" >
+        #{byhyi,jdbcType=INTEGER},
+      </if>
+      <if test="bylra != null" >
+        #{bylra,jdbcType=INTEGER},
+      </if>
+      <if test="bylrb != null" >
+        #{bylrb,jdbcType=INTEGER},
+      </if>
+      <if test="bylrc != null" >
+        #{bylrc,jdbcType=INTEGER},
+      </if>
+      <if test="bylrd != null" >
+        #{bylrd,jdbcType=INTEGER},
+      </if>
+      <if test="bylre != null" >
+        #{bylre,jdbcType=INTEGER},
+      </if>
+      <if test="bylrf != null" >
+        #{bylrf,jdbcType=INTEGER},
+      </if>
+      <if test="bylrg != null" >
+        #{bylrg,jdbcType=INTEGER},
+      </if>
+      <if test="bylrh != null" >
+        #{bylrh,jdbcType=INTEGER},
+      </if>
+      <if test="bylrhj != null" >
+        #{bylrhj,jdbcType=INTEGER},
+      </if>
+      <if test="bylri != null" >
+        #{bylri,jdbcType=INTEGER},
+      </if>
+      <if test="syjza != null" >
+        #{syjza,jdbcType=INTEGER},
+      </if>
+      <if test="syjzb != null" >
+        #{syjzb,jdbcType=INTEGER},
+      </if>
+      <if test="syjzc != null" >
+        #{syjzc,jdbcType=INTEGER},
+      </if>
+      <if test="syjzd != null" >
+        #{syjzd,jdbcType=INTEGER},
+      </if>
+      <if test="syjze != null" >
+        #{syjze,jdbcType=INTEGER},
+      </if>
+      <if test="syjzf != null" >
+        #{syjzf,jdbcType=INTEGER},
+      </if>
+      <if test="syjzg != null" >
+        #{syjzg,jdbcType=INTEGER},
+      </if>
+      <if test="syjzh != null" >
+        #{syjzh,jdbcType=INTEGER},
+      </if>
+      <if test="syjzhj != null" >
+        #{syjzhj,jdbcType=INTEGER},
+      </if>
+      <if test="syjzi != null" >
+        #{syjzi,jdbcType=INTEGER},
+      </if>
+      <if test="dk != null" >
+        #{dk,jdbcType=DECIMAL},
+      </if>
+      <if test="bbs != null" >
+        #{bbs,jdbcType=INTEGER},
+      </if>
+      
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.FxPjgl" >
+    update fx_pjgl
+    <set >
+      <if test="sszd != null" >
+        sszd = #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null" >
+        zdmc = #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null" >
+        zdzz = #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        zt = #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null" >
+        bz = #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null" >
+        sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null" >
+        lryxh = #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null" >
+        lrymc = #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null" >
+        lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="byjca != null" >
+        byjca = #{byjca,jdbcType=INTEGER},
+      </if>
+      <if test="byjcb != null" >
+        byjcb = #{byjcb,jdbcType=INTEGER},
+      </if>
+      <if test="byjcc != null" >
+        byjcc = #{byjcc,jdbcType=INTEGER},
+      </if>
+      <if test="byjcd != null" >
+        byjcd = #{byjcd,jdbcType=INTEGER},
+      </if>
+      <if test="byjce != null" >
+        byjce = #{byjce,jdbcType=INTEGER},
+      </if>
+      <if test="byjcf != null" >
+        byjcf = #{byjcf,jdbcType=INTEGER},
+      </if>
+      <if test="byjcg != null" >
+        byjcg = #{byjcg,jdbcType=INTEGER},
+      </if>
+      <if test="byjch != null" >
+        byjch = #{byjch,jdbcType=INTEGER},
+      </if>
+      <if test="byjchj != null" >
+        byjchj = #{byjchj,jdbcType=INTEGER},
+      </if>
+      <if test="byjci != null" >
+        byjci = #{byjci,jdbcType=INTEGER},
+      </if>
+      <if test="byhya != null" >
+        byhya = #{byhya,jdbcType=INTEGER},
+      </if>
+      <if test="byhyb != null" >
+        byhyb = #{byhyb,jdbcType=INTEGER},
+      </if>
+      <if test="byhyc != null" >
+        byhyc = #{byhyc,jdbcType=INTEGER},
+      </if>
+      <if test="byhyd != null" >
+        byhyd = #{byhyd,jdbcType=INTEGER},
+      </if>
+      <if test="byhye != null" >
+        byhye = #{byhye,jdbcType=INTEGER},
+      </if>
+      <if test="byhyf != null" >
+        byhyf = #{byhyf,jdbcType=INTEGER},
+      </if>
+      <if test="byhyg != null" >
+        byhyg = #{byhyg,jdbcType=INTEGER},
+      </if>
+      <if test="byhyh != null" >
+        byhyh = #{byhyh,jdbcType=INTEGER},
+      </if>
+      <if test="byhyhj != null" >
+        byhyhj = #{byhyhj,jdbcType=INTEGER},
+      </if>
+      <if test="byhyi != null" >
+        byhyi = #{byhyi,jdbcType=INTEGER},
+      </if>
+      <if test="bylra != null" >
+        bylra = #{bylra,jdbcType=INTEGER},
+      </if>
+      <if test="bylrb != null" >
+        bylrb = #{bylrb,jdbcType=INTEGER},
+      </if>
+      <if test="bylrc != null" >
+        bylrc = #{bylrc,jdbcType=INTEGER},
+      </if>
+      <if test="bylrd != null" >
+        bylrd = #{bylrd,jdbcType=INTEGER},
+      </if>
+      <if test="bylre != null" >
+        bylre = #{bylre,jdbcType=INTEGER},
+      </if>
+      <if test="bylrf != null" >
+        bylrf = #{bylrf,jdbcType=INTEGER},
+      </if>
+      <if test="bylrg != null" >
+        bylrg = #{bylrg,jdbcType=INTEGER},
+      </if>
+      <if test="bylrh != null" >
+        bylrh = #{bylrh,jdbcType=INTEGER},
+      </if>
+      <if test="bylrhj != null" >
+        bylrhj = #{bylrhj,jdbcType=INTEGER},
+      </if>
+      <if test="bylri != null" >
+        bylri = #{bylri,jdbcType=INTEGER},
+      </if>
+      <if test="syjza != null" >
+        syjza = #{syjza,jdbcType=INTEGER},
+      </if>
+      <if test="syjzb != null" >
+        syjzb = #{syjzb,jdbcType=INTEGER},
+      </if>
+      <if test="syjzc != null" >
+        syjzc = #{syjzc,jdbcType=INTEGER},
+      </if>
+      <if test="syjzd != null" >
+        syjzd = #{syjzd,jdbcType=INTEGER},
+      </if>
+      <if test="syjze != null" >
+        syjze = #{syjze,jdbcType=INTEGER},
+      </if>
+      <if test="syjzf != null" >
+        syjzf = #{syjzf,jdbcType=INTEGER},
+      </if>
+      <if test="syjzg != null" >
+        syjzg = #{syjzg,jdbcType=INTEGER},
+      </if>
+      <if test="syjzh != null" >
+        syjzh = #{syjzh,jdbcType=INTEGER},
+      </if>
+      <if test="syjzhj != null" >
+        syjzhj = #{syjzhj,jdbcType=INTEGER},
+      </if>
+      <if test="syjzi != null" >
+        syjzi = #{syjzi,jdbcType=INTEGER},
+      </if>
+      <if test="dk != null" >
+        dk = #{dk,jdbcType=DECIMAL},
+      </if>
+      <if test="bbs != null" >
+        bbs = #{bbs,jdbcType=INTEGER},
+      </if>
+      
+    </set>
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.FxPjgl" >
+    update fx_pjgl
+    set sszd = #{sszd,jdbcType=VARCHAR},
+      zdmc = #{zdmc,jdbcType=VARCHAR},
+      zdzz = #{zdzz,jdbcType=VARCHAR},
+      zt = #{zt,jdbcType=INTEGER},
+      bz = #{bz,jdbcType=VARCHAR},
+      sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      lryxh = #{lryxh,jdbcType=VARCHAR},
+      lrymc = #{lrymc,jdbcType=VARCHAR},
+      lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      byjca = #{byjca,jdbcType=INTEGER},
+      byjcb = #{byjcb,jdbcType=INTEGER},
+      byjcc = #{byjcc,jdbcType=INTEGER},
+      byjcd = #{byjcd,jdbcType=INTEGER},
+      byjce = #{byjce,jdbcType=INTEGER},
+      byjcf = #{byjcf,jdbcType=INTEGER},
+      byjcg = #{byjcg,jdbcType=INTEGER},
+      byjch = #{byjch,jdbcType=INTEGER},
+      byjchj = #{byjchj,jdbcType=INTEGER},
+      byjci = #{byjci,jdbcType=INTEGER},
+      byhya = #{byhya,jdbcType=INTEGER},
+      byhyb = #{byhyb,jdbcType=INTEGER},
+      byhyc = #{byhyc,jdbcType=INTEGER},
+      byhyd = #{byhyd,jdbcType=INTEGER},
+      byhye = #{byhye,jdbcType=INTEGER},
+      byhyf = #{byhyf,jdbcType=INTEGER},
+      byhyg = #{byhyg,jdbcType=INTEGER},
+      byhyh = #{byhyh,jdbcType=INTEGER},
+      byhyhj = #{byhyhj,jdbcType=INTEGER},
+      byhyi = #{byhyi,jdbcType=INTEGER},
+      bylra = #{bylra,jdbcType=INTEGER},
+      bylrb = #{bylrb,jdbcType=INTEGER},
+      bylrc = #{bylrc,jdbcType=INTEGER},
+      bylrd = #{bylrd,jdbcType=INTEGER},
+      bylre = #{bylre,jdbcType=INTEGER},
+      bylrf = #{bylrf,jdbcType=INTEGER},
+      bylrg = #{bylrg,jdbcType=INTEGER},
+      bylrh = #{bylrh,jdbcType=INTEGER},
+      bylrhj = #{bylrhj,jdbcType=INTEGER},
+      bylri = #{bylri,jdbcType=INTEGER},
+      syjza = #{syjza,jdbcType=INTEGER},
+      syjzb = #{syjzb,jdbcType=INTEGER},
+      syjzc = #{syjzc,jdbcType=INTEGER},
+      syjzd = #{syjzd,jdbcType=INTEGER},
+      syjze = #{syjze,jdbcType=INTEGER},
+      syjzf = #{syjzf,jdbcType=INTEGER},
+      syjzg = #{syjzg,jdbcType=INTEGER},
+      syjzh = #{syjzh,jdbcType=INTEGER},
+      syjzhj = #{syjzhj,jdbcType=INTEGER},
+      syjzi = #{syjzi,jdbcType=INTEGER},
+      dk = #{dk,jdbcType=DECIMAL},
+      bbs = #{bbs,jdbcType=INTEGER}
+    
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  
+  
+   <!-- getPjData -->
+  <select id="getPjData" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fx_pjgl LEFT JOIN sys_department dept on sszd = dept.departmentid
+    <where>
+    	<if test="lock !=null">and zt = #{lock} </if>
+	   	<if test="st!=null and et==null">and substring(sfrq,1,length(#{st}))&gt;=#{st}</if>
+	   	<if test="et!=null and st==null">and substring(sfrq,1,length(#{et}))&lt;=#{et}</if>
+	   	<if test="st!=null and et!=null">and substring(sfrq,1,length(#{st})) between #{st} and #{et}</if>
+	   	<if test="lrymc!=null">and lrymc like concat('%',#{lrymc},'%')</if>
+	   	<if test="zdzz!=null">and zdzz like concat('%',#{zdzz},'%')</if>
+	   	<if test="depts != null">and sszd in (${depts})</if>
+   	</where>
+   	<if test="order != null">order by ${order}</if>
+   	<if test="order == null">order by sfrq desc </if>
+   		,dept.sortcode asc
+  </select>
+  <!-- getCanDel -->
+  <select id="getCanDel" parameterType="map" resultType="int">
+  	SELECT count(*) FROM fx_pjgl where zt = 1
+  	<if test="sfrq!=null">and substring(sfrq,1,length(#{sfrq}))=#{sfrq}</if>
+  	<if test="xh!=null">and xh!=#{xh}</if>
+  	<if test="sszd!=null">and sszd = #{sszd}</if>
+  </select>
+  
+  
+</mapper>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html><head>
+<meta name="viewport" content="width=device-width">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>高速智能分析系统</title>
+<link href="${ctx.contextPath}/res/app/css.css" rel="stylesheet" type="text/css" />
+<link href="${ctx.contextPath}/res/swiper/css/swiper.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${ctx.contextPath}/res/app/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/swiper/js/swiper.min.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/fastclick/fastclick.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/echarts/shine.min.js"></script>
+</head>
+<body style="background-color:#426586;width:auto;">
+<div class="htmleaf-container">
+	<div class="htmleaf-content bgcolor-3">
+		<div id="Main-Content">
+			<div class="Container">
+				<!-- Flipster List -->
+				<div class="flipster swiper-container">
+					<ul class="swiper-wrapper">
+						<li class="swiper-slide">
+							<div class="mainqp">
+								<div class="bt">${title}拆前收入走势 </div>
+								<div id="lineDiv" style="width: 310px; height: 360px;"></div>
+<div id="zszs" class="widget_wrap" style="margin-top:10px;margin-bottom:10px;">
+<#include "/WEB-INF/t/app/dept_chose.html"/>
+</div><!-- 单位选择 -->
+							</div>
+						</li>
+						<li class="swiper-slide">
+							<div class="mainqp">
+								<div class="bt">${title}拆后收入走势</div>
+								<div id="chDiv" style="width: 310px; height: 360px;"></div>
+<div id="chsrts" class="widget_wrap" style="margin-top:10px;margin-bottom:10px;">
+<#include "/WEB-INF/t/app/dept_chose.html"/>
+</div><!-- 单位选择 -->
+							</div>
+						</li>
+							<li class="swiper-slide">
+							<div class="mainqp">
+								<div class="bt">${title}征收月车流量</div>
+								<div id="ycllDiv" style="width: 310px; height: 360px;"></div>
+<div id="zsycll" class="widget_wrap" style="margin-top:10px;margin-bottom:10px;">
+<#include "/WEB-INF/t/app/dept_chose.html"/>
+</div><!-- 单位选择 -->
+							</div>
+						</li>
+						<!-- 
+						<li class="swiper-slide">
+							<div class="mainqp">
+								<div class="bt">${title}车辆免征费用</div>
+								<div id="ltDiv" style="width: 310px; height: 360px;"></div>
+<div id="clmzfy" class="widget_wrap" style="margin-top:10px;margin-bottom:10px;">
+<#include "/WEB-INF/t/app/dept_chose.html"/>
+</div>
+							</div>
+						</li> -->
+						<li class="swiper-slide">
+							<div class="mainqp">
+								<div class="bt">${title}客货费用比</div>
+								<div id="khfyDiv" style="width: 310px; height: 360px;"></div>
+<div id="khfyb" class="widget_wrap" style="margin-top:10px;margin-bottom:10px;">
+<#include "/WEB-INF/t/app/dept_chose.html"/>
+</div><!-- 单位选择 -->
+							</div>
+						</li>
+						<li class="swiper-slide">
+							<div class="mainqp">
+								<div class="bt">${title}客货流量比</div>
+								<div id="khllDiv" style="width: 310px; height: 360px;"></div>
+<div id="khllb" class="widget_wrap" style="margin-top:10px;margin-bottom:10px;">
+<#include "/WEB-INF/t/app/dept_chose.html"/>
+</div><!-- 单位选择 -->
+							</div>
+						</li>
+						<li class="swiper-slide">
+							<div class="mainqp">
+								<div class="bt">${title}客车类型</div>
+								<div id="kclxDiv" style="width: 310px; height: 360px;"></div>
+<div id="kclx" class="widget_wrap" style="margin-top:10px;margin-bottom:10px;">
+<#include "/WEB-INF/t/app/dept_chose.html"/>
+</div><!-- 单位选择 -->
+							</div>
+						</li>
+						<li class="swiper-slide">
+							<div class="mainqp">
+								<div class="bt">${title}货车类型</div>
+								<div id="hclxDiv" style="width: 310px; height: 360px;"></div>
+<div id="hclx" class="widget_wrap" style="margin-top:10px;margin-bottom:10px;">
+<#include "/WEB-INF/t/app/dept_chose.html"/>
+</div><!-- 单位选择 -->
+							</div>
+						</li>
+						<li class="swiper-slide">
+							<div class="mainqp">
+								<div class="bt">${title}ETC/MTC费用比</div>
+								<div id="etcDiv" style="width: 310px; height: 360px;"></div>
+<div id="etcfyb" class="widget_wrap" style="margin-top:10px;margin-bottom:10px;">
+<#include "/WEB-INF/t/app/dept_chose.html"/>
+</div><!-- 单位选择 -->
+							</div>
+						</li>
+						<li class="swiper-slide">
+							<div class="mainqp">
+								<div class="bt">${title}绿通车次趋势</div>
+								<div id="ltccDiv" style="width: 310px; height: 360px;"></div>
+<div id="ltccqs" class="widget_wrap" style="margin-top:10px;margin-bottom:10px;">
+<#include "/WEB-INF/t/app/dept_chose.html"/>
+</div><!-- 单位选择 -->
+							</div>
+						</li>
+					</ul>
+					<div class="swiper-button-next swiper-button-white"></div>
+					<div class="swiper-button-prev swiper-button-white"></div>
+				</div>
+				<!-- End Flipster List -->
+			</div>
+		</div>
+	</div>
+</div>
+    <!-- end #mainContent -->
+<!-- begin #footer -->
+<input type="hidden" id="token"/>
+<#include "/WEB-INF/t/app/footer.html"/>
+<!-- end #footer -->
+<script type="text/javascript">
+window.addEventListener('load', function() {FastClick.attach(document.body);}, false);
+var interval;
+$(document).ready(function(){//init
+	var swiper = new Swiper('#Main-Content .swiper-container',{loop : true,nextButton: '.swiper-button-next',prevButton: '.swiper-button-prev',onTransitionEnd: function(swiper){}});
+	//控制单位
+	$(".swiper-container a").hide();
+	<#if orgId??>
+		$(".swiper-container a[orgId='${orgId}']").each(function(i,obj){
+			if(!$(this).attr("deptId")){
+				$(this).show().trigger("click");
+			}
+		})
+	<#elseif deptId??>
+		$(".swiper-container a[deptId='${deptId}']").show().trigger("click");
+	</#if>
+	//
+	_loadData("zszs");//P1
+	_loadData("chsrts");//P1
+	//
+	interval = setInterval("loadData(0)",500);
+});
+function loadData(type) {
+	clearInterval(interval);
+	var data=_param("zsycll");//第一次加载
+	$.post("${ctx.contextPath}/app/fyzb.json",data,function(re){if(re.success){_initP2(re.msg.fyzb,type);_initP3(re.msg.khlx,type);}});
+	$.post("${ctx.contextPath}/app/cczs.json",data,function(re){if(re.success){_initP4(re.msg);}});
+}
+_param=function(type,org){
+	var orgId = $("#"+type+" a.on").attr("orgId");
+	var deptId = $("#"+type+" div>a.on").attr("deptId");
+	var depts=[];
+	if(deptId){depts.push("'"+deptId+"'");}else if(orgId){$("#"+type+" div>a[orgId='"+orgId+"']").each(function(){depts.push("'"+$(this).attr("deptId")+"'");});}
+	var data={depts:depts.join(","),token:$("#token").val()};
+	return data;
+}
+_loadData=function(type,org){//
+	var data=_param(type,org);
+	switch (type){
+		case "zszs":$.post("${ctx.contextPath}/app/zsts.json",data,function(re){if(re.success){_initP1(re.msg);}});break;
+		case "chsrts":$.post("${ctx.contextPath}/app/chsrzs.json",data,function(re){if(re.success){_initP5(re.msg);}});break;
+		case "zsycll":
+		case "clmzfy":
+		case "khfyb":
+		case "khllb":
+		case "etcfyb":
+		case "hclx":
+		case "kclx":
+			$.post("${ctx.contextPath}/app/fyzb.json",data,function(re){if(re.success){_initP2(re.msg.fyzb,type);_initP3(re.msg.khlx,type);}});
+		break;
+		case "ltccqs":$.post("${ctx.contextPath}/app/cczs.json",data,function(re){if(re.success){_initP4(re.msg);}});break;
+		default:break;
+	}
+		
+}
+
+_xAxis=[{name: '元',type: 'value',axisLabel:{rotate:-45,textStyle:{color:'#fff'}},axisTick:{lineStyle:{color:'#fff'}},axisLine:{lineStyle:{color:'#fff'}}
+}];
+_xAxis_liang=[{name: '辆',type: 'value',axisLabel:{rotate:-45,textStyle:{color:'#fff'}},axisTick:{lineStyle:{color:'#fff'}},axisLine:{lineStyle:{color:'#fff'}}
+}];
+_yAxis=[{type: 'category',data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+		axisLabel:{textStyle:{color:'#fff'}},axisTick:{lineStyle:{color:'#fff'}},axisLine:{lineStyle:{color:'#fff'}},
+ 		splitLine:{show:true,lineStyle:{color:'#fff'}},
+		inverse:true
+}];
+_initP1=function(data){
+	var option2 = {
+	    tooltip: {trigger: 'axis'},
+	    legend: {data:[""+data.y2+"",""+data.y1+"",""+data.y+""],textStyle:{color:'#fff'}},
+	    xAxis: [{type: 'value',name: '万元',
+   		        axisLabel:{textStyle:{color:'#fff'}},
+   	          	axisTick:{lineStyle:{color:'#fff'}},
+   	      		axisLine:{lineStyle:{color:'#fff'}}
+	    }],
+	    yAxis:_yAxis ,
+	    series: [{name:""+data.y2+"",type:'bar',data:data[data.y2]},
+	             {name:""+data.y1+"",type:'bar',data:data[data.y1]},
+	             {name:""+data.y+"",type:'line',data:data[data.y]}
+	    ]};
+  	var lineChart = echarts.init(document.getElementById('lineDiv'),'shine');
+  	lineChart.setOption(option2, true);
+}
+_initP5=function(data){
+	var option5 = {
+	    tooltip: {trigger: 'axis'},
+	    legend: {data:[""+data.y2+"",""+data.y1+"",""+data.y+""],textStyle:{color:'#fff'}},	
+	    xAxis: [{type: 'value',name: '万元',
+   		        axisLabel:{textStyle:{color:'#fff'}},
+   	          	axisTick:{lineStyle:{color:'#fff'}},
+   	      		axisLine:{lineStyle:{color:'#fff'}}
+	    }],
+	    yAxis:_yAxis ,
+	    series: [{name:""+data.y2+"",type:'bar',data:data[data.y2]},
+	             {name:""+data.y1+"",type:'bar',data:data[data.y1]},
+	             {name:""+data.y+"",type:'line',data:data[data.y]}
+	    ]};
+  	var chChart = echarts.init(document.getElementById('chDiv'),'shine');
+  	chChart.setOption(option5, true);
+}
+_initP2=function(data,type){
+	var zsyllData=[];//征收月车流量zsycll
+	var clmzfyData1=[];//车辆免征费用clmzfy
+	var clmzfyData2=[];//车辆免征费用
+	var khfyb1=[];//客货费用比khfyb
+	var khfyb2=[];//客货费用比
+	var khllbData1=[];//客货流量比khllb
+	var khllbData2=[];//客货流量比
+	var etcData1=[];//ETC/MTC费用比etcfyb
+	var etcData2=[];//ETC/MTC费用比
+	for(var i=0;i<data.length;i++){
+		zsyllData.push(data[i].crkllhj);//
+		//客货
+		khfyb1.push(data[i].kcsrzj);
+		khfyb2.push(data[i].hcsrzj);
+		//
+		khllbData1.push(data[i].kccrkhj);
+		khllbData2.push(data[i].hccrkhj);
+		//etc
+		etcData1.push(data[i].etc);
+		etcData2.push(data[i].mtc);
+		//
+	}
+if(type==0 || type=="zsycll")  {// 月车流量
+  	var ycll = {tooltip: {trigger: 'axis'},
+  		    xAxis:_xAxis_liang,
+  		    yAxis:_yAxis,
+  		    series: [{type:'line',data:zsyllData}]
+  		};
+  	var ycllChart = echarts.init(document.getElementById('ycllDiv'),'shine');
+  	ycllChart.setOption(ycll, true);
+}
+if(type==0 || type=="2")  {// 绿通占比
+	/**
+  	var lt = {
+  		    tooltip : {
+  		        trigger: 'axis',
+  		        axisPointer : {type : 'shadow'}
+  		    },
+  		    legend: {data: ['收费', '绿通'],
+  		        textStyle:{color:'#fff'}},
+  		    xAxis:  {
+  		    	name: '元',
+  		        type: 'value',
+  		      	axisLabel:{textStyle:{color:'#fff'}},
+  	          	axisTick:{lineStyle:{color:'#fff'}},
+  	      		axisLine:{lineStyle:{color:'#fff'}}
+  		    },
+  		    yAxis: {
+  		        type: 'category',
+      		    data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+      		    axisLabel:{textStyle:{color:'#fff'}},
+  	          	axisTick:{lineStyle:{color:'#fff'}},
+  	      		axisLine:{lineStyle:{color:'#fff'}}
+  		    },
+  		    series: [
+  		        {
+  		            name: '收费',
+  		            type: 'bar',
+  		            stack: '总量',
+  		            label: {normal: {show: true,position: 'insideRight'}},
+  		            data: str
+  		        },
+  		        {
+  		            name: '绿通',
+  		            type: 'bar',
+  		            stack: '总量',
+  		            label: {normal: {show: true,position: 'insideRight'}},
+  		            data: str2
+  		        }	      		        
+  		    ]
+  		};
+  	var ltChart = echarts.init(document.getElementById('ltDiv'),'shine');
+  	ltChart.setOption(lt, true);
+  	**/
+}
+if(type==0 || type=="khfyb")  {// 客货费用占比
+  	var khfy = {tooltip : {trigger: 'axis',axisPointer : {type : 'shadow'}},
+	    legend: {data: ['客车', '货车'],textStyle:{color:'#fff'}},
+	    xAxis:_xAxis,
+	    yAxis:_yAxis,
+	    series: [{name: '客车',type: 'bar',stack: '总量',label: {normal: {show: true,position: 'insideRight'}},data: khfyb1},
+	             {name: '货车',type: 'bar',stack: '总量',label: {normal: {show: true,position: 'insideRight'}},data: khfyb2}]
+	};
+  	var khfyChart = echarts.init(document.getElementById('khfyDiv'),'shine');
+  	khfyChart.setOption(khfy, true);
+}
+if(type==0 || type=="khllb")  {// 客货流量占比
+  	var khll = {tooltip : {trigger: 'axis',axisPointer : {type : 'shadow'}},
+	    legend: {data: ['客车', '货车'],textStyle:{color:'#fff'}},
+	    xAxis:_xAxis_liang,
+	  yAxis:_yAxis,
+      series: [{name: '客车',type: 'bar',stack: '总量',label: {normal: {show: true,position: 'insideRight'}},data: khllbData1},
+             {name: '货车',type: 'bar',stack: '总量',label: {normal: {show: true,position: 'insideRight'}},data: khllbData2}]
+	};
+  	var khllChart = echarts.init(document.getElementById('khllDiv'),'shine');
+  	khllChart.setOption(khll, true);
+}
+if(type==0 || type=="etcfyb") {// ETC/MTC 收费月对比
+	var etc = {tooltip : {trigger: 'axis',axisPointer : {type : 'shadow'}},
+	    legend: {data: ['ETC', 'MTC'],textStyle:{color:'#fff'}},
+	    xAxis:_xAxis,
+	    yAxis:_yAxis,
+	    series: [{name: 'ETC',type: 'bar',stack: '总量',label: {normal: {show: true,position: 'insideRight'}},data: etcData1},
+	             {name: 'MTC',type: 'bar',stack: '总量',label: {normal: {show: true,position: 'insideRight'}},data: etcData2}]
+	};
+  	var etcChart = echarts.init(document.getElementById('etcDiv'),'shine');
+  	etcChart.setOption(etc, true);
+}
+}
+_initP3=function(data,type){
+	if(type==0 || type=="kclx") {
+		var str = "[";
+		if(data) {
+			str += "{ value: '"+data.kccrhj1+"', name: '一类' },";
+			str += "{ value: '"+data.kccrhj2+"', name: '二类' },";
+			str += "{ value: '"+data.kccrhj3+"', name: '三类' },";
+			str += "{ value: '"+data.kccrhj4+"', name: '四类' }]";
+		}else {
+			str += "{ value: '0', name: '一类' },";
+			str += "{ value: '0', name: '二类' },";
+			str += "{ value: '0', name: '三类' },";
+			str += "{ value: '0', name: '四类' }]";
+		}
+		str = eval(str);
+	  // 客车类型 月度 流量 比例
+  	  var kclx = { legend: {x : 'center',y : 'bottom',data:['一类','二类','三类','四类'],textStyle:{color:'#fff'}},
+  			tooltip : {trigger: 'item',formatter: "{a} <br/>{b} : {c} ({d}%)"},
+  		    calculable : true,
+  		    series : [{name:'半径模式',type:'pie',
+  		          	labelLine:{normal:{length:5}},
+  		            radius : [30, 80],
+  		            roseType : 'radius',
+  		            label: {normal: {show: false},emphasis: {show: true}},
+  		            lableLine: {normal: {show: false},emphasis: {show: true}},
+  		            data:str
+  		        }
+  		    ]
+  		};
+  	   var kclxChart = echarts.init(document.getElementById('kclxDiv'),'shine');
+  	    kclxChart.setOption(kclx, true);
+	}
+	if(type==0 || type=="hclx") {
+		var str2 = "[";
+		if(data) {
+			str2 += "{ value: '"+data.hccrhj1+"', name: '一类' },";
+			str2 += "{ value: '"+data.hccrhj2+"', name: '二类' },";
+			str2 += "{ value: '"+data.hccrhj3+"', name: '三类' },";
+			str2 += "{ value: '"+data.hccrhj4+"', name: '四类' },";
+			str2 += "{ value: '"+data.hccrhj5+"', name: '五类' },";
+			str2 += "{ value: '"+data.hccrhj6+"', name: '六类' }]";
+		}else {
+			str2 += "{ value: '0', name: '一类' },";
+			str2 += "{ value: '0', name: '二类' },";
+			str2 += "{ value: '0', name: '三类' },";
+			str2 += "{ value: '0', name: '四类' },";
+			str2 += "{ value: '0', name: '五类' },";
+			str2 += "{ value: '0', name: '六类' }]";
+		}
+		str2 = eval(str2);
+	 // 货车类型 月度 流量 比例
+	  	var hclx = {legend: {x : 'center',y : 'bottom',data:['一类','二类','三类','四类','五类','六类'],textStyle:{color:'#fff'}},
+	  	  tooltip : {trigger: 'item',formatter: "{a} <br/>{b} : {c} ({d}%)"},
+  		  calculable : true,
+		  series : [{name:'半径模式',type:'pie',
+		          	labelLine:{normal:{length:5}},
+		            radius : [30, 80],
+		            roseType : 'radius',
+		            label: {normal: {show: false},emphasis: {show: true}},
+		            lableLine: {normal: {show: false},emphasis: {show: true}},
+		            data:str2
+		        }
+		    ]
+  		};
+  	    var hclxChart = echarts.init(document.getElementById('hclxDiv'),'shine');
+  	    hclxChart.setOption(hclx, true);
+	}
+}
+_initP4=function(data){
+	var ltcc = {tooltip: {trigger: 'axis'},
+	    legend: {data:[""+data.y1+"",""+data.y+""],textStyle:{color:'#fff'}},
+	    xAxis: _xAxis_liang,
+	    yAxis:_yAxis ,
+	    series: [{name:""+data.y1+"",type:'bar',data:data[data.y1]},
+	             {name:""+data.y+"",type:'line',data:data[data.y]}
+	    ]};
+  	var ltccChart = echarts.init(document.getElementById('ltccDiv'),'shine');
+  	ltccChart.setOption(ltcc, true);
+}
+</script>
+</body>
+</html>

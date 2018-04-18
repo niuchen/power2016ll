@@ -1,0 +1,38 @@
+<footer class="foot">
+    <div class="btn on"><a href="/index.htm"><i class="iconfont icon-chart1" aria-hidden="true"></i> 数 据</a></div>
+	<div class="btn"><a href="/app/second.htm"><i class="iconfont icon-chart" aria-hidden="true"></i> 态 势</a></div>
+	<div class="btn"><a href="/app/third.htm"><i class="iconfont icon-tachometer" aria-hidden="true"></i> 智 能</a></div>
+	<div class="btn"><a href="/app/forth.htm"><i class="iconfont icon-paper-plane" aria-hidden="true"></i> 信 息</a></div>
+</footer>
+<script type="text/javascript">
+function GetQueryString(name){
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+$(document).ready(function(){
+	var path = window.location.pathname;
+	if(path) {
+		$(".foot div").removeClass("on");
+		if(path.indexOf("index.htm")>0) {
+			$(".foot .btn:eq(0)").addClass("on");
+		}else if(path.indexOf("second.htm")>0){
+			$(".foot .btn:eq(1)").addClass("on");
+		}else if(path.indexOf("third.htm")>0){
+			$(".foot .btn:eq(2)").addClass("on");
+		}else if(path.indexOf("forth.htm")>0){
+			$(".foot .btn:eq(3)").addClass("on");
+		}else if(path.indexOf("news/detail.htm")>0) {
+			$(".foot .btn:eq(3)").addClass("on");
+		}
+	}
+	var token = GetQueryString("token");
+	if(token) {
+		$("#token").val(token);
+		$(".foot .btn").each(function(){
+			var url = $(this).find("a").attr("href");
+			$(this).find("a").attr("href",url + "?token="+token)
+		});
+	}
+});
+</script>

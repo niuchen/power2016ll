@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.BaseFileInfoMapper">
+  <resultMap id="BaseResultMap" type="com.power.common.entity.BaseFileInfo">
+    <id column="fileid" jdbcType="VARCHAR" property="fileid" />
+    <result column="folderid" jdbcType="VARCHAR" property="folderid" />
+    <result column="filename" jdbcType="VARCHAR" property="filename" />
+    <result column="filepath" jdbcType="VARCHAR" property="filepath" />
+    <result column="filesize" jdbcType="DECIMAL" property="filesize" />
+    <result column="fileextensions" jdbcType="VARCHAR" property="fileextensions" />
+    <result column="filetype" jdbcType="VARCHAR" property="filetype" />
+    <result column="isshare" jdbcType="INTEGER" property="isshare" />
+    <result column="sharelink" jdbcType="VARCHAR" property="sharelink" />
+    <result column="sharecode" jdbcType="INTEGER" property="sharecode" />
+    <result column="sharetime" jdbcType="TIMESTAMP" property="sharetime" />
+    <result column="downloadcount" jdbcType="INTEGER" property="downloadcount" />
+    <result column="istop" jdbcType="INTEGER" property="istop" />
+    <result column="sortcode" jdbcType="INTEGER" property="sortcode" />
+    <result column="deletemark" jdbcType="INTEGER" property="deletemark" />
+    <result column="enabledmark" jdbcType="INTEGER" property="enabledmark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="createdate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="createuserid" jdbcType="VARCHAR" property="createuserid" />
+    <result column="createusername" jdbcType="VARCHAR" property="createusername" />
+    <result column="modifydate" jdbcType="TIMESTAMP" property="modifydate" />
+    <result column="modifyuserid" jdbcType="VARCHAR" property="modifyuserid" />
+    <result column="modifyusername" jdbcType="VARCHAR" property="modifyusername" />
+  </resultMap>
+  <resultMap id="FileMessageMap" type="com.power.base.info.entity.fileMessageVO">
+   	<id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="parentid" jdbcType="VARCHAR" property="parentid" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    fileid, folderid, filename, filepath, filesize, fileextensions, filetype, isshare, 
+    sharelink, sharecode, sharetime, downloadcount, istop, sortcode, deletemark, enabledmark, 
+    description, createdate, createuserid, createusername, modifydate, modifyuserid, 
+    modifyusername
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from base_fileinfo
+    where fileid = #{fileid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from base_fileinfo
+    where fileid = #{fileid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.BaseFileInfo">
+    insert into base_fileinfo (fileid, folderid, filename, 
+      filepath, filesize, fileextensions, 
+      filetype, isshare, sharelink, 
+      sharecode, sharetime, downloadcount, 
+      istop, sortcode, deletemark, 
+      enabledmark, description, createdate, 
+      createuserid, createusername, modifydate, 
+      modifyuserid, modifyusername)
+    values (#{fileid,jdbcType=VARCHAR}, #{folderid,jdbcType=VARCHAR}, #{filename,jdbcType=VARCHAR}, 
+      #{filepath,jdbcType=VARCHAR}, #{filesize,jdbcType=DECIMAL}, #{fileextensions,jdbcType=VARCHAR}, 
+      #{filetype,jdbcType=VARCHAR}, #{isshare,jdbcType=INTEGER}, #{sharelink,jdbcType=VARCHAR}, 
+      #{sharecode,jdbcType=INTEGER}, #{sharetime,jdbcType=TIMESTAMP}, #{downloadcount,jdbcType=INTEGER}, 
+      #{istop,jdbcType=INTEGER}, #{sortcode,jdbcType=INTEGER}, #{deletemark,jdbcType=INTEGER}, 
+      #{enabledmark,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, 
+      #{createuserid,jdbcType=VARCHAR}, #{createusername,jdbcType=VARCHAR}, #{modifydate,jdbcType=TIMESTAMP}, 
+      #{modifyuserid,jdbcType=VARCHAR}, #{modifyusername,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.BaseFileInfo">
+    insert into base_fileinfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="fileid != null">
+        fileid,
+      </if>
+      <if test="folderid != null">
+        folderid,
+      </if>
+      <if test="filename != null">
+        filename,
+      </if>
+      <if test="filepath != null">
+        filepath,
+      </if>
+      <if test="filesize != null">
+        filesize,
+      </if>
+      <if test="fileextensions != null">
+        fileextensions,
+      </if>
+      <if test="filetype != null">
+        filetype,
+      </if>
+      <if test="isshare != null">
+        isshare,
+      </if>
+      <if test="sharelink != null">
+        sharelink,
+      </if>
+      <if test="sharecode != null">
+        sharecode,
+      </if>
+      <if test="sharetime != null">
+        sharetime,
+      </if>
+      <if test="downloadcount != null">
+        downloadcount,
+      </if>
+      <if test="istop != null">
+        istop,
+      </if>
+      <if test="sortcode != null">
+        sortcode,
+      </if>
+      <if test="deletemark != null">
+        deletemark,
+      </if>
+      <if test="enabledmark != null">
+        enabledmark,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="createdate != null">
+        createdate,
+      </if>
+      <if test="createuserid != null">
+        createuserid,
+      </if>
+      <if test="createusername != null">
+        createusername,
+      </if>
+      <if test="modifydate != null">
+        modifydate,
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null">
+        modifyusername,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="fileid != null">
+        #{fileid,jdbcType=VARCHAR},
+      </if>
+      <if test="folderid != null">
+        #{folderid,jdbcType=VARCHAR},
+      </if>
+      <if test="filename != null">
+        #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="filepath != null">
+        #{filepath,jdbcType=VARCHAR},
+      </if>
+      <if test="filesize != null">
+        #{filesize,jdbcType=DECIMAL},
+      </if>
+      <if test="fileextensions != null">
+        #{fileextensions,jdbcType=VARCHAR},
+      </if>
+      <if test="filetype != null">
+        #{filetype,jdbcType=VARCHAR},
+      </if>
+      <if test="isshare != null">
+        #{isshare,jdbcType=INTEGER},
+      </if>
+      <if test="sharelink != null">
+        #{sharelink,jdbcType=VARCHAR},
+      </if>
+      <if test="sharecode != null">
+        #{sharecode,jdbcType=INTEGER},
+      </if>
+      <if test="sharetime != null">
+        #{sharetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="downloadcount != null">
+        #{downloadcount,jdbcType=INTEGER},
+      </if>
+      <if test="istop != null">
+        #{istop,jdbcType=INTEGER},
+      </if>
+      <if test="sortcode != null">
+        #{sortcode,jdbcType=INTEGER},
+      </if>
+      <if test="deletemark != null">
+        #{deletemark,jdbcType=INTEGER},
+      </if>
+      <if test="enabledmark != null">
+        #{enabledmark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuserid != null">
+        #{createuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="createusername != null">
+        #{createusername,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuserid != null">
+        #{modifyuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyusername != null">
+        #{modifyusername,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.BaseFileInfo">
+    update base_fileinfo
+    <set>
+      <if test="folderid != null">
+        folderid = #{folderid,jdbcType=VARCHAR},
+      </if>
+      <if test="filename != null">
+        filename = #{filename,jdbcType=VARCHAR},
+      </if>
+      <if test="filepath != null">
+        filepath = #{filepath,jdbcType=VARCHAR},
+      </if>
+      <if test="filesize != null">
+        filesize = #{filesize,jdbcType=DECIMAL},
+      </if>
+      <if test="fileextensions != null">
+        fileextensions = #{fileextensions,jdbcType=VARCHAR},
+      </if>
+      <if test="filetype != null">
+        filetype = #{filetype,jdbcType=VARCHAR},
+      </if>
+      <if test="isshare != null">
+        isshare = #{isshare,jdbcType=INTEGER},
+      </if>
+      <if test="sharelink != null">
+        sharelink = #{sharelink,jdbcType=VARCHAR},
+      </if>
+      <if test="sharecode != null">
+        sharecode = #{sharecode,jdbcType=INTEGER},
+      </if>
+      <if test="sharetime != null">
+        sharetime = #{sharetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="downloadcount != null">
+        downloadcount = #{downloadcount,jdbcType=INTEGER},
+      </if>
+      <if test="istop != null">
+        istop = #{istop,jdbcType=INTEGER},
+      </if>
+      <if test="sortcode != null">
+        sortcode = #{sortcode,jdbcType=INTEGER},
+      </if>
+      <if test="deletemark != null">
+        deletemark = #{deletemark,jdbcType=INTEGER},
+      </if>
+      <if test="enabledmark != null">
+        enabledmark = #{enabledmark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        createdate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuserid != null">
+        createuserid = #{createuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="createusername != null">
+        createusername = #{createusername,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        modifydate = #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid = #{modifyuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyusername != null">
+        modifyusername = #{modifyusername,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where fileid = #{fileid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.BaseFileInfo">
+    update base_fileinfo
+    set folderid = #{folderid,jdbcType=VARCHAR},
+      filename = #{filename,jdbcType=VARCHAR},
+      filepath = #{filepath,jdbcType=VARCHAR},
+      filesize = #{filesize,jdbcType=DECIMAL},
+      fileextensions = #{fileextensions,jdbcType=VARCHAR},
+      filetype = #{filetype,jdbcType=VARCHAR},
+      isshare = #{isshare,jdbcType=INTEGER},
+      sharelink = #{sharelink,jdbcType=VARCHAR},
+      sharecode = #{sharecode,jdbcType=INTEGER},
+      sharetime = #{sharetime,jdbcType=TIMESTAMP},
+      downloadcount = #{downloadcount,jdbcType=INTEGER},
+      istop = #{istop,jdbcType=INTEGER},
+      sortcode = #{sortcode,jdbcType=INTEGER},
+      deletemark = #{deletemark,jdbcType=INTEGER},
+      enabledmark = #{enabledmark,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      createdate = #{createdate,jdbcType=TIMESTAMP},
+      createuserid = #{createuserid,jdbcType=VARCHAR},
+      createusername = #{createusername,jdbcType=VARCHAR},
+      modifydate = #{modifydate,jdbcType=TIMESTAMP},
+      modifyuserid = #{modifyuserid,jdbcType=VARCHAR},
+      modifyusername = #{modifyusername,jdbcType=VARCHAR}
+    where fileid = #{fileid,jdbcType=VARCHAR}
+  </update>
+  <!-- 查询所有文件 -->
+  <select id="showAllFile" parameterType="map" resultMap="FileMessageMap">
+    (SELECT folderid as id,parentid,foldername as name,foldertype as type FROM base_filefolder)
+	UNION
+	(SELECT fileid as id,folderid as parentid,filename as name,filetype as type FROM base_fileinfo)
+  </select>
+  <!-- 根据类型查询文件 -->
+  <select id="showFileByFiletype" parameterType="map" resultMap="BaseResultMap">
+  	select  
+  	<include refid="Base_Column_List" />
+    from base_fileinfo
+    where filetype IN (${filetype}) 
+  </select>
+  <!-- 查询回收站文件 -->
+  <select id="showFileByDeletemark" parameterType="map" resultMap="BaseResultMap">
+  	select  
+  	<include refid="Base_Column_List" />
+    from base_fileinfo
+    where deletemark = 1
+  </select>
+</mapper>

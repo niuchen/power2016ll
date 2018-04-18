@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>站点管理</title>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+    <link href="${ctx.contextPath}/res/jqgrid/jqgrid.css" rel="stylesheet">
+	<link href="${ctx.contextPath}/res/zTree3.5/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet">
+	<script src="${ctx.contextPath}/res/jqgrid/jqgrid.min.js"></script>
+	<script src="${ctx.contextPath}/res/zTree3.5/js/jquery.ztree.all.min.js"></script>
+	<script src="${ctx.contextPath}/res/ui/validator.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+	
+
+    <style>
+        body {
+            margin: 10px;
+            margin-bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+    
+<script>
+    $(function () {
+        InitialPage();
+        GetGrid();
+    });
+    //初始化页面
+    function InitialPage() {
+        //resize重设(表格、树形)宽高
+        $(window).resize(function (e) {
+            window.setTimeout(function () {
+                $('#gridTable').setGridWidth(($('.gridPanel').width()));
+                $("#gridTable").setGridHeight($(window).height() - 108.5);
+            }, 200);
+            e.stopPropagation();
+        });
+    }
+    //加载表格
+    function GetGrid() {
+        var selectedRowIndex = 0;
+        var $gridTable = $('#gridTable');
+        $gridTable.jqGrid({
+            url: "${ctx.contextPath}/sys/dept/showDept",
+            datatype: "json",
+            mtype:"POST",
+            height: $(window).height() - 108.5,
+            autowidth: true,
+            colModel: [
+                { label: '主键', name: 'departmentid', hidden: true,key:true },
+                { label: "站点名称", name: "fullname", width: 200, align: "left", sortable: false },
+                { label: "站点编号", name: "code", width: 100, align: "left", sortable: false },
+                { label: "站点简称", name: "shortname", width: 100, align: "left", sortable: false },
+                { label: "站点性质", name: "nature", width: 100, align: "left", sortable: false, 
+                	formatter: function (cellvalue, options, rowObject) {
+                		if(!cellvalue) return "";
+                        return top.clientdataItem[103] == null ? "" : top.clientdataItem[103][cellvalue];
+                    }	
+                },
+                { label: "负责人", name: "manager", width: 100, align: "left", sortable: false,
+                	formatter: function (cellvalue, options, rowObject) {
+                        return top.clientuserData[cellvalue]== null ? "" : top.clientuserData[cellvalue].realname;
+                    }	
+                },
+                { label: "电话号", name: "outerphone", width: 100, align: "left", sortable: false },
+                { label: "邮箱", name: "email", width: 60, align: "center", sortable: false },
+                { label: "备注", name: "description", width: 200, align: "left", sortable: false },
+                { label: '公司Id', name: 'organizeid', hidden: true },
+                { label: 'Sort', name: 'sortcode', hidden: true }
+            ],
+            treeGrid: true,
+            treeGridModel: "adjacency",
+            treeReader:{
+            	parent_id_field: "parentid"
+       		},
+            ExpandColumn: "code",
+            rowNum: "all",
+            rownumbers: true,
+            onSelectRow: function (rowid) {
+                selectedRowIndex = $("#" + this.id).getGridParam('selrow');
+            },
+            gridComplete: function () {
+                $("#" + this.id).setSelection(selectedRowIndex, false);
+            }
+        });
+        //查询条件设置
+        $("#queryCondition .dropdown-menu li").click(function () {
+            var text = $(this).find('a').html();
+            var value = $(this).find('a').attr('data-value');
+            $("#queryCondition .dropdown-text").html(text).attr('data-value', value)
+        });
+        //查询事件
+        $("#btn_Search").click(function () {
+            $gridTable.jqGrid('setGridParam', {
+                postData: {
+                    condition: $("#queryCondition").find('.dropdown-text').attr('data-value'),
+                    keyword: $("#txt_Keyword").val()
+                }
+            }).trigger('reloadGrid');
+        });
+        //查询回车事件
+        $('#txt_Keyword').bind('keypress', function (event) {
+            if (event.keyCode == "13") {
+                $('#btn_Search').trigger("click");
+            }
+        });
+    }
+    //新增
+    function btn_add() {
+        var departmentId = $("#gridTable").jqGridRowValue("departmentid");
+        var companyId = $("#gridTable").jqGridRowValue("organizeid");
+        var parentId = $("#gridTable").jqGridRowValue("departmentid");
+        var sort = $("#gridTable").jqGridRowValue("sort");
+        if (sort == 'org') {
+            parentId = 0;
+        }
+        dialogOpen({
+            id: "Form",
+            title: '添加站点',
+            url: "${ctx.contextPath}/sys/dept/form?departmentId="+ departmentId+ "&companyId=" + companyId + "&parentId=" + departmentId,
+            width: "700px",
+            height: "400px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].AcceptClick();
+            }
+        });
+    };
+    //编辑
+    function btn_edit() {
+        var keyValue = $("#gridTable").jqGridRowValue("departmentid");
+        if (checkedRow(keyValue)) {
+            var sort = $("#gridTable").jqGridRowValue("sortcode");
+            if (sort == 'org') {
+                return false;
+            }
+            dialogOpen({
+                id: "Form",
+                title: '编辑站点',
+                url: "${ctx.contextPath}/sys/dept/form?keyValue="+keyValue,
+                width: "700px",
+                height: "400px",
+                callBack: function (iframeId) {
+                    top.frames[iframeId].AcceptClick();
+                }
+            });
+        }
+    }
+    //删除
+    function btn_delete() {
+        var keyValue = $("#gridTable").jqGridRowValue("departmentid");
+        if (keyValue) {
+         //   var sort = $("#gridTable").jqGridRowValue("F_Sort");
+         //   if (sort == 'Organize') {
+         //       return false;
+         //   }
+            $.RemoveForm({
+                url: "${ctx.contextPath}/sys/dept/delDept",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#gridTable").resetSelection();
+                    $("#gridTable").trigger("reloadGrid");
+                }
+            })
+        } else {
+            dialogMsg('请选择需要删除的站点！', 0);
+        }
+    }
+</script>
+<div class="titlePanel">
+    <div class="title-search">
+        <table>
+            <tr>
+                <td>
+                    <div id="queryCondition" class="btn-group">
+                        <a class="btn btn-default dropdown-text" data-toggle="dropdown">选择条件</a>
+                        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a data-value="fullname">站点名称</a></li>
+                            <li><a data-value="code">站点编号</a></li>
+                            <li><a data-value="shortname">站点简称</a></li>
+                            <li><a data-value="manager">负责人</a></li>
+                            <li><a data-value="phone">电话号</a></li>
+                            <li><a data-value="email">邮箱</a></li>
+                        </ul>
+                    </div>
+                </td>
+                <td style="padding-left: 2px;">
+                    <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入要查询关键字" style="width: 200px;" />
+                </td>
+                <td style="padding-left: 5px;">
+                    <a id="btn_Search" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp;查询</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="toolbar">
+        <div class="btn-group">
+            <a id="b_ref" class="btn btn-default" onclick="reload();"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
+            <a id="b_add" class="btn btn-default" onclick="btn_add()"><i class="fa fa-plus"></i>&nbsp;新增</a>
+            <a id="b_edit" class="btn btn-default" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑</a>
+            <a id="b_delete" class="btn btn-default" onclick="btn_delete()"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+        </div>
+        <script>$('.toolbar').authorizeButton()</script>
+      </div>
+</div>
+<div class="gridPanel">
+    <table id="gridTable"></table>
+</div>
+
+</body>
+</html>

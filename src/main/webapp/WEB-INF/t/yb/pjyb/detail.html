@@ -1,0 +1,2289 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>拆后月报数据</title>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.extension.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet"/>
+	<script src="${ctx.contextPath}/res/ui/validator.js"></script>
+	<script src="${ctx.contextPath}/res/datepicker/WdatePicker.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+	<style type="text/css">
+	.tdTitle {
+	    position: relative;
+	    left: 0px;
+	    text-align: center;
+	    white-space: nowrap;
+	    font-weight: normal;
+	    width: 30px;
+	    padding-right: 10px;
+	}
+	.numberTxt{
+		border:none;
+		border:1px;
+		text-align:right;
+		border-bottom-style:solid;
+		font-weight: bold;
+		font-size: 13px;
+		color:blue;
+		padding-right: 5px;
+	}
+	.moneyTxt{
+		border:none;
+		border:1px;
+		text-align:right;
+		border-bottom-style:solid;
+		font-weight: bold;
+		font-size: 13px;
+		color:red;
+		padding-right: 5px;
+	}
+	.alldata{
+	text-align:right;
+	font-size: 14px;
+	}
+	</style>
+</head>
+<body>
+    <form id="form1">
+<div style="margin-left: 10px; margin-right: 10px;">
+    <div class="tab-content" style="padding-top: 10px;">
+            <header>数据归属信息</header>
+            <table class="form">
+             <input id="xh" name="xh" type="hidden" value=""/>
+               <tr>
+                    <td class="formTitle">所属站点<font face="宋体">*</font></td>
+                    <td class="formValue">
+                    	<span style="font-weight: bold;font-size: 14px;color: green;">${user.orgName} </span>
+                         <input id="sszd" type="hidden" value="${user.orgId}"/>
+                        <input id="zdmc" type="hidden" value="${user.orgName}"/>
+                        <input id="lryxh" type="hidden" value="${user.uid}"/>
+                        <input id="lrymc" type="hidden" value="${user.realName}"/>
+                    </td>
+                    <td class="formTitle">上报日期<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <input id="sfrq" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'%y-%M'})" value="${.now?string('yyyy-MM')}"/>
+                    </td>
+                 	<td class="formTitle">录入人员<font face="宋体">*</font></td>
+                 	 <td class="formValue">
+                	<span style="font-weight: bold;font-size: 14px;color: green;">${user.realName} </span>
+                	</td>
+                	</tr>
+                	<tr
+                    <th class="formTitle" valign="top" style="padding-top: 4px;">备注信息</th>
+                    <th class="formTitle" valign="top" style="padding-top: 4px;">备注 </th>
+                    <td class="formValue" colspan="5">
+                        <textarea id="bz" class="form-control" style="height: 50px;"></textarea>
+                    </td>
+                </tr>
+                
+               
+                 </table>
+                 <header>单位</header>
+                  <table class="form">
+                  <tr class="keyRow">
+                    <td class="tdTitle"></td>
+                    <td class="tdTitle"></td>
+                    <td class="tdTitle">微机票据</td>
+                    <td class="tdTitle"></td>
+                    <td class="tdTitle"></td>
+                    <td class="tdTitle">伍元定额票</td>
+                    <td class="tdTitle"></td>
+                    <td class="tdTitle"></td>
+                    <td class="tdTitle">拾元定额票</td>
+                    <td class="tdTitle"></td>
+                    <td class="tdTitle"></td>
+                     <td class="tdTitle">贰拾元定额票</td>
+                    <td class="tdTitle"></td>
+                    <td class="tdTitle"></td>
+                     <td class="tdTitle">伍拾元定额票</td>
+                    <td class="tdTitle"></td>
+                </tr>
+                   <tr class="keyRow">
+                    <td class="tdTitle"></td>
+                    <td class="tdTitle">本月领入</td>
+                    <td class="tdTitle">本月耗用</td>
+                    <td class="tdTitle">实际结存</td>
+                     <td class="tdTitle">本月领入</td>
+                    <td class="tdTitle">本月耗用</td>
+                    <td class="tdTitle">实际结存</td>
+                     <td class="tdTitle">本月领入</td>
+                    <td class="tdTitle">本月耗用</td>
+                    <td class="tdTitle">实际结存</td>
+                     <td class="tdTitle">本月领入</td>
+                    <td class="tdTitle">本月耗用</td>
+                    <td class="tdTitle">实际结存</td>
+                     <td class="tdTitle">本月领入</td>
+                    <td class="tdTitle">本月耗用</td>
+                    <td class="tdTitle">实际结存</td>
+                    
+                   
+                </tr>
+                </table>
+                <header>征收科</header>
+                 <table class="form">
+                  <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="zskbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="zskbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="zskbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="zskbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="zskbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                     <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="zskbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="zskbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="zskbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="zskbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="zskbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zskbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+            </table>
+             <header>洛龙收费站</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="llbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="llbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="llbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="llbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="llbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="llbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="llbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="llbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="llbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="llbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="llbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+                    
+            </table>
+             <header>伊川西收费站</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="ycxbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="ycxbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="ycxbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="ycxbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="ycxbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="ycxbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="ycxbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="ycxbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="ycxbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="ycxbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="ycxbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+                    
+            </table>
+              <header>嵩县产业聚集区收费站</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="scjbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="scjbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="scjbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="scjbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="scjbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="scjbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="scjbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="scjbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="scjbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="scjbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="scjbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+                    
+            </table>
+             <header>嵩县收费站</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="sxbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="sxbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="sxbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="sxbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="sxbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="sxbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="sxbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="sxbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="sxbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="sxbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sxbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+                    
+            </table>
+             <header>洛嵩段</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="lsxjbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lsxjbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lsxjbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lsxjbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lsxjbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="lsxjbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lsxjbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lsxjbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lsxjbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lsxjbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lsxjbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+                    
+            </table>
+            <header>旧县收费站</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="jxbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jxbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jxbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jxbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jxbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="jxbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jxbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jxbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jxbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jxbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jxbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+            </table>
+            <header>九龙山收费站</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="jlsbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jlsbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jlsbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jlsbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jlsbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="jlsbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jlsbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jlsbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jlsbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jlsbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jlsbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+            </table>
+             <header>重渡沟收费站</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="jdgbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jdgbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jdgbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jdgbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jdgbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="jdgbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jdgbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jdgbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jdgbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="jdgbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="jdgbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+            </table>
+            <header>栾川收费站</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="lcbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lcbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lcbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lcbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lcbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="lcbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lcbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lcbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lcbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lcbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lcbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+            </table>
+            <header>嵩栾段小计</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="slxjbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="slxjbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="slxjbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="slxjbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="slxjbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="slxjbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="slxjbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="slxjbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="slxjbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="slxjbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="slxjbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+            </table>
+              <header>周山收费站</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="zsbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="zsbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="zsbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="zsbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="zsbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="zsbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="zsbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="zsbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="zsbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="zsbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+            </table>
+              <header>宜阳收费站</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="yybylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="yybyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="yybyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="yybylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="yybyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="yybyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="yybylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="zsbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="yybylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="yybyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="yybyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="yybylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="yybyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="yybyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="yybylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="yybyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="yybyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="yybylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="yybyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="yybyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="yybylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="yybyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="yybyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="yybylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="yybyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="yybyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="yybylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="yybyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="yybyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+            </table>
+            
+             <header>韩城收费站</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="hcbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="hcbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="hcbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="hcbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="hcbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="hcbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="hcbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="hcbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="hcbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="hcbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hcbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+            </table>
+             <header>洛宁收费站</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="lnbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="lnbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+            </table>
+            
+             <header>洛宁段小计</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="lnxjbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnxjbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnxjbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnxjbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnxjbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="lnxjbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnxjbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnxjbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnxjbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnxjbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxjbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+            </table>
+             <header>洛宁西收费站</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="lnxbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnxbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnxbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnxbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnxbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="lnxbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnxbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnxbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnxbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="lnxbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="lnxbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+            </table>
+            <header>长水收费站</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="csbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="csbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="csbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="csbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="csbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="csbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="csbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="csbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="csbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="csbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="csbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+            </table>
+            <header>上戈收费站</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="sgbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="sgbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="sgbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="sgbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="sgbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="sgbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="sgbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="sgbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="sgbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="sgbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="sgbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+            </table>
+            
+             <header>宁卢段小计</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="nlxjbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="nlxjbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="nlxjbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="nlxjbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="nlxjbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="nlxjbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="nlxjbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="nlxjbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="nlxjbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="nlxjbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="nlxjbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+            </table>
+             <header>合计</header>
+                 <table class="form">
+                 <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="hjbylr1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyhy1" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyjc1" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="hjbylr2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyhy2" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyjc2" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="hjbylr3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyhy3" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyjc3" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="hjbylr4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyhy4" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyjc4" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="hjbylr5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyhy5" type="text" class="form-control numberTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyjc5" type="text" class="form-control numberTxt" />
+                    </td>
+                    </tr>
+                        <tr>
+                 <td class="tdTitle"></td>
+                 <td class="tdTitle"></td>
+                 <td class="formValue">
+                        <input id="hjbylrje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyhyje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyjcje1" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="hjbylrje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyhyje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyjcje2" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="hjbylrje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyhyje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyjcje3" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="hjbylrje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyhyje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyjcje4" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="formValue">
+                        <input id="hjbylrje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyhyje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                      <td class="formValue">
+                        <input id="hjbyjcje5" type="text" class="form-control moneyTxt" />
+                    </td>
+                    </tr>
+            </table>
+    </div>
+</div>
+    </form>
+<script>
+var keyValue = request('keyValue');
+$(function () {
+    initControl();
+})
+//初始化控件
+function initControl() {
+    //获取表单
+    if (!!keyValue) {
+    	$.SetForm({
+            url: "${ctx.contextPath}/yb/getPjybFormJson",
+            param: { keyValue: keyValue },
+            success: function (data) {
+                $("#form1").SetWebControls(data);
+                $("#zdmc").text(data.zdmc);
+                $("#lrymc").text(data.lrymc);
+                var zdzz = top.clientuserData[data.zdzz] == null ? "" : top.clientuserData[data.zdzz].realname;//站点站长
+                $("#zdzz").text(zdzz);
+                $("#ldmc").text(data.ldmc);
+                $("#sfrq").val(formatDate(new Date(data.sfrq), "yyyy-MM"));
+                $("#form1").find('.form-control,.ui-select,input').attr('disabled', 'disabled');
+            }
+        });
+    }
+}
+</script>
+</body>
+</html>

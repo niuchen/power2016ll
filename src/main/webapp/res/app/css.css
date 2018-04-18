@@ -1,0 +1,167 @@
+﻿@charset "utf-8";
+body, ul, dl, dd, dt, ol, li, p, h1, h2, h3, h4, h5, h6, textarea, form, select, fieldset, table, td, div, input {margin:0;padding:0;-webkit-text-size-adjust: none}
+h1, h2, h3, h4, h5, h6{font-size:12px;font-weight:normal}
+body>div{margin:0 auto}
+div {text-align:left}
+a img {border:0;}
+body {text-align: center; font: 12px "微软雅黑"; }
+ul, ol, li {list-style-type:none;vertical-align:0}
+a {outline-style:none;color:#535353;text-decoration:none}
+a:hover { color: #D40000; text-decoration: none}
+.clear{height:0; overflow:hidden; clear:both}
+.Container{padding-bottom:60px;}
+.keBody{background:url(bg.jpg) no-repeat top center fixed;background-size:cover; position:relative}
+.kePublic{padding:0px; height: 206px; width:85%; margin:auto; margin-top:63%; border-radius:15px; }
+.kePublic .inputu{width:81%; height:40px; background:url(bg.PNG) repeat; margin:auto; border-radius:20px; }
+.inputu input{width:77%; height:40px; padding-left:52px; background:url(user.PNG) no-repeat; font-size:14px; line-height:40px; border:none;border-radius:20px; color:#fff}
+.kePublic .inputu1{width:81%; height:40px; background:url(bg.PNG) repeat; margin:auto; border-radius:20px; margin-top:15px; }
+.inputu1 input{width:77%; height:40px; padding-left:52px; background:url(word.PNG) no-repeat; font-size:14px; line-height:40px; border:none;border-radius:20px; color:#fff}
+.kePublic .inputu2{width:75%; height:40px; margin:auto;line-height:40px; position:relative}
+.inputu2 .inpleft{width:50%; float:left; color:#fff}
+.inpleft input{ margin-right:5px; margin-top:0px; position:absolute; top:14px}
+.inputu2 .inpright{width:50%; float:left; text-align:right;}
+.inpright a{color:#fff}
+.kePublic .inputu3{width:75%; height:40px; margin:auto;line-height:40px; position:relative}
+.inputu3 .inpleft1{width:50%; float:left; color:#fff; overflow:hidden}
+.inpleft1 input{width:80%; height:30px; border-radius:15px; background:#008ed8; border:1px #fff solid; text-align:center; color:#fff}
+.inputu3 .inpright1{width:50%; float:right; text-align:right; overflow:hidden}
+.inpright1 input{width:80%; height:30px; border-radius:15px; background:#008ed8; border:1px #fff solid; text-align:center; color:#fff}
+
+.con{width:100%; margin:auto;position:relative;}
+.con .dc{width:100%; height:32px;}
+.con .top{width:480px; height:60px; line-height:60px; text-align:center; background:url(line.png) repeat-x bottom;}
+.top .tleft{width:75px; height:60px; float:left; line-height:60px; text-align:center}
+.top .tleft img{margin-top:17px}
+.top .tcenter{width:330px; height:60px; float:left; font-size:24px; color:#fff; line-height:60px; text-align:center}
+.top .tright{width:75px; height:60px; float:left; line-height:60px; text-align:center}
+.top .tright img{margin-top:15px}
+
+.main{width:480px; height:470px; overflow:hidden; margin-top:67px;}
+.main .mleft{width:86px; height:380px; float:left; margin-top:40px; border-radius:5px;}
+.mleft img{width:100%}
+.main .mcenter{width:284px; height:460px; float:left; margin-left:11px; margin-right:11px; background:url(bg1.png) repeat; border-radius:5px;box-shadow: 2px 0px 6px rgba(0, 0, 0, 0.5); position:relative;}
+.mcenter img{width:100%}
+.mcenter .zt{width:284px; height:38px; line-height:38px; position:absolute; bottom:0px; text-align:center; font-size:14px; color:#fff; background:url(bg3.png) repeat;}
+.main .mright{width:86px; height:380px; float:left; margin-top:40px;border-radius:5px;}
+.mright img{width:100%}
+/* ; background:url(bg4.png) repeat */
+.foot{z-index:10000;margin:0 auto;height:60px;background:#2d78f4; box-shadow: 2px 0px 6px rgba(0, 0, 0, 0.5); line-height:57px;position: fixed;bottom:0;left:0;width:100%;}
+.foot .btn{width:25%; height:60px; float:left; text-align:center;font-size:23px; color:#fff}
+.foot .on{background-color: #1F529F;}
+.foot a{display:inline-table; height:60px; color:#fff; font-size:18px}
+.foot a img{margin-right:10px}
+
+
+.mainqp{width:310px;height:80%; overflow:auto; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.4);border-radius:5px;background-color:#0E4F97; margin:auto;margin-top:28px; padding-bottom:25px}
+.mainqp .bt{  height:40px; line-height:40px; text-align:center; background-color:#2660A1; font-size:18px; color:#fff}
+.mainqp .jd{height:230px; margin:auto; margin-top:30px; margin-bottom:30px}
+.mainqp .wc{height:88px; border-top:1px #5d82a5 solid;border-bottom:1px #5d82a5 solid; background:url(wcbg.png) no-repeat -11px 0px;}
+.wc .wleft{height:74px; float:left; text-align:center; font-size:16px; color:#fff; padding-top:14px}
+.wleft span{color:#00ffff; font-size:23px}
+.wleft span font{font-size:27px}
+.wc .wright{width:215px; height:74px; float:left; text-align:center; font-size:16px; color:#fff; padding-top:14px}
+.wright span{color:#aeff00; font-size:23px}
+.wright span font{font-size:27px}
+.mainqp .bt1{ width:430px; height:40px; line-height:38px; text-align:center;background-color:#2660A1;font-size:21px; color:#fff; margin-top:27px; margin-bottom:27px}
+.bt1 img{margin-right:12px; margin-top:0px;}
+.mainqp .my{width:430px; height:153px; margin-top:32px; margin-bottom:32px}
+.my .mmleft{width:198px; height:153px; text-align:center; float:left}
+.my .mmleft img{margin-top:7px}
+.my .mmright{width:232px; height:153px; background:url(ss.png) no-repeat left; float:left}
+.mmright p{margin:0px; width:140px; height:33px; padding-left:26px; font-size:16px; color:#84a3be; margin-top:-8px}
+.mmright p span{font-size:21px; color:#00ffff; display:inline-table; width:90px}
+.mmright p span font{font-size:27px}
+.mmright p label{color:#aeff00; display:inline-table; width:90px; font-size:21px}
+.mmright p label font{font-size:27px}
+.mainqp .tb{width:389px; height:246px; margin:auto}
+
+/**/
+.mainqp .bb{height:144px;}
+.bb .bbt{height:22px;  font-size:16px; color:#fff; padding-top:23px; padding-left:20px}
+.bb .bbb{font-size:30px; color:#fff; padding-top:8px; padding-left:20px}
+.bbb span{font-size:30px}
+.bbb span font{font-size:55px; color:#acff00}
+
+.mainqp .my1{margin-top:10px;}
+.my1 dl{margin:0px; padding:0px}
+.my1 dl dd{height:35px; background:url(line1.png) repeat-x top; line-height:35px}
+.my1 dl dd .sfnow{ background:url(bg9.png) repeat}
+.my1 dl dd .sfmo .sfzmc{float:left; height:35px; line-height:35px;padding-left:12px; color:#fff; font-size:14px}
+.my1 dl dd .sfmo .money{padding-right:12px; height:35px; line-height:35px; float:right; color:#fff; font-size:14px}
+.money span{color:#baf94d;display: inline-block;}
+
+
+/*************/
+.widget_wrap{padding:2px;}
+.widget_wrap a{display: inline-block;padding:2px 3px;}
+.widget_wrap a label{
+	display: inline-block;
+	min-width:30px;
+	max-width:150px;
+	height:24px;
+	line-height: 24px;
+	padding:0 13px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	font-size:12px;
+	color:#636363;
+	background:#d9d9d9;
+	border-radius:8px;
+}
+.widget_wrap a.on label{
+	background:#42ACE2;
+	color:#ffffff;
+}
+/* Let's get this party started */
+::-webkit-scrollbar {
+    width: 6px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 18px;
+    border-radius: 10px;
+    background: rgba(0,0,0,0.8); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: rgba(255,0,0,0.4); 
+}
+
+.container {
+      width: 300px;
+      height: 300px;
+      background-color: #DCDCDC;
+      overflow: scroll; /* showing scrollbars */
+}
+
+
+/*zt**/
+@font-face {font-family: "iconfont";
+  src: url('iconfont.eot?t=1491638744209'); /* IE9*/
+  src: url('iconfont.eot?t=1491638744209#iefix') format('embedded-opentype'), /* IE6-IE8 */
+  url('iconfont.woff?t=1491638744209') format('woff'), /* chrome, firefox */
+  url('iconfont.ttf?t=1491638744209') format('truetype'), /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+  url('iconfont.svg?t=1491638744209#iconfont') format('svg'); /* iOS 4.1- */
+}
+.iconfont {
+  font-family:"iconfont" !important;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-home:before { content: "\e885"; }
+.icon-paper-plane:before { content: "\e613"; }
+.icon-chart:before { content: "\e6e2"; }
+.icon-chart1:before { content: "\e61b"; }
+.icon-tachometer:before { content: "\e730"; }
+

@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.FxJdxmzMapper">
+  <resultMap id="BaseResultMap" type="com.power.common.entity.FxJdxmz">
+    <id column="xh" jdbcType="BIGINT" property="xh" />
+    <result column="sszd" jdbcType="VARCHAR" property="sszd" />
+    <result column="zdmc" jdbcType="VARCHAR" property="zdmc" />
+    <result column="zt" jdbcType="INTEGER" property="zt" />
+    <result column="bz" jdbcType="VARCHAR" property="bz" />
+    <result column="sfrq" jdbcType="TIMESTAMP" property="sfrq" />
+    <result column="lryxh" jdbcType="VARCHAR" property="lryxh" />
+    <result column="lrymc" jdbcType="VARCHAR" property="lrymc" />
+    <result column="lrsj" jdbcType="TIMESTAMP" property="lrsj" />
+    <result column="mzsj" jdbcType="VARCHAR" property="mzsj" />
+    <result column="clr" jdbcType="INTEGER" property="clr" />
+    <result column="clc" jdbcType="INTEGER" property="clc" />
+    <result column="clhj" jdbcType="INTEGER" property="clhj" />
+    <result column="mfje" jdbcType="DECIMAL" property="mfje" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    xh, sszd, zdmc, zt, bz, sfrq, lryxh, lrymc, lrsj, mzsj, clr, clc, clhj, mfje
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fx_jdxmz
+    where xh = #{xh,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from fx_jdxmz
+    where xh = #{xh,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.FxJdxmz">
+    <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_jdxmz (sszd, zdmc, zt, 
+      bz, sfrq, lryxh, 
+      lrymc, lrsj, mzsj, 
+      clr, clc,clhj, mfje)
+    values (#{sszd,jdbcType=VARCHAR}, #{zdmc,jdbcType=VARCHAR}, #{zt,jdbcType=INTEGER}, 
+      #{bz,jdbcType=VARCHAR}, #{sfrq,jdbcType=TIMESTAMP}, #{lryxh,jdbcType=VARCHAR}, 
+      #{lrymc,jdbcType=VARCHAR}, #{lrsj,jdbcType=TIMESTAMP}, #{mzsj,jdbcType=VARCHAR}, 
+      #{clr,jdbcType=INTEGER}, #{clc,jdbcType=INTEGER},#{clhj,jdbcType=INTEGER}, #{mfje,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.FxJdxmz">
+    <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_jdxmz
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sszd != null">
+        sszd,
+      </if>
+      <if test="zdmc != null">
+        zdmc,
+      </if>
+      <if test="zt != null">
+        zt,
+      </if>
+      <if test="bz != null">
+        bz,
+      </if>
+      <if test="sfrq != null">
+        sfrq,
+      </if>
+      <if test="lryxh != null">
+        lryxh,
+      </if>
+      <if test="lrymc != null">
+        lrymc,
+      </if>
+      <if test="lrsj != null">
+        lrsj,
+      </if>
+      <if test="mzsj != null">
+        mzsj,
+      </if>
+      <if test="clr != null">
+        clr,
+      </if>
+      <if test="clc != null">
+        clc,
+      </if>
+      <if test="clhj != null">
+        clhj,
+      </if>
+      <if test="mfje != null">
+        mfje,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sszd != null">
+        #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null">
+        #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null">
+        #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null">
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null">
+        #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null">
+        #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null">
+        #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null">
+        #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mzsj != null">
+        #{mzsj,jdbcType=VARCHAR},
+      </if>
+      <if test="clr != null">
+        #{clr,jdbcType=INTEGER},
+      </if>
+      <if test="clc != null">
+        #{clc,jdbcType=INTEGER},
+      </if>
+      <if test="clhj != null">
+        #{clhj,jdbcType=INTEGER},
+      </if>
+      <if test="mfje != null">
+        #{mfje,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.FxJdxmz">
+    update fx_jdxmz
+    <set>
+      <if test="sszd != null">
+        sszd = #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null">
+        zdmc = #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null">
+        zt = #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null">
+        bz = #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null">
+        sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null">
+        lryxh = #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null">
+        lrymc = #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null">
+        lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mzsj != null">
+        mzsj = #{mzsj,jdbcType=VARCHAR},
+      </if>
+      <if test="clr != null">
+        clr = #{clr,jdbcType=INTEGER},
+      </if>
+      <if test="clc != null">
+        clc = #{clc,jdbcType=INTEGER},
+      </if>
+      <if test="clhj != null">
+        clhj = #{clhj,jdbcType=INTEGER},
+      </if>
+      <if test="mfje != null">
+        mfje = #{mfje,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.FxJdxmz">
+    update fx_jdxmz
+    set sszd = #{sszd,jdbcType=VARCHAR},
+      zdmc = #{zdmc,jdbcType=VARCHAR},
+      zt = #{zt,jdbcType=INTEGER},
+      bz = #{bz,jdbcType=VARCHAR},
+      sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      lryxh = #{lryxh,jdbcType=VARCHAR},
+      lrymc = #{lrymc,jdbcType=VARCHAR},
+      lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      mzsj = #{mzsj,jdbcType=VARCHAR},
+      clr = #{clr,jdbcType=INTEGER},
+      clc = #{clc,jdbcType=INTEGER},
+      clhj = #{clhj,jdbcType=INTEGER},
+      mfje = #{mfje,jdbcType=DECIMAL}
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  
+  <!--  getJdxmzData-->
+   <select id="getJdxmzData" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fx_jdxmz 
+    <where>
+        <if test="lock !=null">and zt = #{lock} </if>
+	   	<if test="st!=null and et==null">and substring(sfrq,1,length(#{st}))&gt;=#{st}</if>
+	   	<if test="et!=null and st==null">and substring(sfrq,1,length(#{et}))&lt;=#{et}</if>
+	   	<if test="st!=null and et!=null">and substring(sfrq,1,length(#{st})) between #{st} and #{et}</if>
+	   	<if test="depts != null">and sszd in (${depts})</if>
+	   	<if test="mzsj != null">and mzsj=#{mzsj}</if>
+   	</where>
+   	order by sfrq desc
+  </select>
+  <!-- allowReport 是否允许上上报数据-->
+  <select id="allowReport" parameterType="int" resultType="int">
+  	SELECT count(*) FROM sz_jdxmz where zt >0 
+  	and xh=#{value} 
+  	and substring(now(),1,10) between kssj and jssj
+  </select>
+  <!-- 是否存在 -->
+  <select id="isExist" parameterType="map" resultType="int">
+  	SELECT count(*) FROM fx_jdxmz where zt >0
+  	<if test="sfrq!=null">and substring(sfrq,1,length(#{sfrq}))=#{sfrq}</if>
+  	<if test="xh!=null">and xh!=#{xh}</if>
+  	<if test="sszd!=null">and sszd = #{sszd}</if>
+  </select>
+  
+</mapper>

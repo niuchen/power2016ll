@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>新增字典分类</title>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.extension.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+	<link href="${ctx.contextPath}/res/datetime/pikaday.css" rel="stylesheet"/>
+	<link href="${ctx.contextPath}/res/wizard/wizard.css" rel="stylesheet"/>
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet"/>
+	<script src="${ctx.contextPath}/res/ui/validator.js"></script>
+	<script src="${ctx.contextPath}/res/wizard/wizard.js"></script>
+	<script src="${ctx.contextPath}/res/datetime/pikaday.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+	
+
+</head>
+<body>
+    <form id="form1">
+
+<script>
+    var keyValue = request('keyValue');
+   // var parentId = request('parentId');
+    $(function () {
+        initControl();
+    })
+    //初始化控件
+    function initControl() {
+        //获取表单
+        if (!!keyValue) {
+            $.SetForm({
+                url: "${ctx.contextPath}/sys/dict/getClassFormJson",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#form1").SetWebControls(data);
+                }
+            });
+        } else {
+        	$("#dictid").val("1");
+        }
+    }
+    //保存表单
+    function AcceptClick() {
+        if (!$('#form1').Validform()) {
+            return false;
+        }
+        var postData = $("#form1").GetWebControls(keyValue);
+        //if (postData["F_ParentId"] == "") {
+        //    postData["F_ParentId"] = 0;
+        //}
+        $.SaveForm({
+            url: "${ctx.contextPath}/sys/dict/CalssSub",
+            param: postData,
+            loading: "正在保存数据...",
+            success: function () {
+                top.__classForm.$("#gridTable").resetSelection();
+                top.__classForm.$("#gridTable").trigger("reloadGrid");
+                $.currentIframe().reload();
+            }
+        })
+    }
+</script>
+<div style="margin-top: 20px; margin-right: 30px;">
+    <table class="form">
+		<input id="parentid" name="parentid" value="1" type="hidden"></input>
+		<input id="dictid" name="dictid" type="hidden"></input>
+        <tr>
+            <td class="formTitle">字典名称<font face="宋体">*</font></td>
+            <td class="formValue">
+                <input id="fullname" type="text" onblur="" class="form-control" placeholder="请输入名称" isvalid="yes" checkexpession="NotNull" />
+            </td>
+        </tr>
+        <tr>
+            <td class="formTitle">排序<font face="宋体">*</font></td>
+            <td class="formValue">
+                <input id="sortcode" type="text" onblur="" class="form-control" placeholder="请输入编号" isvalid="yes" checkexpession="NotNull" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle" valign="top" style="padding-top: 4px;">备注</th>
+            <td class="formValue">
+                <textarea id="remark" class="form-control" style="height: 70px;"></textarea>
+            </td>
+        </tr>
+    </table>
+</div>
+
+    </form>
+</body>
+</html>

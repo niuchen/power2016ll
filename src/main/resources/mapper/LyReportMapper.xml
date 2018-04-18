@@ -1,0 +1,1079 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.LyReportMapper">
+
+
+ <!-- 通行费收入及票据月报表 -->
+  <select id="getTxfsrpjData" parameterType="map" resultType="com.power.report.entity.TxfsrpjVO">
+	SELECT ttt.sszd,ttt.zdmc as fullName,GROUP_CONCAT(yf,':',ttt.sr,"-",ttt.ck,"-",ttt.jzsr) as hj FROM(
+	SELECT tt.yf,tt.sszd,tt.zdmc,SUM(xjhj)AS sr,SUM(ck)AS ck,SUM(jzsr)AS jzsr FROM
+	(
+	SELECT 'bn' AS yf,zdmc,sszd, SUM(xjhj+ydzf)AS xjhj ,SUM(ck)AS ck,SUM(jzsr)AS jzsr
+		from fx_rcsj
+		where zt>1 and date_format(sfrq, '%Y%m') BETWEEN (#{year}) AND (#{yearMonth})
+		<if test="depts!=null">and sszd in (${depts})</if>
+	GROUP BY yf,zdmc
+	UNION 
+ 	SELECT date_format(sfrq,'%Y%m') yf,zdmc,sszd, SUM(xjhj+ydzf)AS xjhj ,SUM(ck)AS ck,SUM(jzsr)AS jzsr
+		from fx_rcsj
+		where zt>1 and date_format(sfrq,'%Y%m') in (#{yearMonth})
+		<if test="depts!=null">and sszd in (${depts})</if>
+	GROUP BY yf,zdmc
+	UNION
+	SELECT 'zkt'AS yf,zdmc,sszd, SUM(xjhj+ydzf)AS xjhj, SUM(ck)AS ck,SUM(jzsr)AS jzsr
+		from fx_rcsj
+		where zt>1 
+		<if test="depts!=null">and sszd in (${depts})</if>
+	GROUP BY yf,zdmc)tt
+	GROUP BY tt.yf)ttt
+
+  </select>
+	<!-- 票据信息 -->
+   <select id="getPjglData" parameterType="map" resultType="com.power.common.entity.FxPjgl">
+   SELECT 'all' AS cz, sszd ,zdmc, SUM(syjza) As syjza,SUM(syjzb) As syjzb,SUM(syjzc) As syjzc,
+   SUM(syjzd) As syjzd,SUM(syjze) As syjze,SUM(syjzf) As syjzf,
+   SUM(syjzg) As syjzg,SUM(syjzh) As syjzh,SUM(syjzhj) As syjzhj,SUM(syjzi) As syjzi,
+   
+   SUM(bylra) As bylra,SUM(bylrb) As bylrb,SUM(bylrc) As bylrc,
+   SUM(bylrd) As bylrd,SUM(bylre) As bylre,SUM(bylrf) As bylrf,
+   SUM(bylrg) As bylrg,SUM(bylrh) As bylrh,SUM(bylrhj) As bylrhj,SUM(bylri) As bylri,
+   
+   SUM(byhya) As byhya,SUM(byhyb) As byhyb,SUM(byhyc) As byhyc,
+   SUM(byhyd) As byhyd,SUM(byhye) As byhye,SUM(byhyf) As byhyf,
+   SUM(byhyg) As byhyg,SUM(byhyh) As byhyh,SUM(byhyhj) As byhyhj,SUM(byhyi) As byhyi,
+   
+   SUM(byjca) As byjca,SUM(byjcb) As byjcb,SUM(byjcc) As byjcc,
+   SUM(byjcd) As byjcd,SUM(byjce) As byjce,SUM(byjcf) As byjcf,
+   SUM(byjcg) As byjcg,SUM(byjch) As byjch,SUM(byjchj) As byjchj,SUM(byjci) As byjci,
+   SUM(dk) As dk,SUM(bbs) As bbs
+   
+   FROM fx_pjgl
+   WHERE zt>1 and date_format(sfrq, '%Y%m') IN (${yearMonth})
+		<if test="depts!=null">and sszd in (${depts})</if>
+		GROUP BY cz
+
+   </select>
+   
+   <!-- 通行费收入及票据拆后数据 -->
+  <select id="getTxfsrpjchData" parameterType="map" resultType="com.power.report.entity.TxfsrpjVO">
+  SELECT ttt.sszd,ttt.zdmc as fullName,GROUP_CONCAT(yf,':',ttt.chsr) as hj FROM(
+	SELECT tt.yf,tt.sszd,tt.zdmc,SUM(tt.chsr)AS chsr  FROM
+	(
+	SELECT 'bn' AS yf,zdmc,sszd, SUM(chhj)AS chsr 
+		from fx_chsjyb
+		where zt>1 and date_format(sfrq, '%Y%m') BETWEEN (#{year}) AND (#{yearMonth})
+		<if test="depts!=null">and sszd in (${depts})</if>
+	GROUP BY yf,zdmc
+	UNION 
+ 	SELECT date_format(sfrq,'%Y%m') yf,zdmc,sszd, SUM(chhj)AS chsr 
+		from fx_chsjyb
+		where zt>1 and date_format(sfrq,'%Y%m') in (#{yearMonth})
+		<if test="depts!=null">and sszd in (${depts})</if>
+	GROUP BY yf,zdmc
+	UNION
+	SELECT 'zkt'AS yf,zdmc,sszd, SUM(chhj)AS chsr 
+		from fx_chsjyb
+		where zt>1 
+		<if test="depts!=null">and sszd in (${depts})</if>
+	GROUP BY yf,zdmc)tt
+	GROUP BY tt.yf)ttt
+	GROUP BY ttt.sszd
+  </select>
+   <!--01月份 报表分析说明数据 -->
+  <select id="getBbfxsmData" parameterType="map" resultType="com.power.report.entity.BbfxsmDataVO">
+ 	SELECT ttt.sszd,ttt.zdmc as fullName,GROUP_CONCAT(yf,':',ttt.chhj) as hj FROM(
+	SELECT tt.yf,tt.sszd,tt.zdmc,SUM(chhj)AS chhj FROM
+	(
+	SELECT 'bn' as yf,zdmc,sszd, SUM(chhj)AS chhj 
+		from fx_chsjyb
+		where zt>1 and date_format(sfrq, '%Y%m') BETWEEN (#{year}) AND (#{yearMonth})
+	GROUP BY yf,zdmc
+	UNION 
+ 	SELECT date_format(sfrq,'%Y%m') yf,zdmc,sszd, SUM(chhj)AS chhj 
+		from fx_chsjyb
+		where zt>1 and date_format(sfrq,'%Y%m') in (#{yearMonth})
+	GROUP BY yf,zdmc
+	UNION
+	SELECT date_format(sfrq,'%Y%m') yf,zdmc,sszd, SUM(chhj)AS chhj 
+		from fx_chsjyb
+		where zt>1 and date_format(sfrq,'%Y%m') in (#{preMonth})
+	GROUP BY yf,zdmc
+	UNION
+	SELECT date_format(sfrq,'%Y%m') yf,zdmc,sszd, SUM(chhj)AS chhj 
+		from fx_chsjyb
+		where zt>1 and date_format(sfrq,'%Y%m') in (#{preYearMonth})
+	GROUP BY yf,zdmc
+	UNION
+	SELECT 'qn' as yf,zdmc,sszd, SUM(chhj)AS chhj 
+		from fx_chsjyb
+		where zt>1 and date_format(sfrq,'%Y%m')  BETWEEN (#{preyear}) AND (#{preYearMonth})
+	GROUP BY yf,zdmc
+	)tt
+	GROUP BY tt.yf)ttt
+	GROUP BY ttt.sszd
+  </select>
+  <!-- 01年度 -->
+   <select id="getBbfxsmndData" parameterType="map" resultType="com.power.report.entity.BbfxsmDataVO">
+   SELECT ttt.sszd,ttt.zdmc as fullName,GROUP_CONCAT(yf,':',ttt.chhj) as hj FROM(
+	SELECT tt.yf,tt.sszd,tt.zdmc,SUM(chhj)AS chhj FROM
+	(
+	SELECT 'bn' as yf,zdmc,sszd, SUM(chhj)AS chhj 
+		from fx_chsjyb
+		where zt>1 and YEAR(sfrq) = (#{year}) 
+	GROUP BY yf,zdmc
+	  UNION
+   SELECT 'qn' as yf,zdmc,sszd, SUM(chhj)AS chhj 
+		from fx_chsjyb
+		where zt>1 and  YEAR(sfrq) =(#{preyear})
+	GROUP BY yf,zdmc
+	)tt
+	GROUP BY tt.yf)ttt
+	GROUP BY ttt.sszd
+   </select>
+   
+   <!-- 02通行费拆后收入汇总 -->
+    <select id="getTxfchsrhzData" parameterType="map" resultType="com.power.report.entity.txfchsrhzbVO">
+SELECT ttt.nd,ttt.yf,
+	GROUP_CONCAT(ttt.ldmc,":",ttt.zcsr,"-",ttt.jzsr,"-",ttt.ck,"-",ttt.jsk,"-",ttt.etccq) AS jehj
+	 FROM (
+SELECT tt.nd,tt.yf,tt.ldmc,
+	SUM(zcsr)AS zcsr,SUM(jzsr) AS jzsr,SUM(ck) AS ck, SUM(jsk) AS jsk, SUM(etccq) AS etccq	 FROM
+	(
+	SELECT  'lsd' AS ldmc,zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,
+	SUM(chzcsrje) AS zcsr	,SUM(chjzjsje) AS jzsr,SUM(chckje) AS ck, SUM(chjskje) AS jsk, SUM(chetcje) AS etccq
+  		FROM fx_chsjyb 
+	WHERE ldmc IN ('洛嵩段')
+	AND zt>1
+	GROUP BY ldmc,nd,yf
+	UNION 
+	SELECT  'sld' AS ldmc,zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,
+	SUM(chzcsrje) AS zcsr	,SUM(chjzjsje) AS jzsr	,SUM(chckje) AS ck, SUM(chjskje) AS jsk, SUM(chetcje) AS etccq
+  		FROM fx_chsjyb  
+	WHERE ldmc IN ('嵩栾段')
+	AND zt>1
+	GROUP BY ldmc,nd,yf
+	UNION 
+	SELECT  'lnd' AS ldmc,zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,
+	SUM(chzcsrje) AS zcsr	,SUM(chjzjsje) AS jzsr	,SUM(chckje) AS ck, SUM(chjskje) AS jsk, SUM(chetcje) AS etccq	
+  		FROM fx_chsjyb  
+	WHERE ldmc IN ('洛宁段')
+	AND zt>1
+	GROUP BY ldmc,nd,yf
+	UNION 
+	SELECT  'nld' AS ldmc,zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,
+	SUM(chzcsrje) AS zcsr	,SUM(chjzjsje) AS jzsr	,SUM(chckje) AS ck, SUM(chjskje) AS jsk, SUM(chetcje) AS etccq	
+  		FROM fx_chsjyb  
+	WHERE ldmc IN ('宁卢段')
+	AND zt>1
+	GROUP BY ldmc,nd,yf
+	UNION 
+	SELECT  'glc' AS ldmc,zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,
+	SUM(chzcsrje) AS zcsr	,SUM(chjzjsje) AS jzsr	,SUM(chckje) AS ck, SUM(chjskje) AS jsk, SUM(chetcje) AS etccq	
+   		FROM fx_chsjyb  
+	WHERE zt>1
+	GROUP BY ldmc,nd,yf
+	) tt
+GROUP BY tt.nd,tt.yf,tt.ldmc
+ORDER BY tt.nd,tt.yf
+)ttt
+	GROUP BY ttt.nd,ttt.yf
+	ORDER BY ttt.nd,ttt.yf
+    </select>
+       <!-- 02通行费拆后收入自开通累计-->
+    <select id="getTxfchsrzktData" parameterType="map" resultType="com.power.report.entity.txfchsrhzbVO">
+    SELECT 
+	GROUP_CONCAT(ttt.ldmc,":",ttt.zcsr,"-",ttt.jzsr,"-",ttt.ck,"-",ttt.jsk,"-",ttt.etccq) AS jehj
+	 FROM (
+SELECT tt.ldmc,
+	SUM(zcsr)AS zcsr,SUM(jzsr) AS jzsr,SUM(ck) AS ck, SUM(jsk) AS jsk, SUM(etccq) AS etccq	 FROM
+	(
+	SELECT  'lsd' AS ldmc,zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,
+	SUM(chzcsrje) AS zcsr	,SUM(chjzjsje) AS jzsr,SUM(chckje) AS ck, SUM(chjskje) AS jsk, SUM(chetcje) AS etccq
+  		FROM fx_chsjyb 
+	WHERE ldmc IN ('洛嵩段')
+	AND zt>1
+	GROUP BY ldmc,nd,yf
+	UNION 
+	SELECT  'sld' AS ldmc,zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,
+	SUM(chzcsrje) AS zcsr	,SUM(chjzjsje) AS jzsr	,SUM(chckje) AS ck, SUM(chjskje) AS jsk, SUM(chetcje) AS etccq
+  		FROM fx_chsjyb  
+	WHERE ldmc IN ('嵩栾段')
+	AND zt>1
+	GROUP BY ldmc,nd,yf
+	UNION 
+	SELECT  'lnd' AS ldmc,zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,
+	SUM(chzcsrje) AS zcsr	,SUM(chjzjsje) AS jzsr	,SUM(chckje) AS ck, SUM(chjskje) AS jsk, SUM(chetcje) AS etccq	
+  		FROM fx_chsjyb  
+	WHERE ldmc IN ('洛宁段')
+	AND zt>1
+	GROUP BY ldmc,nd,yf
+	UNION 
+	SELECT  'nld' AS ldmc,zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,
+	SUM(chzcsrje) AS zcsr	,SUM(chjzjsje) AS jzsr	,SUM(chckje) AS ck, SUM(chjskje) AS jsk, SUM(chetcje) AS etccq	
+  		FROM fx_chsjyb  
+	WHERE ldmc IN ('宁卢段')
+	AND zt>1
+	GROUP BY ldmc,nd,yf
+	UNION 
+	SELECT  'glc' AS ldmc,zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,
+	SUM(chzcsrje) AS zcsr	,SUM(chjzjsje) AS jzsr	,SUM(chckje) AS ck, SUM(chjskje) AS jsk, SUM(chetcje) AS etccq	
+   		FROM fx_chsjyb  
+	WHERE zt>1
+	GROUP BY ldmc,nd,yf
+	) tt
+GROUP BY tt.ldmc
+)ttt
+
+    
+    </select>
+   <!-- 通行费10日报 -->
+  <select id="getTxfchsrmxData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+	SELECT GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,SUM(xjhj+ydzf) as je from fx_rcsj
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m%d') BETWEEN ${StartTime} and ${EndTime}
+	GROUP BY zdmc)tt
+  </select>
+  <!-- 通行费10日报本年 -->
+   <select id="getTxfchsrmxbnData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+   SELECT GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,SUM(xjhj+ydzf) as je from fx_rcsj
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq, '%Y%m') BETWEEN (#{year}) AND (#{yearMonth})
+	GROUP BY zdmc)tt
+   </select>
+   <!-- 通行费10日报本月 -->
+    <select id="getTxfchsrmxbyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,SUM(xjhj+ydzf) as je from fx_rcsj
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m') in (#{yearMonth})
+	GROUP BY zdmc)tt
+   
+   </select>
+   <!-- 通行费10日报 自开通-->
+    <select id="getTxfchsrmxzktData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+   SELECT GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,SUM(xjhj+ydzf) as je from fx_rcsj
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	GROUP BY zdmc)tt
+   </select>
+   <!-- 流量入口10日报 -->
+  <select id="getCllmxData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+	SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(rkllzj) as ll from fx_rcclhz
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m%d') BETWEEN ${StartTime} and ${EndTime}
+	GROUP BY zdmc)tt
+  </select>
+  <!-- 流量入口10日报本年 -->
+   <select id="getCllmxbnData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(rkllzj) as ll from fx_rcclhz
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq, '%Y%m') BETWEEN (#{year}) AND (#{yearMonth})
+	GROUP BY zdmc)tt
+   </select>
+   <!-- 流量入口10日报本月 -->
+    <select id="getCllmxbyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+ SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(rkllzj) as ll from fx_rcclhz
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m') in (#{yearMonth})
+	GROUP BY zdmc)tt
+   
+   </select>
+   <!-- 流量入口 自开通-->
+    <select id="getCllmxzktData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(rkllzj) as ll from fx_rcclhz
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	GROUP BY zdmc)tt
+   </select>
+    <!-- 流量出口10日报 -->
+  <select id="getCllckmxData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+	SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(ckllzj) as ll from fx_rcclhz
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m%d') BETWEEN ${StartTime} and ${EndTime}
+	GROUP BY zdmc)tt
+  </select>
+  <!-- 流量出口10日报本年 -->
+   <select id="getCllckmxbnData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(ckllzj) as ll from fx_rcclhz
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq, '%Y%m') BETWEEN (#{year}) AND (#{yearMonth})
+	GROUP BY zdmc)tt
+   </select>
+   <!-- 流量出口10日报本月 -->
+    <select id="getCllckmxbyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+ SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(ckllzj) as ll from fx_rcclhz
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m') in (#{yearMonth})
+	GROUP BY zdmc)tt
+   
+   </select>
+   <!-- 流量出s口 自开通-->
+    <select id="getCllckmxzktData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(ckllzj) as ll from fx_rcclhz
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	GROUP BY zdmc)tt
+   </select>
+     <!-- 流量出口10日报 -->
+  <select id="getCllcrkmxData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+	SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(crkllhj) as ll from fx_rcclhz
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m%d') BETWEEN ${StartTime} and ${EndTime}
+	GROUP BY zdmc)tt
+  </select>
+  <!-- 流量出口10日报本年 -->
+   <select id="getCllcrkmxbnData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(crkllhj) as ll from fx_rcclhz
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq, '%Y%m') BETWEEN (#{year}) AND (#{yearMonth})
+	GROUP BY zdmc)tt
+   </select>
+   <!-- 流量出口10日报本月 -->
+    <select id="getCllcrkmxbyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+ SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(crkllhj) as ll from fx_rcclhz
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m') in (#{yearMonth})
+	GROUP BY zdmc)tt
+   
+   </select>
+   <!-- 流量出口 自开通-->
+    <select id="getCllcrkmxzktData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(crkllhj) as ll from fx_rcclhz
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	GROUP BY zdmc)tt
+   </select>
+   <!-- 车流量汇总 -->
+   <select id="getCllhzData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+    SELECT tt.nd, tt.yf, GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,SUM(crkllhj) as je from fx_rcclhz
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and YEAR(sfrq) = #{year}
+	GROUP BY zdmc,yf)tt
+	GROUP BY tt.yf
+	ORDER BY tt.yf
+   </select>
+    <!-- 通行费汇总 -->
+   <select id="getTxfhzData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+   SELECT tt.nd, tt.yf, GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,SUM(xjhj+ydzf) as je from fx_rcsj
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and YEAR(sfrq) = #{year}
+	GROUP BY zdmc,yf)tt
+	GROUP BY tt.yf
+	ORDER BY tt.yf
+   </select>
+   
+   
+<!-- 04车流量汇总 -->
+   <select id="getCllhzhjData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+    SELECT tt.nd, tt.yf, GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,SUM(crkllhj) as je from fx_rcclhz
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	GROUP BY zdmc,yf,nd)tt
+	GROUP BY tt.yf,tt.nd
+	ORDER BY tt.nd,tt.yf
+   </select>
+   <!-- 04车流量汇总自开通 -->
+   <select id="getCllhzhjzktData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+    SELECT GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,SUM(crkllhj) as je from fx_rcclhz
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	GROUP BY zdmc)tt
+
+   </select>
+    <!-- 04通行费汇总 -->
+   <select id="getTxfhzhjData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+   SELECT tt.nd, tt.yf, GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,SUM(xjhj+ydzf) as je from fx_rcsj
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	GROUP BY zdmc,nd,yf)tt
+	
+	GROUP BY tt.yf,tt.nd
+	ORDER BY tt.nd,tt.yf
+   </select>
+     <!-- 04通行费汇总 自开通-->
+   <select id="getTxfhzhjzktData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+   SELECT  GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,SUM(xjhj+ydzf) as je from fx_rcsj
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	GROUP BY zdmc)tt
+	
+   </select>
+   
+   <!--  Etc通行费10日报 -->
+  <select id="getEtcTxfchsrmxData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+	SELECT GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,SUM(khcsrzj) as je from fx_rcetcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m%d') BETWEEN ${StartTime} and ${EndTime}
+	GROUP BY zdmc)tt
+  </select>
+  <!-- Etc通行费10日报本年 -->
+   <select id="getEtcTxfchsrmxbnData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+   SELECT GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,SUM(khcsrzj) as je from fx_rcetcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq, '%Y%m') BETWEEN (#{year}) AND (#{yearMonth})
+	GROUP BY zdmc)tt
+   </select>
+   <!-- Etc通行费10日报本月 -->
+    <select id="getEtcTxfchsrmxbyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,SUM(khcsrzj) as je from fx_rcetcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m') in (#{yearMonth})
+	GROUP BY zdmc)tt
+   
+   </select>
+   <!-- Etc通行费10日报 自开通-->
+    <select id="getEtcTxfchsrmxzktData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+   SELECT GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,SUM(khcsrzj) as je from fx_rcetcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	GROUP BY zdmc)tt
+   </select>
+   <!-- Etc流量入口10日报 -->
+  <select id="getEtcCllmxData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+	SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(rkllzj) as ll from fx_rcetcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m%d') BETWEEN ${StartTime} and ${EndTime}
+	GROUP BY zdmc)tt
+  </select>
+  <!-- Etc流量入口10日报本年 -->
+   <select id="getEtcCllmxbnData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(rkllzj) as ll from fx_rcetcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq, '%Y%m') BETWEEN (#{year}) AND (#{yearMonth})
+	GROUP BY zdmc)tt
+   </select>
+   <!-- Etc流量入口10日报本月 -->
+    <select id="getEtcCllmxbyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+ SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(rkllzj) as ll from fx_rcetcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m') in (#{yearMonth})
+	GROUP BY zdmc)tt
+   
+   </select>
+   <!-- Etc流量入口 自开通-->
+    <select id="getEtcCllmxzktData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(rkllzj) as ll from fx_rcetcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	GROUP BY zdmc)tt
+   </select>
+    <!-- Etc流量出口10日报 -->
+  <select id="getEtcCllckmxData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+	SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(ckllzj) as ll from fx_rcetcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m%d') BETWEEN ${StartTime} and ${EndTime}
+	GROUP BY zdmc)tt
+  </select>
+  <!-- Etc流量出口10日报本年 -->
+   <select id="getEtcCllckmxbnData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(ckllzj) as ll from fx_rcetcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq, '%Y%m') BETWEEN (#{year}) AND (#{yearMonth})
+	GROUP BY zdmc)tt
+   </select>
+   <!-- Etc流量出口10日报本月 -->
+    <select id="getEtcCllckmxbyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+ SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(ckllzj) as ll from fx_rcetcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m') in (#{yearMonth})
+	GROUP BY zdmc)tt
+   
+   </select>
+   <!-- Etc流量出s口 自开通-->
+    <select id="getEtcCllckmxzktData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(ckllzj) as ll from fx_rcetcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	GROUP BY zdmc)tt
+   </select>
+     <!-- Etc流量出口10日报 -->
+  <select id="getEtcCllcrkmxData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+	SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(crkllhj) as ll from fx_rcetcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m%d') BETWEEN ${StartTime} and ${EndTime}
+	GROUP BY zdmc)tt
+  </select>
+  <!-- Etc流量出口10日报本年 -->
+   <select id="getEtcCllcrkmxbnData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(crkllhj) as ll from fx_rcetcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq, '%Y%m') BETWEEN (#{year}) AND (#{yearMonth})
+	GROUP BY zdmc)tt
+   </select>
+   <!-- Etc流量出口10日报本月 -->
+    <select id="getEtcCllcrkmxbyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+ SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(crkllhj) as ll from fx_rcetcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m') in (#{yearMonth})
+	GROUP BY zdmc)tt
+   
+   </select>
+   <!-- Etc流量出口 自开通-->
+    <select id="getEtcCllcrkmxzktData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(crkllhj) as ll from fx_rcetcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	GROUP BY zdmc)tt
+   </select>
+   <!-- Etc车流量汇总 -->
+   <select id="getEtcCllhzData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+    SELECT tt.nd, tt.yf, GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,SUM(crkllhj) as je from fx_rcetcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and YEAR(sfrq) = #{year}
+	GROUP BY zdmc,yf)tt
+	GROUP BY tt.yf
+	ORDER BY tt.yf
+   </select>
+    <!-- Etc通行费汇总 -->
+   <select id="getEtcTxfhzData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+   SELECT tt.nd, tt.yf, GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,SUM(khcsrzj) as je from fx_rcetcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and YEAR(sfrq) = #{year}
+	GROUP BY zdmc,yf)tt
+	GROUP BY tt.yf
+	ORDER BY tt.yf
+   </select>
+   
+   
+   
+    <!--  Mtc通行费10日报 -->
+  <select id="getMtcTxfchsrmxData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+	SELECT GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,SUM(khcsrzj) as je from fx_rcmtcmx
+	WHERE zt>1
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	 and date_format(sfrq,'%Y%m%d') BETWEEN ${StartTime} and ${EndTime}
+	GROUP BY zdmc)tt
+  </select>
+  <!-- Mtc通行费10日报本年 -->
+   <select id="getMtcTxfchsrmxbnData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+   SELECT GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,SUM(khcsrzj) as je from fx_rcmtcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq, '%Y%m') BETWEEN (#{year}) AND (#{yearMonth})
+	GROUP BY zdmc)tt
+   </select>
+   <!-- Mtc通行费10日报本月 -->
+    <select id="getMtcTxfchsrmxbyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,SUM(khcsrzj) as je from fx_rcmtcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m') in (#{yearMonth})
+	GROUP BY zdmc)tt
+   
+   </select>
+   <!-- Mtc通行费10日报 自开通-->
+    <select id="getMtcTxfchsrmxzktData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+   SELECT GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,SUM(khcsrzj) as je from fx_rcmtcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	GROUP BY zdmc)tt
+   </select>
+   <!-- Mtc流量入口10日报 -->
+  <select id="getMtcCllmxData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+	SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(rkllzj) as ll from fx_rcmtcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m%d') BETWEEN ${StartTime} and ${EndTime}
+	GROUP BY zdmc)tt
+  </select>
+  <!-- Mtc流量入口10日报本年 -->
+   <select id="getMtcCllmxbnData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(rkllzj) as ll from fx_rcmtcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq, '%Y%m') BETWEEN (#{year}) AND (#{yearMonth})
+	GROUP BY zdmc)tt
+   </select>
+   <!-- Mtc流量入口10日报本月 -->
+    <select id="getMtcCllmxbyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+ SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(rkllzj) as ll from fx_rcmtcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m') in (#{yearMonth})
+	GROUP BY zdmc)tt
+   
+   </select>
+   <!-- Mtc流量入口 自开通-->
+    <select id="getMtcCllmxzktData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(rkllzj) as ll from fx_rcmtcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	GROUP BY zdmc)tt
+   </select>
+    <!-- Mtc流量出口10日报 -->
+  <select id="getMtcCllckmxData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+	SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(ckllzj) as ll from fx_rcmtcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m%d') BETWEEN ${StartTime} and ${EndTime}
+	GROUP BY zdmc)tt
+  </select>
+  <!-- Mtc流量出口10日报本年 -->
+   <select id="getMtcCllckmxbnData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(ckllzj) as ll from fx_rcmtcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq, '%Y%m') BETWEEN (#{year}) AND (#{yearMonth})
+	GROUP BY zdmc)tt
+   </select>
+   <!-- Mtc流量出口10日报本月 -->
+    <select id="getMtcCllckmxbyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+ SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(ckllzj) as ll from fx_rcmtcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m') in (#{yearMonth})
+	GROUP BY zdmc)tt
+   
+   </select>
+   <!-- Mtc流量出s口 自开通-->
+    <select id="getMtcCllckmxzktData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(ckllzj) as ll from fx_rcmtcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	GROUP BY zdmc)tt
+   </select>
+     <!-- Mtc流量出口10日报 -->
+  <select id="getMtcCllcrkmxData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+	SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(crkllhj) as ll from fx_rcmtcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m%d') BETWEEN ${StartTime} and ${EndTime}
+	GROUP BY zdmc)tt
+  </select>
+  <!-- Mtc流量出口10日报本年 -->
+   <select id="getMtcCllcrkmxbnData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(crkllhj) as ll from fx_rcmtcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq, '%Y%m') BETWEEN (#{year}) AND (#{yearMonth})
+	GROUP BY zdmc)tt
+   </select>
+   <!-- Mtc流量出口10日报本月 -->
+    <select id="getMtcCllcrkmxbyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+ SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(crkllhj) as ll from fx_rcmtcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and date_format(sfrq,'%Y%m') in (#{yearMonth})
+	GROUP BY zdmc)tt
+   
+   </select>
+   <!-- Mtc流量出口 自开通-->
+    <select id="getMtcCllcrkmxzktData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(crkllhj) as ll from fx_rcmtcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	GROUP BY zdmc)tt
+   </select>
+   <!-- Mtc车流量汇总 -->
+   <select id="getMtcCllhzData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+    SELECT tt.nd, tt.yf, GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,SUM(crkllhj) as je from fx_rcmtcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and YEAR(sfrq) = #{year}
+	GROUP BY zdmc,yf)tt
+	GROUP BY tt.yf
+	ORDER BY tt.yf
+   </select>
+    <!-- Mtc通行费汇总 -->
+   <select id="getMtcTxfhzData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+   SELECT tt.nd, tt.yf, GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,SUM(khcsrzj) as je from fx_rcmtcmx
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and YEAR(sfrq) = #{year}
+	GROUP BY zdmc,yf)tt
+	GROUP BY tt.yf
+	ORDER BY tt.yf
+   </select>
+   
+     <!-- 10分车型流量表数据 -->
+   <select id="getFcxllData" parameterType="map" resultType="com.power.report.entity.FcxllDataVO">
+   SELECT  zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,
+	SUM(kcll1) AS kc1	,SUM(kcll2) AS kc2,SUM(kcll3) AS kc3, SUM(kcll4) AS kc4,
+	SUM(hcll1) AS hc1	,SUM(hcll2) AS hc2,SUM(hcll3) AS hc3, SUM(hcll4) AS hc4,
+	SUM(hcll5) AS hc5	,SUM(hcll6) AS hc6
+  		FROM fx_czfc  
+	WHERE YEAR(sfrq) = #{year}
+	AND zt>1
+	<if test="deptId!=null">and ldmc = #{deptId}</if>
+	GROUP BY nd,yf
+	ORDER BY nd,yf
+   </select>
+    <!-- 10分车型流量表数据 -->
+   <select id="getFcxjeData" parameterType="map" resultType="com.power.report.entity.FcxllDataVO">
+   SELECT  zdmc,YEAR(sfrq) AS nd,MONTH(sfrq) AS yf,
+	SUM(kcje1) AS kc1	,SUM(kcje2) AS kc2,SUM(kcje3) AS kc3, SUM(kcje4) AS kc4,
+	SUM(hcje1) AS hc1	,SUM(hcje2) AS hc2,SUM(hcje3) AS hc3, SUM(hcje4) AS hc4,
+	SUM(hcje5) AS hc5	,SUM(hcje6) AS hc6
+  		FROM fx_czfc  
+	WHERE YEAR(sfrq) = #{year}
+	AND zt>1
+	<if test="deptId!=null">and ldmc = #{deptId}</if>
+	GROUP BY nd,yf
+	ORDER BY nd,yf
+   </select>
+   
+   <!-- 通行费月报上月 -->
+    <select id="getTxfchsrmxsyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,SUM(xjhj+ydzf) as je from fx_rcsj
+	WHERE zt>1 and date_format(sfrq,'%Y%m') in (#{preMonth})
+	GROUP BY zdmc)tt
+   </select>
+   <!-- 通行费月报上年同期 -->
+    <select id="getTxfchsrmxsntqData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,SUM(xjhj+ydzf) as je from fx_rcsj
+	WHERE zt>1 and date_format(sfrq,'%Y%m') in (#{preYearMonth})
+	GROUP BY zdmc)tt
+   </select>
+   <!-- 通行费月报上年-->
+    <select id="getTxfchsrmxsnData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT zdmc,SUM(xjhj+ydzf) as je from fx_rcsj
+	WHERE zt>1 and date_format(sfrq,'%Y%m') BETWEEN (#{preyear}) AND (#{preYearMonth})
+	GROUP BY zdmc)tt
+   </select>
+   
+   <!-- 拆后金额本月 -->
+   <select id="getTxfchjebyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.ldmc,':',tt.je) as hj
+	FROM
+	(SELECT ldmc,SUM(chhj) as je from fx_chsjyb
+	WHERE zt>1 and date_format(sfrq,'%Y%m') in (#{yearMonth})
+	GROUP BY ldmc)tt
+   </select>
+   <!-- 拆后金额本年 -->
+   <select id="getTxfchjebnData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.ldmc,':',tt.je) as hj
+	FROM
+	(SELECT ldmc,SUM(chhj) as je from fx_chsjyb
+	WHERE zt>1 and date_format(sfrq,'%Y%m') BETWEEN (#{year}) AND (#{yearMonth})
+	GROUP BY ldmc)tt
+   </select>
+   <!-- 拆后金额自开通 -->
+   <select id="getTxfchjezktData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.ldmc,':',tt.je) as hj
+	FROM
+	(SELECT ldmc,SUM(chhj) as je from fx_chsjyb
+	WHERE zt>1
+	GROUP BY ldmc)tt
+   </select>
+
+   <!-- 拆后金额上月 -->
+   <select id="getTxfchjesyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.ldmc,':',tt.je) as hj
+	FROM
+	(SELECT ldmc,SUM(chhj) as je from fx_chsjyb
+	WHERE zt>1 and date_format(sfrq,'%Y%m') in (#{preMonth})
+	GROUP BY ldmc)tt
+   </select>
+   
+      <!-- 拆后金额上年同期 -->
+   <select id="getTxfchjesntqData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.ldmc,':',tt.je) as hj
+	FROM
+	(SELECT ldmc,SUM(chhj) as je from fx_chsjyb
+	WHERE zt>1 and date_format(sfrq,'%Y%m') in (#{preYearMonth})
+	GROUP BY ldmc)tt
+   </select>
+   
+      <!-- 拆后金额上年 -->
+   <select id="getTxfchjesnData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+  SELECT GROUP_CONCAT(tt.ldmc,':',tt.je) as hj
+	FROM
+	(SELECT ldmc,SUM(chhj) as je from fx_chsjyb
+	WHERE zt>1 and date_format(sfrq,'%Y%m') BETWEEN (#{preyear}) AND (#{preYearMonth})
+	GROUP BY ldmc)tt
+   </select>
+   
+   <!-- 绿通车辆本月 -->
+   <select id="getLtclbyData" parameterType="map" resultType="com.power.common.entity.FxLtcl">
+   SELECT SUM(ltsl) AS ltsl,SUM(ltje) AS ltje FROM fx_ltcl
+   WHERE zt>1 and date_format(sfrq,'%Y%m') in (#{yearMonth})
+   </select>
+   <!-- 绿通车辆本年 -->
+   <select id="getLtclbnData" parameterType="map" resultType="com.power.common.entity.FxLtcl">
+   SELECT SUM(ltsl) AS ltsl,SUM(ltje) AS ltje FROM fx_ltcl
+   WHERE zt>1 and date_format(sfrq,'%Y%m') BETWEEN (#{year}) AND (#{yearMonth})
+   </select>
+   <!-- 绿通车辆自开通 -->
+   <select id="getLtclzktData" parameterType="map" resultType="com.power.common.entity.FxLtcl">
+   SELECT SUM(ltsl) AS ltsl,SUM(ltje) AS ltje FROM fx_ltcl
+   WHERE zt>1
+   </select>
+    <!-- ic卡使用情况统计表 -->
+   <select id="getIcksyqktjbData" parameterType="map" resultType="com.power.report.entity.IcksyqktjbDataVO">
+(SELECT zdmc,jy,fk,hs,bz FROM fx_ick WHERE zdmc = '洛龙站' and date_format(sfrq, '%Y%m') = (#{st}) and zt>1)
+UNION
+(SELECT zdmc,jy,fk,hs,bz FROM fx_ick WHERE zdmc = '伊川西站' and date_format(sfrq, '%Y%m') = (#{st}) and zt>1)
+UNION
+(SELECT zdmc,jy,fk,hs,bz FROM fx_ick WHERE zdmc = '嵩县产业集聚区站' and date_format(sfrq, '%Y%m') = (#{st}) and zt>1)
+UNION
+(SELECT zdmc,jy,fk,hs,bz FROM fx_ick WHERE zdmc = '嵩县站' and date_format(sfrq, '%Y%m') = (#{st}) and zt>1)
+UNION
+(SELECT zdmc,jy,fk,hs,bz FROM fx_ick WHERE zdmc = '旧县站' and date_format(sfrq, '%Y%m') = (#{st}) and zt>1)
+UNION
+(SELECT zdmc,jy,fk,hs,bz FROM fx_ick WHERE zdmc = '九龙山站' and date_format(sfrq, '%Y%m') = (#{st}) and zt>1)
+UNION
+(SELECT zdmc,jy,fk,hs,bz FROM fx_ick WHERE zdmc = '重渡沟站' and date_format(sfrq, '%Y%m') = (#{st}) and zt>1)
+UNION
+(SELECT zdmc,jy,fk,hs,bz FROM fx_ick WHERE zdmc = '栾川站' and date_format(sfrq, '%Y%m') = (#{st}) and zt>1)
+UNION
+(SELECT '洛栾段合计',sum(jy),sum(fk),sum(hs),bz FROM fx_ick WHERE zdmc IN ('洛龙站','伊川西站','嵩县产业集聚区站','嵩县站','旧县站','九龙山站','重渡沟站','栾川站') and date_format(sfrq, '%Y%m') = (#{st}) and zt>1)
+UNION
+(SELECT zdmc,jy,fk,hs,bz FROM fx_ick WHERE zdmc = '周山站' and date_format(sfrq, '%Y%m') = (#{st}) and zt>1)
+UNION
+(SELECT zdmc,jy,fk,hs,bz FROM fx_ick WHERE zdmc = '宜阳站' and date_format(sfrq, '%Y%m') = (#{st}) and zt>1)
+UNION
+(SELECT zdmc,jy,fk,hs,bz FROM fx_ick WHERE zdmc = '韩城站' and date_format(sfrq, '%Y%m') = (#{st}) and zt>1)
+UNION
+(SELECT zdmc,jy,fk,hs,bz FROM fx_ick WHERE zdmc = '洛宁站' and date_format(sfrq, '%Y%m') = (#{st}) and zt>1)
+UNION
+(SELECT zdmc,jy,fk,hs,bz FROM fx_ick WHERE zdmc = '洛宁西站' and date_format(sfrq, '%Y%m') = (#{st}) and zt>1)
+UNION
+(SELECT zdmc,jy,fk,hs,bz FROM fx_ick WHERE zdmc = '长水站' and date_format(sfrq, '%Y%m') = (#{st}) and zt>1)
+UNION
+(SELECT zdmc,jy,fk,hs,bz FROM fx_ick WHERE zdmc = '上戈站' and date_format(sfrq, '%Y%m') = (#{st}) and zt>1)
+UNION
+(SELECT '洛卢段合计',sum(jy),sum(fk),sum(hs),bz FROM fx_ick WHERE zdmc IN ('周山站','宜阳站','韩城站','洛宁站','洛宁西站','长水站','上戈站') and date_format(sfrq, '%Y%m') = (#{st}) and zt>1)
+UNION
+(SELECT '总计',sum(jy),sum(fk),sum(hs),bz FROM fx_ick WHERE zdmc IN ('洛龙站','伊川西站','嵩县产业集聚区站','嵩县站','旧县站','九龙山站','重渡沟站','栾川站','周山站','宜阳站','韩城站','洛宁站','洛宁西站','长水站','上戈站') and date_format(sfrq, '%Y%m') = (#{st}) and zt>1)
+   </select>
+   
+   <!-- 通行费排名表-->
+ <select id="getTxfpmbData" parameterType="map" resultType="com.power.report.entity.txfcllpmbDataVO">
+SELECT 
+t.fullname AS txffullname,
+	sum((IFNULL(t.xjhj,'0')+ IFNULL(t.ydzf,'0'))) AS txfsr
+FROM
+(SELECT a.*,b.* FROM 
+	(select dep.departmentid,dep.fullname  from sys_department dep where LENGTH(dep.sortcode)= 5) a left join fx_rcsj b
+ON
+	a.departmentid = b.sszd
+AND date_format(b.sfrq, '%Y%m')= (#{st}) ) t
+
+GROUP BY
+	t.fullname
+ORDER BY
+	txfsr DESC;
+   </select>
+   <!-- 车流量排名表 -->
+ <select id="getcllpmbData" parameterType="map" resultType="com.power.report.entity.txfcllpmbDataVO">
+	SELECT 
+	t.fullname AS cllfullname,
+	sum(IFNULL(t.crkllhj,0)) AS cll
+	FROM
+	(SELECT a.*,b.* FROM 
+	(select dep.departmentid,dep.fullname from sys_department dep where LENGTH(dep.sortcode)= 5) a left join fx_rcclhz b
+	ON
+	a.departmentid = b.sszd
+	AND date_format(b.sfrq, '%Y%m')= (#{st}) ) t
+
+	GROUP BY
+	t.fullname
+	ORDER BY
+	cll DESC;
+   </select>
+   <!-- 流失卡表 -->
+   <select id="getZclskyjntxftjbData" parameterType="map" resultType="com.power.common.entity.FxLsk">
+   SELECT lskrq,lskszzdmc,lskszsj,lskthkh,cxmc,lskcph,lskclzdmc,lskclqksm FROM fx_lsk
+   WHERE date_format(sfrq, '%Y%m')= (#{st}) and zt>1
+   </select>
+   <!-- 灰名单表 -->
+   <select id="gethmdclsqbData" parameterType="map" resultType="com.power.common.entity.FxHmd">
+   SELECT hmdthkh,hmdfksj,hmdkhh,hmdfkzm,hmdfkygh,cxmc,hmdffcx,hmdcp,sfmc FROM fx_hmd
+   WHERE date_format(sfrq, '%Y%m')= (#{st}) and zt>1
+   </select>
+   <!-- 闯关事故车辆表 -->
+   <select id="getcgsgclbData" parameterType="map" resultType="com.power.common.entity.FxCgcl">
+   SELECT ldmc,cgsfzmc,cgcksjcl,cgcksj,cgckqksm,cgsgcp,cgtgsj,cgwhsk,cgsgcljg FROM fx_cgcl
+   WHERE date_format(sfrq, '%Y%m')= (#{st}) and zt>1
+   </select>
+   <!-- 强制组合表 -->
+   <select id="getqzzhqkbData" parameterType="map" resultType="com.power.common.entity.FxQzzh">
+	SELECT zhrq,zhzdmc,zhthkh,zhtxkzs,zhcx,cxmc,zhcph,zhbz,(SELECT fullname from sys_department WHERE departmentid =  dept.parentid)  AS ldmc FROM fx_qzzh t
+	LEFT JOIN sys_department dept ON t.sszd = dept.departmentid
+	WHERE date_format(sfrq, '%Y%m')= (#{st})
+	ORDER BY zhrq
+   </select>
+    <select id="getCllcrkmxsyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+ SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(crkllhj) as ll from fx_rcclhz
+	WHERE zt>1 and date_format(sfrq,'%Y%m') in (#{preMonth})
+	GROUP BY zdmc)tt
+	</select>
+	
+   <!-- 车流量上年同期 -->
+   <select id="getCllcrkmxsntqData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+ SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(crkllhj) as ll from fx_rcclhz
+	WHERE zt>1 and date_format(sfrq,'%Y%m') in (#{preYearMonth})
+	GROUP BY zdmc)tt
+   
+   </select>
+   <!-- 车流量上年同期 -->
+   <select id="getCllcrkmxsnData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+ SELECT GROUP_CONCAT(tt.zdmc,':',tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(crkllhj) as ll from fx_rcclhz
+	WHERE zt>1 and date_format(sfrq,'%Y%m') BETWEEN (#{preyear}) AND (#{preYearMonth})
+	GROUP BY zdmc)tt
+   
+   </select>
+   
+    <!-- 车流量上年同期 -->
+   <select id="getLtzlData" parameterType="map" resultType="com.power.common.entity.FxLtsj">
+    SELECT zdmc, SUM(xxsc) xxsc,SUM(xxsg) xxsg,SUM(xhscp) xhscp,SUM(hdxq) hdxq,SUM(xxdrdn) xxdrdn,SUM(syhls) syhls,SUM(zlhj) zlhj
+   	FROM fx_ltsj
+    WHERE date_format(sfrq, '%Y%m')= (#{st}) and zt>1
+	GROUP BY zdmc
+   </select>
+</mapper>

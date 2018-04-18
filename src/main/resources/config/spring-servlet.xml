@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd	
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd"
+	default-lazy-init="true">
+	
+	<!-- 只搜索@Controller 标注的类 不搜索其他标注的类 -->
+	<context:component-scan base-package="com.power.**.web" use-default-filters="false">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	
+	<!--通知spring使用cglib而不是jdk的来生成代理方法 AOP可以拦截到Controller-->  
+	<aop:aspectj-autoproxy proxy-target-class="true"/> 
+	
+	<!-- 对某些静态资源，如css,图片等进行过滤 ,有引用 "/resources/**" 的路径引用转到工程的/resources/目录取资源 -->
+	<mvc:resources mapping="/res/**" location="/res/" />
+
+	<!-- 文件上传 --> 
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="maxUploadSize" value="62914560" />
+		<property name="maxInMemorySize" value="204800" />
+		<property name="resolveLazily" value="true" />
+	</bean>
+	
+	<!-- 针对类、方法级别的权限拦截器 -->
+	<!-- 
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/"/>
+			<mvc:exclude-mapping path="/res/**"/>
+			<mvc:exclude-mapping path="/logout"/>
+			<mvc:exclude-mapping path="/loginS"/>
+			<bean class="com.power.base.auth.web.ContextInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors> 
+	 -->
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+    	<property name="useSuffixPatternMatch" value="false" />
+    </bean>
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">  
+	    <property name="messageConverters">  
+	        <list>
+	        	<bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter"></bean>
+	            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
+				    <property name="supportedMediaTypes" value="application/json" /> 
+				</bean>
+	        </list>  
+	    </property>  
+	</bean>
+	
+	<!--freemarker 自定义 标签 -->
+	<bean id="html_cut" class="com.power.common.freemarker.HtmlCutDirective"/>
+	<bean id="text_cut" class="com.power.common.freemarker.TextCutDirective"/>
+	<bean id="fdate" class="com.power.common.freemarker.FormatDateDirective"/>
+	
+	<!-- 前台展现试图  -->
+	<bean id="freemarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView"/>
+		<property name="contentType" value="text/html; charset=UTF-8"/>
+		<property name="exposeRequestAttributes" value="false"/>
+		<property name="exposeSessionAttributes" value="false"/>
+		<property name="exposeSpringMacroHelpers" value="false"/>
+		<property name="requestContextAttribute" value="ctx"/>
+		<property name="prefix" value="/WEB-INF/t/"/>
+		<property name="suffix" value=".html"/>
+		<property name="cache" value="true"/>
+		<property name="order" value="0"/>
+	</bean>
+	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+		<property name="templateLoaderPath" value=""/>
+		<property name="freemarkerVariables">
+			<map>
+				<entry key="text_cut" value-ref="text_cut"/>
+				<entry key="html_cut" value-ref="html_cut"/>
+				<entry key="fdate" value-ref="fdate"/>
+			</map>
+		</property>
+		<property name="freemarkerSettings">
+			<props>
+				<!-- <prop key="tag_syntax">auto_detect</prop> 设置标签类型 两种：[] 和 <> 。[] 这种标记解析要快些-->
+				<prop key="template_update_delay">5</prop>
+				<prop key="defaultEncoding">UTF-8</prop>
+				<prop key="url_escaping_charset">UTF-8</prop>
+				<prop key="boolean_format">true,false</prop>
+				<prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+				<prop key="date_format">yyyy-MM-dd</prop>
+				<prop key="time_format">HH:mm:ss</prop>
+				<prop key="number_format">0.######</prop>
+				<prop key="whitespace_stripping">true</prop>
+				<!-- 可以满足一般需要。默认情况变量为null则替换为空字符串，如果需要自定义，写上${empty!"EmptyValue of fbysss"}的形式即可  -->
+				<prop key="classic_compatible">true</prop>
+			</props>
+		</property>
+	</bean>
+
+</beans>

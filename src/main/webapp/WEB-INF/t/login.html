@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>智慧交通数据分析系统-登录</title>
+    <link href="${ctx.contextPath}/res/ui/power-login.css" rel="stylesheet" />
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet" />
+</head>
+<body class="aaabody" style="background: url(${ctx.contextPath}/res/ui/img/bg2.jpg) center 0;">
+    <div class="wrap" style="margin-top:240px;">
+        <div style="text-align: center;">
+        </div>
+        <div id="loginform" class="container">
+            <fieldset class="box">
+                <legend>智慧交通数据分析系统</legend>
+                <dl class="form">
+                    <dd>
+                        <input value="power" id="username" type="text" class="px" placeholder="账户、邮箱或手机号"></dd>
+                    <dd>
+                        <input value="123" id="password" type="password" class="px" placeholder="密码"></dd>
+                    <dd style="overflow: hidden;">
+                        <div style="float: left; width: 65%">
+                            <input value="2" id="verifycode" maxlength="5" type="text" class="px" placeholder="图片验证码">
+                        </div>
+                        <div style="float: left; width: 35%">
+                            <img id="login_verifycode" class="img_verifycode" src="/validateCode" width="100" height="30" alt="点击切换验证码"
+                                title="点击切换验证码" style="cursor: pointer; padding-top: 2px; padding-left: 5px;" />
+                        </div>
+                    </dd>
+                    <dd>
+                        <span class="y"><a href="#" onclick="alert('请联系管理员')">忘记密码了？</a></span>
+                    </dd>
+                    <dd class="btn">
+                        <button id="btnlogin" type="button" class="pn"><span>登录</span></button>
+                    </dd>
+                </dl>
+            </fieldset>
+        </div>
+    </div>
+    <!--<div class="copyright">
+        POWER 
+        <br>@2016
+    </div>-->
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <script src="${ctx.contextPath}/res/jquery/jquery.md5.js"></script>
+    <script src="${ctx.contextPath}/res/jquery/jquery.cookie.js"></script>
+    <script src="${ctx.contextPath}/res/layui/lay/modules/layer.js"></script>
+    <script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+    <script src="${ctx.contextPath}/res/jquery/validator.js"></script>
+    <script src="${ctx.contextPath}/res/jquery/tipso.min.js"></script>
+    <script>
+        var isIE = !!window.ActiveXObject;
+        var isIE6 = isIE && !window.XMLHttpRequest;
+        if (isIE6) {
+            window.location.href = "/res/error/errBrowser.html";
+        }
+        if(window.self != window.top){window.top.location=window.self.location;}
+        //回车键
+        document.onkeydown = function (e) {
+            if (!e) e = window.event;
+            if ((e.keyCode || e.which) == 13) {
+                var btlogin = document.getElementById("btnlogin");
+                btnlogin.click();
+            }
+        }
+        //初始化
+        $(function () {
+            //$(".wrap").css("margin-top", ($(window).height() - $(".wrap").height()) / 2 - 35);
+            //$(window).resize(function (e) {
+            //    $(".wrap").css("margin-top", ($(window).height() - $(".wrap").height()) / 2 - 35);
+            //    e.stopPropagation();
+            //});
+            $("#username").focus();
+            //设置下次自动登录
+            //登录按钮事件
+            $("#btnlogin").click(function () {
+                var $username = $("#username");
+                var $password = $("#password");
+                var $verifycode = $("#verifycode");
+                if ($username.val() == "") {
+                    $username.focus();
+                    formMessage('请输入账户或手机号。');
+                    return false;
+                } else if ($password.val() == "") {
+                    $password.focus();
+                    formMessage('请输入密码。');
+                    return false;
+                } else if ($verifycode.val() == "") {
+                    $verifycode.focus();
+                    formMessage('请输入验证码。');
+                    return false;
+                } else {
+                    CheckLogin(0);
+                }
+            })
+            //点击切换验证码
+            $("#login_verifycode").click(function () {
+                $("#verifycode").val('');
+                $("#login_verifycode").attr("src", "/validateCode?t=" + Math.random());
+            });
+        })
+        //登录验证
+        function CheckLogin(rememberMe) {
+            $("#btnlogin").addClass('active').attr('disabled', 'disabled');
+            $("#btnlogin").find('span').hide();
+
+            var username = $.trim($("#username").val());
+            var password = $.trim($("#password").val());
+            var verifycode = $.trim($("#verifycode").val());
+            $.ajax({
+                url: "/login",
+                data: { username: $.trim(username), password: $.trim(password), validateCode: verifycode, rememberMe: rememberMe },
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    if (data.success) {
+                        window.location.href = data.msg;
+                    } else {
+                        if (data.msg.length >= 30) {
+                            dialogAlert(data.msg, 0)
+                        } else {
+                            formMessage(data.msg);
+                        }
+                        $("#btnlogin").removeClass('active').removeAttr('disabled');
+                        $("#btnlogin").find('span').show();
+                        $("#login_verifycode").trigger("click");
+                    }
+                }
+            });
+        }
+        //提示信息
+        function formMessage(msg, type) {
+            $('.login_tips').parents('dt').remove();
+            var _class = "login_tips";
+            if (type == 1) {
+                _class = "login_tips-succeed";
+            }
+            $('.form').prepend('<dt><div class="' + _class + '"><i class="fa fa-question-circle"></i>' + msg + '</div></dt>');
+        }
+    </script>
+</body>
+</html>

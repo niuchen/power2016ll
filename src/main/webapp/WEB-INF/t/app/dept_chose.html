@@ -1,0 +1,33 @@
+<a href="javascript:void(0);" onclick="sel(this,1)" class="on" ><label>全处</label></a>
+<a href="javascript:void(0);" onclick="sel(this,1)" orgId="71959b2f7a114efa995ca8b443bd9d0e"><label>少洛</label></a>
+<a href="javascript:void(0);" onclick="sel(this,1)" orgId="ab6f0c4c812d47dfba4dfbddb3c6b0a1"><label>济洛</label></a>
+<a href="javascript:void(0);" onclick="sel(this,1)" orgId="f69a931d443e4ce6af7afe5eb6044dca"><label>新济</label></a>
+<div class="site_center">
+<a onclick="sel(this)" style="display:none;" href="javascript:void(0);" deptId="00476c5349cb46cc98a71a57138e4aec" orgId="64ea2da703594effa3ffe1e764c9b924"><label>洛龙站</label></a>
+<a onclick="sel(this)" style="display:none;" href="javascript:void(0);" deptId="5b7a5ec1a4094891bd7ffa29cedd4e32" orgId="64ea2da703594effa3ffe1e764c9b924"><label>伊川西站</label></a>
+<a onclick="sel(this)" style="display:none;" href="javascript:void(0);" deptId="7ba07ce4bf27427e96843853a3f416bf" orgId="64ea2da703594effa3ffe1e764c9b924"><label>嵩县产业集聚区站</label></a>
+<a onclick="sel(this)" style="display:none;" href="javascript:void(0);" deptId="dc0737cbfe89416eb6b5003b2fbc1f1b" orgId="64ea2da703594effa3ffe1e764c9b924"><label>嵩县站</label></a>
+<a onclick="sel(this)" style="display:none;" href="javascript:void(0);" deptId="811ecebc5c564944a2b690ade569ff38" orgId="64ea2da703594effa3ffe1e764c9b924"><label>旧县站</label></a>
+<a onclick="sel(this)" style="display:none;" href="javascript:void(0);" deptId="559969d8463d42df9e77fd0923c8a18f" orgId="64ea2da703594effa3ffe1e764c9b924"><label>九龙山站</label></a>
+<a onclick="sel(this)" style="display:none;" href="javascript:void(0);" deptId="b15fcca204d441acbddf78d7db46faa1" orgId="64ea2da703594effa3ffe1e764c9b924"><label>重渡沟站</label></a>
+<a onclick="sel(this)" style="display:none;" href="javascript:void(0);" deptId="9f4c1a4d9cbf45b980f0b4b8db776eb3" orgId="64ea2da703594effa3ffe1e764c9b924"><label>栾川站</label></a>
+<a onclick="sel(this)" style="display:none;" href="javascript:void(0);" deptId="daa2a351094844fdbc4ca3ac43a03bf0" orgId="728126e40163413994ad525f3f3892a4"><label>周山站</label></a>
+<a onclick="sel(this)" style="display:none;" href="javascript:void(0);" deptId="f164f7951b1147f0b0df2bbe316d637f" orgId="728126e40163413994ad525f3f3892a4"><label>宜阳站</label></a>
+<a onclick="sel(this)" style="display:none;" href="javascript:void(0);" deptId="50955dd0c2e8417bbbd3b5dd48542132" orgId="728126e40163413994ad525f3f3892a4"><label>韩城站</label></a>
+<a onclick="sel(this)" style="display:none;" href="javascript:void(0);" deptId="bc778c873bbf42179239cfeff006ce83" orgId="728126e40163413994ad525f3f3892a4"><label>洛宁站</label></a>
+<a onclick="sel(this)" style="display:none;" href="javascript:void(0);" deptId="534431a3f9a049cfad0dd2a6d6af930c" orgId="728126e40163413994ad525f3f3892a4"><label>洛宁西站</label></a>
+<a onclick="sel(this)" style="display:none;" href="javascript:void(0);" deptId="68a704eb1a05490db060011143487407" orgId="728126e40163413994ad525f3f3892a4"><label>长水站</label></a>
+<a onclick="sel(this)" style="display:none;" href="javascript:void(0);" deptId="bfded8f651084344b8a14b119bece709" orgId="728126e40163413994ad525f3f3892a4"><label>上戈站</label></a>
+</div>
+<script type="text/javascript">
+function sel(obj,flag){
+	$(obj).siblings().removeClass("on");
+	$(obj).addClass("on");
+	if(flag){
+		$(".site_center a",$(obj).parent()).removeClass("on").hide();
+		var orgId = $(obj).attr("orgId");
+		$("a[orgId='"+orgId+"']",$(obj).parent()).show();
+		_loadData($(obj).parent().attr("id"),'org');
+	}else{_loadData($(obj).parent().parent().attr("id"),'dept');}
+}
+</script>

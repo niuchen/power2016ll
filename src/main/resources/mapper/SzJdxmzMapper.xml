@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.SzJdxmzMapper">
+  <resultMap id="BaseResultMap" type="com.power.common.entity.SzJdxmz">
+    <id column="xh" jdbcType="INTEGER" property="xh" />
+    <result column="dwbh" jdbcType="VARCHAR" property="dwbh" />
+    <result column="kssj" jdbcType="TIMESTAMP" property="kssj" />
+    <result column="jssj" jdbcType="TIMESTAMP" property="jssj" />
+    <result column="mfcllx" jdbcType="VARCHAR" property="mfcllx" />
+    <result column="zt" jdbcType="INTEGER" property="zt" />
+    <result column="sjmc" jdbcType="VARCHAR" property="sjmc" />
+    <result column="bz" jdbcType="VARCHAR" property="bz" />
+    <result column="yxsbdw" jdbcType="VARCHAR" property="yxsbdw" />
+    <result column="txr" jdbcType="VARCHAR" property="txr" />
+    <result column="txrmc" jdbcType="VARCHAR" property="txrmc" />
+    <result column="txsj" jdbcType="TIMESTAMP" property="txsj" />
+    <result column="xgr" jdbcType="VARCHAR" property="xgr" />
+    <result column="xgsj" jdbcType="TIMESTAMP" property="xgsj" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    xh, dwbh, kssj, jssj, mfcllx, zt, sjmc, bz, yxsbdw, txr, txrmc, txsj, xgr, xgsj
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sz_jdxmz
+    where xh = #{xh,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sz_jdxmz
+    where xh = #{xh,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.SzJdxmz">
+    <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sz_jdxmz (dwbh, kssj, jssj, 
+      mfcllx, zt, sjmc, bz, 
+      yxsbdw, txr, txrmc, 
+      txsj, xgr, xgsj
+      )
+    values (#{dwbh,jdbcType=VARCHAR}, #{kssj,jdbcType=TIMESTAMP}, #{jssj,jdbcType=TIMESTAMP}, 
+      #{mfcllx,jdbcType=VARCHAR}, #{zt,jdbcType=INTEGER}, #{sjmc,jdbcType=VARCHAR}, #{bz,jdbcType=VARCHAR}, 
+      #{yxsbdw,jdbcType=VARCHAR}, #{txr,jdbcType=VARCHAR}, #{txrmc,jdbcType=VARCHAR}, 
+      #{txsj,jdbcType=TIMESTAMP}, #{xgr,jdbcType=VARCHAR}, #{xgsj,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.SzJdxmz">
+    <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sz_jdxmz
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dwbh != null">
+        dwbh,
+      </if>
+      <if test="kssj != null">
+        kssj,
+      </if>
+      <if test="jssj != null">
+        jssj,
+      </if>
+      <if test="mfcllx != null">
+        mfcllx,
+      </if>
+      <if test="zt != null">
+        zt,
+      </if>
+      <if test="sjmc != null">
+        sjmc,
+      </if>
+      <if test="bz != null">
+        bz,
+      </if>
+      <if test="yxsbdw != null">
+        yxsbdw,
+      </if>
+      <if test="txr != null">
+        txr,
+      </if>
+      <if test="txrmc != null">
+        txrmc,
+      </if>
+      <if test="txsj != null">
+        txsj,
+      </if>
+      <if test="xgr != null">
+        xgr,
+      </if>
+      <if test="xgsj != null">
+        xgsj,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dwbh != null">
+        #{dwbh,jdbcType=VARCHAR},
+      </if>
+      <if test="kssj != null">
+        #{kssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jssj != null">
+        #{jssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mfcllx != null">
+        #{mfcllx,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null">
+        #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="sjmc != null">
+        #{sjmc,jdbcType=VARCHAR},
+      </if>
+      <if test="bz != null">
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="yxsbdw != null">
+        #{yxsbdw,jdbcType=VARCHAR},
+      </if>
+      <if test="txr != null">
+        #{txr,jdbcType=VARCHAR},
+      </if>
+      <if test="txrmc != null">
+        #{txrmc,jdbcType=VARCHAR},
+      </if>
+      <if test="txsj != null">
+        #{txsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="xgr != null">
+        #{xgr,jdbcType=VARCHAR},
+      </if>
+      <if test="xgsj != null">
+        #{xgsj,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.SzJdxmz">
+    update sz_jdxmz
+    <set>
+      <if test="dwbh != null">
+        dwbh = #{dwbh,jdbcType=VARCHAR},
+      </if>
+      <if test="kssj != null">
+        kssj = #{kssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jssj != null">
+        jssj = #{jssj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mfcllx != null">
+        mfcllx = #{mfcllx,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null">
+        zt = #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="sjmc != null">
+        sjmc = #{sjmc,jdbcType=VARCHAR},
+      </if>
+      <if test="bz != null">
+        bz = #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="yxsbdw != null">
+        yxsbdw = #{yxsbdw,jdbcType=VARCHAR},
+      </if>
+      <if test="txr != null">
+        txr = #{txr,jdbcType=VARCHAR},
+      </if>
+      <if test="txrmc != null">
+        txrmc = #{txrmc,jdbcType=VARCHAR},
+      </if>
+      <if test="txsj != null">
+        txsj = #{txsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="xgr != null">
+        xgr = #{xgr,jdbcType=VARCHAR},
+      </if>
+      <if test="xgsj != null">
+        xgsj = #{xgsj,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where xh = #{xh,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.SzJdxmz">
+    update sz_jdxmz
+    set dwbh = #{dwbh,jdbcType=VARCHAR},
+      kssj = #{kssj,jdbcType=TIMESTAMP},
+      jssj = #{jssj,jdbcType=TIMESTAMP},
+      mfcllx = #{mfcllx,jdbcType=VARCHAR},
+      zt = #{zt,jdbcType=INTEGER},
+      sjmc = #{sjmc,jdbcType=VARCHAR},
+      bz = #{bz,jdbcType=VARCHAR},
+      yxsbdw = #{yxsbdw,jdbcType=VARCHAR},
+      txr = #{txr,jdbcType=VARCHAR},
+      txrmc = #{txrmc,jdbcType=VARCHAR},
+      txsj = #{txsj,jdbcType=TIMESTAMP},
+      xgr = #{xgr,jdbcType=VARCHAR},
+      xgsj = #{xgsj,jdbcType=TIMESTAMP}
+    where xh = #{xh,jdbcType=INTEGER}
+  </update>
+   <!-- getJdxmzData -->
+  <select id="getJdxmzData" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sz_jdxmz 
+    <where>
+    	<if test="lock !=null">and zt = #{lock} </if>	   
+	   	<if test="txrmc!=null">and txrmc like concat('%',#{txrmc},'%')</if> 
+	 <!--    	<if test="depts != null">and dwbh in (${depts})</if>-->
+   	</where>
+	order by dwbh desc		 
+  </select>
+  <!--  getMzsjTree-->
+  <select id="getMzsjTree"  resultType="com.power.base.sys.entity.KeyValue">
+    select 
+    xh as id, sjmc name
+    from sz_jdxmz where zt>=1
+  </select>
+  
+   <!-- 免征事件不重复 -->
+  <select id="getCanDel" parameterType="map" resultType="int">
+  	SELECT count(*) FROM sz_jdxmz where zt > 0
+  	<if test="sjmc!=null">and sjmc = #{sjmc}</if>
+  	<if test="xh!=null">and xh!=#{xh}</if>
+  </select>
+</mapper>

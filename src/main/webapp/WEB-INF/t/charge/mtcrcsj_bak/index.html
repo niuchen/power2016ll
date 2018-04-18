@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <title>日常数据上报管理</title>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet">
+	<link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet">
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet">
+    <link href="${ctx.contextPath}/res/jqgrid/jqgrid.css" rel="stylesheet">
+	<link href="${ctx.contextPath}/res/wdTree/tree.css" rel="stylesheet"/>
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+	<script src="${ctx.contextPath}/res/jqgrid/jqgrid.min.js"></script>
+	<script src="${ctx.contextPath}/res/datepicker/WdatePicker.js"></script>
+	<script src="${ctx.contextPath}/res/wdTree/tree.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+	
+    <style>
+        body {
+            margin: 10px;
+            margin-bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+    
+<script>
+	var _now = "${.now?string('yyyy-MM-dd')}";
+	var _nowDate = new Date(Date.parse("${.now}".replace(/-/g, "/").replace("T", " ").split(".")[0]));
+	$(function () {
+		var st = formatDate(_nowDate.DateAdd('d',-7),'yyyy-MM-dd');
+		$("#StartTime").val(st);
+	    $("#EndTime").val(_now);
+	    $("#SelectedStartTime").html($("#StartTime").val());
+	    $("#SelectedEndTime").html($("#EndTime").val());
+	    InitialPage();
+	    GetGrid();
+      	//中心/站点
+      	$("#deptId").ComboBoxTree({
+      		url: "${ctx.contextPath}/sys/dept/deptTree",
+            description: "==请选择==",
+            height: "180px",
+            click: function (item) {
+                if (item.sort == 'org') {
+                    $("#orgId").val(item.id);
+                }else{
+                	$("#orgId").val("");
+                }
+            }
+        });
+
+	});
+    //初始化页面
+    function InitialPage() {
+        //resize重设(表格、树形)宽高
+        $(window).resize(function (e) {
+            window.setTimeout(function () {
+                $('#gridTable').setGridWidth(($('.gridPanel').width()));
+                $("#gridTable").setGridHeight($(window).height() - 136.5);
+            }, 200);
+            e.stopPropagation();
+        });
+        
+        //点击时间范围（今天、近7天、近一个月、近三个月）
+        $("#time_horizon a.btn-default").click(function () {
+            $("#time_horizon a.btn-default").removeClass("active");
+            $(this).addClass("active");
+            var st = _now;
+            switch ($(this).attr('data-value')) {
+                case "1"://今天
+                	st = formatDate(_nowDate.DateAdd('d',-1),'yyyy-MM-dd');
+                    break;
+                case "2"://近7天
+                	st = formatDate(_nowDate.DateAdd('d',-7),'yyyy-MM-dd');
+                    break;
+                case "3"://近一个月
+                	st = formatDate(_nowDate.DateAdd('d',-30),'yyyy-MM-dd');
+                    break;
+                default:break;
+            }
+            $("#StartTime").val(st);
+            $("#EndTime").val(_now);
+            $("#SelectedStartTime").html($("#StartTime").val());
+            $("#SelectedEndTime").html($("#EndTime").val());
+            SearchEvent();
+        });
+        //日志分类点击事件（登录日志、访问日志、操作日志）
+        $("#SystemLogType li").click(function () {
+            $("#SystemLogType li").removeClass("active");
+            $(this).addClass("active");
+            SearchEvent();
+        });
+        //查询点击事件
+        $("#btn_Search").click(function () {
+            SearchEvent();
+            $(".ui-filter-text").trigger("click");
+            $("#SelectedStartTime").html($("#StartTime").val());
+            $("#SelectedEndTime").html($("#EndTime").val());
+        });
+    }
+
+    //查询表格函数
+    function SearchEvent() {
+        var queryJson = $("#filter-form").GetWebControls();
+        $("#gridTable").jqGrid('setGridParam', {
+        	postData: { st: queryJson.StartTime,
+            	et: queryJson.EndTime,
+            	deptId: queryJson.deptId,
+            	orgId: queryJson.orgId,
+            	lock: queryJson.lock,
+            },
+            page: 1
+        }).trigger('reloadGrid');
+    }
+    
+    //加载表格
+    function GetGrid() {
+    	var queryJson = $("#filter-form").GetWebControls();
+        var selectedRowIndex = 0;
+        var $gridTable = $('#gridTable');
+        $gridTable.jqGrid({
+            url: "${ctx.contextPath}/charge/mtcrcsjData",
+            postData: { st: queryJson.StartTime,
+            	et: queryJson.EndTime,
+            	lrymc: queryJson.lrymc,
+            	zdzz: queryJson.zdzz,
+            	},
+            datatype: "json",
+            mtype:"POST",
+            prmNames:{rows:"pS"},
+            jsonReader : {total: "pages",records: "total"},
+            height: $(window).height() - 144.5,
+            autowidth: true,
+            multiselect: true,
+            colModel: [
+                { label: '主键', name: 'xh', hidden: true },
+                { label: '状态', name: 'zt', width: 40, align: 'center',sortable:false,
+                	formatter: function (cellvalue, options, rowObject) {
+                		var re = "";
+                		if (cellvalue == 1) {re = '<i class="fa fa-unlock fa-lg"></i>';} else if (cellvalue == 2) {re = '<i class="fa fa-lock fa-lg"></i>';}
+                		return re;
+                    }
+                },
+                { label: '收费日期', name: 'sfrq', index: 'sfrq', width: 100, align: 'center',
+                	formatter: function (cellvalue, options, rowObject) {
+                		return cellvalue==null?"":formatDate(new Date(cellvalue), 'yyyy-MM-dd');
+                    }
+                },
+                { label: '站点名称', name: 'zdmc', index: 'zdmc', width: 100, align: 'left',sortable:false  },
+                { label: '客车收入总计', name: 'kcsrzj', index: 'kcsrzj', width: 100, align: 'right',sortable:false },
+                { label: '货车收入总计', name: 'hcsrzj', index: 'hcsrzj', width: 100, align: 'right',sortable:false },
+                { label: '客车出入口总计', name: 'kccrkhj', index: 'kccrkhj', width: 100, align: 'right',sortable:false },
+                { label: '客车入口总计', name: 'kcrkzj', index: 'kcrkzj', width: 100, align: 'right',sortable:false },
+                { label: '客车出口总计', name: 'kcckzj', index: 'kcckzj', width: 100, align: 'right',sortable:false },
+                { label: '货车出入口总计', name: 'hccrkhj', index: 'hccrkhj', width: 100, align: 'right',sortable:false },
+                { label: '货车入口总计', name: 'hcrkzj', index: 'hcrkzj', width: 100, align: 'right',sortable:false },
+                { label: '货车出口总计', name: 'hcckzj', index: 'hcckzj', width: 100, align: 'right',sortable:false },
+                { label: '出入口流量总计', name: 'crkllhj', index: 'crkllhj', width: 100, align: 'right',sortable:false },
+                { label: '入口流量总计', name: 'rkllzj', index: 'rkllzj', width: 100, align: 'right',sortable:false },
+                { label: '出口流量总计', name: 'ckllzj', index: 'ckllzj', width: 100, align: 'right',sortable:false },
+                { label: 'MTC1型客车<br/>出入口合计', name: 'kccrhj1', index: 'kccrhj1', width: 110, align: 'right',sortable:false },
+                { label: 'MTC1型客车(入)', name: 'kcr1', index: 'kcr1', width: 110, align: 'right',sortable:false },
+                { label: 'MTC1型客车(出)', name: 'kcc1', index: 'kcc1', width: 110, align: 'right',sortable:false },
+                { label: 'MTC1型客车收入', name: 'kcsr1', index: 'kcsr1', width: 110, align: 'right',sortable:false },
+                { label: 'MTC2型客车<br/>出入口合计', name: 'kccrhj2', index: 'kccrhj2', width: 110, align: 'right',sortable:false },
+                { label: 'MTC2型客车(入)', name: 'kcr2', index: 'kcr2', width: 110, align: 'right',sortable:false },
+                { label: 'MTC2型客车(出)', name: 'kcc2', index: 'kcc2', width: 110, align: 'right',sortable:false },
+                { label: 'MTC2型客车收入', name: 'kcsr2', index: 'kcsr2', width: 110, align: 'right',sortable:false },
+                { label: 'MTC3型客车<br/>出入口合计', name: 'kccrhj3', index: 'kccrhj3', width: 110, align: 'right',sortable:false },
+                { label: 'MTC3型客车(入)', name: 'kcr3', index: 'kcr3', width: 110, align: 'right',sortable:false },
+                { label: 'MTC3型客车(出)', name: 'kcc3', index: 'kcc3', width: 110, align: 'right',sortable:false },
+                { label: 'MTC3型客车收入', name: 'kcsr3', index: 'kcsr3', width: 110, align: 'right',sortable:false },
+                { label: 'MTC4型客车<br/>出入口合计', name: 'kccrhj4', index: 'kccrhj4', width: 110, align: 'right',sortable:false },
+                { label: 'MTC4型客车(入)', name: 'kcr4', index: 'kcr4', width: 110, align: 'right',sortable:false },
+                { label: 'MTC4型客车(出)', name: 'kcc4', index: 'kcc4', width: 110, align: 'right',sortable:false },
+                { label: 'MTC4型客车收入', name: 'kcsr4', index: 'kcsr4', width: 110, align: 'right',sortable:false },
+                { label: 'MTCA型货车<br/>出入口合计', name: 'hccrhj1', index: 'hccrhj1', width: 110, align: 'right',sortable:false },
+                { label: 'MTCA型货车(入)', name: 'hcr1', index: 'hcr1', width: 110, align: 'right',sortable:false },
+                { label: 'MTCA型货车(出)', name: 'hcc1', index: 'hcc1', width: 110, align: 'right',sortable:false },
+                { label: 'MTCA型货车收入', name: 'hcsr1', index: 'hcsr1', width: 110, align: 'right',sortable:false },
+                { label: 'MTCB型货车<br/>出入口合计', name: 'hccrhj2', index: 'hccrhj2', width: 110, align: 'right',sortable:false },
+                { label: 'MTCB型货车(入)', name: 'hcr2', index: 'hcr2', width: 110, align: 'right',sortable:false },
+                { label: 'MTCB型货车(出)', name: 'hcc2', index: 'hcc2', width: 110, align: 'right',sortable:false },
+                { label: 'MTCB型货车收入', name: 'hcsr2', index: 'hcsr2', width: 110, align: 'right',sortable:false },
+                { label: 'MTCC型货车<br/>出入口合计', name: 'hccrhj3', index: 'hccrhj3', width: 110, align: 'right',sortable:false },
+                { label: 'MTCC型货车(入)', name: 'hcr3', index: 'hcr3', width: 110, align: 'right',sortable:false },
+                { label: 'MTCC型货车(出)', name: 'hcc3', index: 'hcc3', width: 110, align: 'right',sortable:false },
+                { label: 'MTCC型货车收入', name: 'hcsr3', index: 'hcsr3', width: 110, align: 'right',sortable:false },
+                { label: 'MTCD型货车<br/>出入口合计', name: 'hccrhj4', index: 'hccrhj4', width: 110, align: 'right',sortable:false },
+                { label: 'MTCD型货车(入)', name: 'hcr4', index: 'hcr4', width: 110, align: 'right',sortable:false },
+                { label: 'MTCD型货车(出)', name: 'hcc4', index: 'hcc4', width: 110, align: 'right',sortable:false },
+                { label: 'MTCD型货车收入', name: 'hcsr4', index: 'hcsr4', width: 110, align: 'right',sortable:false },
+                { label: 'MTCE型货车<br/>出入口合计', name: 'hccrhj5', index: 'hccrhj5', width: 110, align: 'right',sortable:false },
+                { label: 'MTCE型货车(入)', name: 'hcr5', index: 'hcr5', width: 110, align: 'right',sortable:false },
+                { label: 'MTCE型货车(出)', name: 'hcc5', index: 'hcc5', width: 110, align: 'right',sortable:false },
+                { label: 'MTCE型货车收入', name: 'hcsr5', index: 'hcsr5', width: 110, align: 'right',sortable:false },
+                { label: 'MTCF型货车<br/>出入口合计', name: 'hccrhj6', index: 'hccrhj6', width: 110, align: 'right',sortable:false },
+                { label: 'MTCF型货车(入)', name: 'hcr6', index: 'hcr6', width: 110, align: 'right',sortable:false },
+                { label: 'MTCF型货车(出)', name: 'hcc6', index: 'hcc6', width: 110, align: 'right',sortable:false },
+                { label: 'MTCF型货车收入', name: 'hcsr6', index: 'hcsr6', width: 110, align: 'right',sortable:false },
+                { label: 'MTC客车收入', name: 'kcsrzj', index: 'kcsrzj', width: 110, align: 'right',sortable:false },
+                { label: 'MTC货车收入', name: 'hcsrzj', index: 'hcsrzj', width: 110, align: 'right',sortable:false },
+                { label: '录入人员', name: 'lrymc', index: 'lrymc', width: 100, align: 'center',sortable:false },
+                { label: '操作时间', name: 'lrsj', index: 'lrsj', width: 150, align: 'center',sortable:false,
+                	formatter: function (cellvalue, options, rowObject) {
+                    return cellvalue==null?"":formatDate(new Date(cellvalue), 'yyyy-MM-dd hh:mm:ss');
+                }},
+                { label: '值班站长', name: 'zdzz', index: 'zdzz', width: 100, align: 'center',sortable:false,
+                	formatter: function (cellvalue, options, rowObject) {
+                    	return top.clientuserData[cellvalue] == null ? "" : top.clientuserData[cellvalue].realname;
+                	}	
+                },
+                { label: "备注信息", name: "bz", index: "bz", width: 200, align: "left",sortable:false }
+            ],
+            viewrecords: true,
+            rowNum: 20,
+            rowList: [20, 50, 100,1000,10000],
+            pager: "#gridPager",
+           // rownumbers: true,
+            shrinkToFit: false,
+            gridview: true,
+            onSelectRow: function () {
+                selectedRowIndex = $("#" + this.id).getGridParam('selrow');
+            },
+            loadComplete: function() {
+                $("tr.jqgrow:odd").addClass('rowOdd');
+            },
+            gridComplete: function () {
+            	_gridHj();
+            },ondblClickRow:function(rowid,iRow,iCol,e){
+            	if(!rowid || rowid==0)return;
+            	btn_detail($gridTable.getRowData(rowid).xh);
+            }
+        });
+        //$gridTable.authorizeColModel()
+        $("#btn_Reset").click(function () {
+       	  $("#deptId").ComboBoxTreeSetValue("");
+    	  $("#lock").val("");
+        });
+        //查询回车
+        $('#txt_Keyword').bind('keypress', function (event) {
+            if (event.keyCode == "13") {
+                $('#btn_Search').trigger("click");
+            }
+        });
+    }
+    
+    _gridHj=function(){
+    	var $gridTable = $('#gridTable');
+    	//判断是否空行
+    	if($gridTable.getGridParam("reccount")<1){return;}
+    	
+    	 var sfhj = $gridTable.getCol("sfhj", false, "sum");
+    	 var xjhj = $gridTable.getCol("xjhj", false, "sum");
+    	 var zcsr = $gridTable.getCol("zcsr", false, "sum");
+    	 var jzsr = $gridTable.getCol("jzsr", false, "sum");
+    	 var jsk = $gridTable.getCol("jsk", false, "sum");
+    	 var ck = $gridTable.getCol("ck", false, "sum");
+    	 var etccq = $gridTable.getCol("etccq", false, "sum");
+    	 var kcsrzj = $gridTable.getCol("kcsrzj", false, "sum");
+    	 var hcsrzj = $gridTable.getCol("hcsrzj", false, "sum");
+    	 var kccrkhj = $gridTable.getCol("kccrkhj", false, "sum");
+    	 var kcrkzj = $gridTable.getCol("kcrkzj", false, "sum");
+    	 var kcckzj = $gridTable.getCol("kcckzj", false, "sum");
+    	 var hccrkhj = $gridTable.getCol("hccrkhj", false, "sum");
+    	 var hcrkzj = $gridTable.getCol("hcrkzj", false, "sum");
+    	 var hcckzj = $gridTable.getCol("hcckzj", false, "sum");
+    	 var mzcrkhj = $gridTable.getCol("mzcrkhj", false, "sum");
+    	 var mzrkzj = $gridTable.getCol("mzrkzj", false, "sum");
+    	 var mzckzj = $gridTable.getCol("mzckzj", false, "sum");
+    	 var crkllhj = $gridTable.getCol("crkllhj", false, "sum");
+    	 var rkllzj = $gridTable.getCol("rkllzj", false, "sum");
+    	 var ckllzj = $gridTable.getCol("ckllzj", false, "sum");
+    	 var kccrhj1 = $gridTable.getCol("kccrhj1", false, "sum");
+    	 var kcr1 = $gridTable.getCol("kcr1", false, "sum");
+    	 var kcc1 = $gridTable.getCol("kcc1", false, "sum");
+    	 var kcsr1 = $gridTable.getCol("kcsr1", false, "sum");
+    	 var kccrhj2 = $gridTable.getCol("kccrhj2", false, "sum");
+    	 var kcr2 = $gridTable.getCol("kcr2", false, "sum");
+    	 var kcc2 = $gridTable.getCol("kcc2", false, "sum");
+    	 var kcsr2 = $gridTable.getCol("kcsr2", false, "sum");
+    	 var kccrhj3 = $gridTable.getCol("kccrhj3", false, "sum");
+    	 var kcr3 = $gridTable.getCol("kcr3", false, "sum");
+    	 var kcc3 = $gridTable.getCol("kcc3", false, "sum");
+    	 var kcsr3 = $gridTable.getCol("kcsr3", false, "sum");
+    	 var kccrhj4 = $gridTable.getCol("kccrhj4", false, "sum");
+    	 var kcr4 = $gridTable.getCol("kcr4", false, "sum");
+    	 var kcc4 = $gridTable.getCol("kcc4", false, "sum");
+    	 var kcsr4 = $gridTable.getCol("kcsr4", false, "sum");
+    	 var hccrhj1 = $gridTable.getCol("hccrhj1", false, "sum");
+    	 var hcr1 = $gridTable.getCol("hcr1", false, "sum");
+    	 var hcc1 = $gridTable.getCol("hcc1", false, "sum");
+    	 var hcsr1 = $gridTable.getCol("hcsr1", false, "sum");
+    	 var hccrhj2 = $gridTable.getCol("hccrhj2", false, "sum");
+    	 var hcr2 = $gridTable.getCol("hcr2", false, "sum");
+    	 var hcc2 = $gridTable.getCol("hcc2", false, "sum");
+    	 var hcsr2 = $gridTable.getCol("hcsr2", false, "sum");
+    	 var hccrhj3 = $gridTable.getCol("hccrhj3", false, "sum");
+    	 var hcr3 = $gridTable.getCol("hcr3", false, "sum");
+    	 var hcc3 = $gridTable.getCol("hcc3", false, "sum");
+    	 var hcsr3 = $gridTable.getCol("hcsr3", false, "sum");
+    	 var hccrhj4 = $gridTable.getCol("hccrhj4", false, "sum");
+    	 var hcr4 = $gridTable.getCol("hcr4", false, "sum");
+    	 var hcc4 = $gridTable.getCol("hcc4", false, "sum");
+    	 var hcsr4 = $gridTable.getCol("hcsr4", false, "sum");
+    	 var hccrhj5 = $gridTable.getCol("hccrhj5", false, "sum");
+    	 var hcr5 = $gridTable.getCol("hcr5", false, "sum");
+    	 var hcc5 = $gridTable.getCol("hcc5", false, "sum");
+    	 var hcsr5 = $gridTable.getCol("hcsr5", false, "sum");
+    	 var hccrhj6 = $gridTable.getCol("hccrhj6", false, "sum");
+    	 var hcr6 = $gridTable.getCol("hcr6", false, "sum");
+    	 var hcc6 = $gridTable.getCol("hcc6", false, "sum");
+    	 var hcsr6 = $gridTable.getCol("hcsr6", false, "sum");
+    	 var gwcrhj = $gridTable.getCol("gwcrhj", false, "sum");
+    	 var gwr = $gridTable.getCol("gwr", false, "sum");
+    	 var gwc = $gridTable.getCol("gwc", false, "sum");
+    	 var jccrhj = $gridTable.getCol("jccrhj", false, "sum");
+    	 var jcr = $gridTable.getCol("jcr", false, "sum");
+    	 var jcc = $gridTable.getCol("jcc", false, "sum");
+    	 var jchecrhj = $gridTable.getCol("jchecrhj", false, "sum");
+    	 var jcher = $gridTable.getCol("jcher", false, "sum");
+    	 var jchec = $gridTable.getCol("jchec", false, "sum");
+    	 var mfcrhj = $gridTable.getCol("mfcrhj", false, "sum");
+    	 var mfr = $gridTable.getCol("mfr", false, "sum");
+    	 var mfc = $gridTable.getCol("mfc", false, "sum");
+    	 var cdhj = $gridTable.getCol("cdhj", false, "sum");
+    	 var cdr = $gridTable.getCol("cdr", false, "sum");
+    	 var cdc = $gridTable.getCol("cdc", false, "sum");
+    	 var cghj = $gridTable.getCol("cghj", false, "sum");
+    	 var cgr = $gridTable.getCol("cgr", false, "sum");
+    	 var cgc = $gridTable.getCol("cgc", false, "sum");
+    	 var mtccrhj = $gridTable.getCol("mtccrhj", false, "sum");
+    	 var mtcr = $gridTable.getCol("mtcr", false, "sum");
+    	 var mtcc = $gridTable.getCol("mtcc", false, "sum");
+    	 var etccrhj = $gridTable.getCol("etccrhj", false, "sum");
+    	 var etcr = $gridTable.getCol("etcr", false, "sum");
+    	 var etcc = $gridTable.getCol("etcc", false, "sum");
+    	 var json = {
+    			 "zdmc" : "合计：",
+    			 "sfhj": parseFloat(sfhj).toFixed(2),
+    			 "xjhj": parseFloat(xjhj).toFixed(2),
+    			 "zcsr": parseFloat(zcsr).toFixed(2),
+    			 "jzsr": parseFloat(jzsr).toFixed(2),
+    			 "jsk": parseFloat(jsk).toFixed(2),
+    			 "ck": parseFloat(ck).toFixed(2),
+    			 "etccq": parseFloat(etccq).toFixed(2),
+    			 "kcsrzj": parseFloat(kcsrzj).toFixed(2),
+    			 "hcsrzj": parseFloat(hcsrzj).toFixed(2),
+    			 "kccrkhj": kccrkhj,
+    			 "kcrkzj": kcrkzj,
+    			 "kcckzj": kcckzj,
+    			 "hccrkhj": hccrkhj,
+    			 "hcrkzj": hcrkzj,
+    			 "hcckzj": hcckzj,
+    			 "mzcrkhj": mzcrkhj,
+    			 "mzrkzj": mzrkzj,
+    			 "mzckzj": mzckzj,
+    			 "crkllhj": crkllhj,
+    			 "rkllzj": rkllzj,
+    			 "ckllzj": ckllzj,
+    			 "kccrhj1": kccrhj1,
+    			 "kcr1": kcr1,
+    			 "kcc1": kcc1,
+    			 "kcsr1": parseFloat(kcsr1).toFixed(2),
+    			 "kccrhj2": kccrhj2,
+    			 "kcr2": kcr2,
+    			 "kcc2": kcc2,
+    			 "kcsr2": parseFloat(kcsr2).toFixed(2),
+    			 "kccrhj3": kccrhj3,
+    			 "kcr3": kcr3,
+    			 "kcc3": kcc3,
+    			 "kcsr3": parseFloat(kcsr3).toFixed(2),
+    			 "kccrhj4": kccrhj4,
+    			 "kcr4": kcr4,
+    			 "kcc4": kcc4,
+    			 "kcsr4": parseFloat(kcsr4).toFixed(2),
+    			 "hccrhj1": hccrhj1,
+    			 "hcr1": hcr1,
+    			 "hcc1": hcc1,
+    			 "hcsr1": parseFloat(hcsr1).toFixed(2),
+    			 "hccrhj2": hccrhj2,
+    			 "hcr2": hcr2,
+    			 "hcc2": hcc2,
+    			 "hcsr2": parseFloat(hcsr2).toFixed(2),
+    			 "hccrhj3": hccrhj3,
+    			 "hcr3": hcr3,
+    			 "hcc3": hcc3,
+    			 "hcsr3": parseFloat(hcsr3).toFixed(2),
+    			 "hccrhj4": hccrhj4,
+    			 "hcr4": hcr4,
+    			 "hcc4": hcc4,
+    			 "hcsr4": parseFloat(hcsr4).toFixed(2),
+    			 "hccrhj5": hccrhj5,
+    			 "hcr5": hcr5,
+    			 "hcc5": hcc5,
+    			 "hcsr5": parseFloat(hcsr5).toFixed(2),
+    			 "hccrhj6": hccrhj6,
+    			 "hcr6": hcr6,
+    			 "hcc6": hcc6,
+    			 "hcsr6": parseFloat(hcsr6).toFixed(2),
+    			 "gwcrhj": gwcrhj,
+    			 "gwr": gwr,
+    			 "gwc": gwc,
+    			 "jccrhj": jccrhj,
+    			 "jcr": jcr,
+    			 "jcc": jcc,
+    			 "jchecrhj": jchecrhj,
+    			 "jcher": jcher,
+    			 "jchec": jchec,
+    			 "mfcrhj": mfcrhj,
+    			 "mfr": mfr,
+    			 "mfc": mfc,
+    			 "cdhj": cdhj,
+    			 "cdr": cdr,
+    			 "cdc": cdc,
+    			 "cghj": cghj,
+    			 "cgr": cgr,
+    			 "cgc": cgc,
+    			 "mtccrhj": mtccrhj,
+    			 "mtcr": mtcr,
+    			 "mtcc": mtcc,
+    			 "etccrhj": etccrhj,
+    			 "etcr": etcr,
+    			 "etcc": etcc
+    			
+    	 };
+    	 $gridTable.jqGrid("addRowData",0,json,"last","",true);
+      	var ids = $gridTable.jqGrid("getDataIDs");
+     	$("tr[id='0']",$gridTable).css({"background":"#dadada"});
+    }
+    //新增
+    function btn_add() {
+        dialogOpen({
+            id: "Form",
+            title: '日常数据上报',
+            url: "${ctx.contextPath}/charge/mtcrcsjForm",
+            width: "1100px",
+            height: "800px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].AcceptClick();
+            }
+        });
+    };
+    //编辑
+    function btn_edit() {
+        var keyValue = $("#gridTable").jqGridRowValue("xh");
+        if (checkedRow(keyValue)) {
+	        var zt = $("#gridTable").jqGridRowValue("zt");
+	        //判断是否锁定
+	        if(zt.indexOf("-lock")>0){dialogMsg('数据已锁定无法修改，请联系中心管理员！',-1);return;}
+            dialogOpen({
+                id: "Form",
+                title: '修改日常数据上报',
+                url: "${ctx.contextPath}/charge/mtcrcsjForm?keyValue="+keyValue,
+                width: "1100px",
+                height: "800px",
+                callBack: function (iframeId) {
+                    top.frames[iframeId].AcceptClick();
+                }
+            });
+        }
+    }
+    //删除
+    function btn_delete() {
+        var keyValue = $("#gridTable").jqGridRowValue("xh");
+        if (checkedRow(keyValue)) {
+            $.RemoveForm({
+                url: "${ctx.contextPath}/charge/delmtcRcsj",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#gridTable").trigger("reloadGrid");
+                }
+            })
+        } else {
+            dialogMsg('请选择需要删除的数据行！', 0);
+        }
+    }
+    
+    //详细
+    function btn_detail(keyValue) {
+        //var keyValue = $("#gridTable").jqGridRowValue("xh");
+        dialogOpen({
+            id: "Detail",
+            title: '日常数据上报--详细信息',
+            url: "${ctx.contextPath}/charge/mtcrcsjForm?detail=1&keyValue="+keyValue,
+            width: "1100px",
+            height: "800px",
+            btn: null
+        });
+    }
+
+    //数据锁定
+    function btn_lock(){
+    	var xhs = $('#gridTable').jqGridRowValue("xh");
+    	if(xhs.length<1 || xhs==','){//
+    		dialogMsg('请选择需要锁定的数据行！', 0);
+    		return;
+    	}//数据锁定
+    	$.ConfirmAjax({
+    		msg:"数据锁定后将无法修改，是否继续提交？",
+            url: "${ctx.contextPath}/charge/mtcrcsjLock",
+            param: { xhs: xhs },
+            success: function (data) {
+                $("#gridTable").trigger("reloadGrid");
+            }
+        });
+    }
+
+    
+    //导出
+    function btn_export() {
+        location.href = "../../BaseManage/User/ExportUserList";
+    }
+    //禁用
+    function btn_disabled(keyValue) {
+        if (keyValue == undefined) {
+            keyValue = $("#gridTable").jqGridRowValue("F_UserId");
+        }
+        if (checkedRow(keyValue)) {
+            $.ConfirmAjax({
+                msg: "注：您确定要【禁用】账户？",
+                url: "../../BaseManage/User/DisabledAccount",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#gridTable").trigger("reloadGrid");
+                }
+            })
+        }
+    }
+    //启用
+    function btn_enabled(keyValue) {
+        if (keyValue == undefined) {
+            keyValue = $("#gridTable").jqGridRowValue("F_UserId");
+        }
+        if (checkedRow(keyValue)) {
+            $.ConfirmAjax({
+                msg: "注：您确定要【启用】账户？",
+                url: "../../BaseManage/User/EnabledAccount",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#gridTable").trigger("reloadGrid");
+                }
+            })
+        }
+    }
+    //用户授权
+    function btn_authorize() {
+        var keyValue = $("#gridTable").jqGridRowValue("userid");
+        var RealName = $("#gridTable").jqGridRowValue("realname");
+        if (checkedRow(keyValue)) {
+            dialogOpen({
+                id: "setAuthorize",
+                title: '用户授权 - ' + RealName,
+                url: '${ctx.contextPath}/sys/auth/setAuth/6?objId=' + keyValue,
+                width: "700px",
+                height: "690px",
+                btn: null
+            });
+        }
+    }
+    //IP过滤
+    function btn_ipfilter() {
+        var keyValue = $("#gridTable").jqGridRowValue("F_UserId");
+        var FullName = $("#gridTable").jqGridRowValue("F_RealName");
+        if (checkedRow(keyValue)) {
+            dialogOpen({
+                id: "FilterIP",
+                title: 'TCP/IP 地址访问限制 - ' + FullName,
+                url: '/AuthorizeManage/FilterIP/Index?objectId=' + keyValue + '&objectType=Uesr',
+                width: "600px",
+                height: "400px",
+                btn: null
+            });
+        }
+    }
+    //时段过滤
+    function btn_timefilter() {
+        var keyValue = $("#gridTable").jqGridRowValue("F_UserId");
+        var FullName = $("#gridTable").jqGridRowValue("F_RealName");
+        if (checkedRow(keyValue)) {
+            dialogOpen({
+                id: "FilterTime",
+                title: '时段访问过滤 - ' + FullName,
+                url: '/AuthorizeManage/FilterTime/Index?objectId=' + keyValue + '&objectType=Uesr',
+                width: "640px",
+                height: "480px",
+                callBack: function (iframeId) {
+                    top.frames[iframeId].AcceptClick();
+                }
+            });
+        }
+    }
+</script>
+<div class="titlePanel">
+    <div class="title-search">
+        <table>
+            <tr>
+               <td>查询条件</td>
+               <td style="padding-left: 10px;">
+                   <div class="ui-filter" style="width: 200px;">
+                       <div class="ui-filter-text">
+                           <strong id="SelectedStartTime"></strong> 至 <strong id="SelectedEndTime"></strong>
+                       </div>
+                       <div class="ui-filter-list" style="width: 350px;">
+                           <table class="form" id="filter-form">
+                               <input id="orgId" type="hidden" class="form-control" value="">
+                               <tr>
+                                   <th class="formTitle">录入时间：</th>
+                                   <td class="formValue">
+                                       <div style="float: left; width: 45%;">
+                                           <input id="StartTime" readonly type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({maxDate:'%y-%M-%d'})">
+                                       </div>
+                                       <div style="float: left; width: 10%; text-align: center;">至</div>
+                                       <div style="float: left; width: 45%;">
+                                           <input id="EndTime" readonly type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({maxDate:'%y-%M-%d'})">
+                                       </div>
+                                   </td>
+                               </tr>
+                               <tr>
+                                   <td class="formTitle">站点：</td>
+                                   <td class="formValue">
+                                       <div id="deptId" type="selectTree" class="ui-select"></div>
+                                   </td>
+                               </tr>
+                               <tr>
+                                   <td class="formTitle">状态：</td>
+                                   <td class="formValue">
+                                       <select style="width:183px;" id="lock">
+                                       	<option value="">==全部==</option>
+                                       	<option value="1">未锁定</option>
+                                       	<option value="2">已锁定</option>
+                                       </select>
+                                   </td>
+                               </tr>
+                           </table>
+                           <div class="ui-filter-list-bottom">
+                               <a id="btn_Reset" class="btn btn-default">&nbsp;重&nbsp;&nbsp;置</a>
+                               <a id="btn_Search" class="btn btn-primary">&nbsp;查&nbsp;&nbsp;询</a>
+                           </div>
+                       </div>
+                   </div>
+               </td>
+               <td style="padding-left: 10px;">
+                   <div id="time_horizon" class="btn-group">
+                       <a class="btn btn-default" data-value="1">昨天</a>
+                       <a class="btn btn-default active" data-value="2">近7天</a>
+                       <a class="btn btn-default" data-value="3">近1个月</a>
+                   </div>
+               </td>
+           </tr>
+        </table>
+    </div>
+    <div class="toolbar">
+        <div class="btn-group">
+            <a id="b-ref" class="btn btn-default" onclick="reload();"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
+            <a id="b-add" class="btn btn-default" onclick="btn_add()"><i class="fa fa-plus"></i>&nbsp;新增</a>
+            <a id="b-edit" class="btn btn-default" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑</a>
+            <a id="b-delete" class="btn btn-default" onclick="btn_delete()"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+        </div>
+        <div class="btn-group">
+            <a id="b-lock" class="btn btn-default" onclick="btn_lock()"><i class="fa fa-lock"></i>&nbsp;数据锁定</a>
+        </div>
+        <script>$('.toolbar').authorizeButton()</script>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridTable"></table>
+    <div id="gridPager"></div>
+</div>
+
+</body>
+</html>

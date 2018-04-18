@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html><head>
+<meta name="viewport" content="width=device-width">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>高速智能分析系统</title>
+<link href="${ctx.contextPath}/res/app/css.css" rel="stylesheet" type="text/css" />
+<link href="${ctx.contextPath}/res/swiper/css/swiper.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${ctx.contextPath}/res/app/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/swiper/js/swiper.min.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/fastclick/fastclick.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/datepicker/WdatePicker.js"></script>
+</head>
+<body style="background-color:#426586;width:auto;">
+<div class="htmleaf-container">
+	<div class="htmleaf-content bgcolor-3">
+		<div id="Main-Content">
+			<div class="Container">
+				<!-- Flipster List -->
+				<div class="flipster swiper-container">
+				<ul class="swiper-wrapper">
+<!-- 1 -->
+<li id="finash_info_div" class="swiper-slide">
+<div class="mainqp">
+<div class="bt">${title}征收任务完成情况</div>
+<div id="wclDiv" style="height: 300px;"></div>
+<div style="font-size: 16px; color: #fff; margin-left: 18px;">年征收收入任务：<b style="font-size: 21px; color: #00ff00">${rw} 万元</b></div>
+<div style="font-size: 16px; color: #fff; margin-left: 18px;">本月拆后收入：<b style="font-size: 21px; color: #00ff00">${by} 万元</b></div>
+<div style="font-size: 16px; color: #fff; margin-left: 18px;">本年累计拆后收入：<b style="font-size: 21px; color: #00ff00">${bn} 万元</b></div>
+<div style="font-size: 16px; color: #fff; margin-left: 18px;">本年累计完成年征收任务百分比：<b style="font-size: 21px; color: #00ff00">${rwb}%</b></div>
+<div style="font-size: 16px; color: #fff; margin-left: 18px;">较上月增长率：<b style="font-size: 21px; color: #00ff00">${tongbi}%</b></div>
+<div style="font-size: 16px; color: #fff; margin-left: 18px;">较去年同期增长率：<b style="font-size: 21px; color: #00ff00">${huanbi}%</b></div>
+<div style="font-size: 16px; color: #fff; margin-left: 18px;">本年累计较去年累计：<b style="font-size: 21px; color: #00ff00">${qntongbi}%</b></div>
+</div>
+</li>
+<!-- 2 -->
+<li  id="info_data_div" class="swiper-slide">
+<input type="hidden" value="0" id="siteId"/>
+   	<div class="mainqp">
+		<div class="bt">${title}数据查询</div>
+		<div class="bb" style="height:60px;">
+			<div class="bbt" style="padding-top: 10px;">
+<input type="text" id="date_txt" onclick="WdatePicker({onpicked:function(){_loadData('sjcx');}});" value="${.now?string('yyyy-MM-dd')}" readonly="true" class="Wdate" style="width: 220px;height:26px;margin-left:8px;" />
+<div id="sjcx" class="widget_wrap" style="margin-top:10px;margin-bottom:10px;">
+<#include "/WEB-INF/t/app/dept_chose.html"/>
+</div><!-- 单位选择 -->
+		</div>
+	</div>
+	<div class="my1" style="margin-top:132px;height: 220px;">
+<dl id="chaxundata">
+			<dd>
+				<div class="sfmo">
+					<a href="#">
+						<div class="money" style="float: left; margin-left: 6px;font-size:13px;">
+							1班应缴:<span><i id="_yjje1">0.00</i> 万元</span> 
+							2班应缴:<span><i id="_yjje2">0.00</i> 万元</span>
+						</div>
+						<div class="money" style="float: left; margin-left: 6px;font-size:13px;">
+							1班实缴:<span><i id="_sjje1">0.00</i> 万元</span> 
+							2班实缴:<span><i id="_sjje2">0.00</i> 万元</span>
+						</div>
+					</a>
+				</div>
+				<div class="sfmo">
+					<a href="#">
+						<div class="money" style="float: left; margin-left: 6px;font-size:13px;">当天累计应缴:<span><i id=yjjehj>0.00</i> 万元</span></div>
+						<div class="money" style="float: left; margin-left: 6px;font-size:13px;">当天累计实缴:<span><i id="sjjehj">0.00</i> 万元</span></div>
+					</a>
+				</div>
+			  </dd>
+			</dl>
+	</div>
+	</div>
+</li>
+<!-- ETC -->
+<li id="info_data_etc_div" class="swiper-slide">
+	<div class="mainqp">
+		<div class="bt">${title}ETC/MTC月报</div>
+		<div class="my1" style="margin-top:100px;height: 310px;">
+	      <div class="sfmo">
+		        <a>
+			      <div class="money" style="text-align:center;float:none;font-size:16px;color:#fff;">${title}</div>
+			    </a>
+		    </div>
+			<dl style="margin-top:50px;">
+<dd>
+	<div class="sfmo">
+		<div class="money" style="font-size:12px;">
+			拆前ECT:<span style="width:75px"><i id="etcBefore">0.00</i> 万元</span> 
+			拆前MTC:<span style="width:75px"><i id="mtcBefore">0.00</i> 万元</span>
+		</div>
+		<div class="money" style="font-size:12px;">
+			拆后ECT:<span style="width:75px"><i id="etcAfter">0.00</i> 万元</span> 
+			拆后MTC:<span style="width:75px"><i id="mtcAfter">0.00</i> 万元</span>
+		</div>
+	</div>
+</dd>
+			</dl>
+		</div>
+	</div></li>
+<!-- lvtong -->
+<li id="info_data_lvtong" class="swiper-slide">
+	<div class="mainqp">
+		<div class="bt">${title}绿通车流量报表</div>
+		<div class="bb" style="height:100px;">
+			<div class="bbt">${title}月绿通车流量统计</div>
+			<div class="bbb" style="font-size:18px;">
+				<span><font style="font-size:22px;"><b id="_ltllhj">0</b>辆</font></span>
+			</div>
+		</div>
+		<div class="my1" style="margin-top:0px;height: 310px; overflow-y: scroll;overflow-x: hidden;">
+<dl id="_ltll">
+<#include "/WEB-INF/t/app/dept_list.html"/>
+</dl>
+		</div>
+	</div>
+</li>
+<!-- 5 -->
+<li class="swiper-slide">
+	<div class="mainqp">
+		<div class="bt">${title}绿通减免费用报表</div>
+		<div class="bb" style="height:100px;">
+			<div class="bbt">${title}月绿通减免费用统计</div>
+			<div class="bbb" style="font-size:18px;">
+				<span><font style="font-size:22px;"><b class="_ltfyhj">0.00</b>万元</font></span>
+			</div>
+		</div>
+		<div class="my1" style="margin-top:0px;height: 310px; overflow-y: scroll;overflow-x: hidden;">
+<dl class="_ltfy">
+<#include "/WEB-INF/t/app/dept_list.html"/>
+</dl>
+		</div>
+	</div>
+</li>
+				</ul>
+				<div class="swiper-button-next swiper-button-white"></div>
+				<div class="swiper-button-prev swiper-button-white"></div>
+				</div>
+				<!-- End Flipster List -->
+			</div>
+		</div>
+	</div>
+</div>
+    <!-- end #mainContent -->
+<!-- begin #footer -->
+<input type="hidden" id="token"/>
+<#include "/WEB-INF/t/app/footer.html"/>
+<!-- end #footer -->
+<script type="text/javascript">
+window.addEventListener('load', function() {FastClick.attach(document.body);}, false);
+var interval;
+$(document).ready(function(){//init
+	initData();//
+	var swiper = new Swiper('#Main-Content .swiper-container',{loop : true,nextButton: '.swiper-button-next',prevButton: '.swiper-button-prev',onTransitionEnd: function(swiper){}});
+	//控制单位
+	<#if orgId??>
+		$("#sjcx a").hide();
+		$("#sjcx>a[orgId='${orgId}']").show().trigger("click");
+		$("#_ltll dd[orgId!='${orgId}']").hide();
+		$("._ltfy dd[orgId!='${orgId}']").hide();
+	<#elseif deptId??>
+		$("#sjcx a").hide();
+		$("#sjcx div>a[deptId='${deptId}']").show().trigger("click");
+		$("#_ltll dd[deptId!='${deptId}']").hide();
+		$("._ltfy dd[deptId!='${deptId}']").hide();
+	</#if>
+	//
+	interval = setInterval("loadData()",1000);
+});
+_loadData=function(type,org){//机构切换回调
+	var orgId = $("#"+type+" a.on").attr("orgId");
+	var deptId = $("#"+type+" div>a.on").attr("deptId");
+	var depts=[];
+	if(deptId){depts.push("'"+deptId+"'");}else if(orgId){$("#"+type+" div>a[orgId='"+orgId+"']").each(function(){depts.push("'"+$(this).attr("deptId")+"'");});}
+	var data={rq:$("#date_txt").val(),depts:depts.join(","),token:$("#token").val()};
+	$.post("${ctx.contextPath}/app/yhData.json",data,function(re){
+		if(re.success){
+			$("#yjjehj").text(re.msg.yjjehj);
+			$("#sjjehj").text(re.msg.sjjehj);
+			$("#_yjje1").text(re.msg.yjje1);
+			$("#_yjje2").text(re.msg.yjje2);
+			$("#_sjje1").text(re.msg.sjje1);
+			$("#_sjje2").text(re.msg.sjje2);
+		}
+  });
+}
+function loadData() {
+	clearInterval(interval);
+	_loadData("sjcx");//data
+	//
+	$.get("${ctx.contextPath}/app/first.json?token=" + $("#token").val(),function(data){
+    		if(data.success){
+    			var etc = data.msg.etc;
+    			$("#etcBefore").text(etc.etcBefore);
+    			$("#mtcBefore").text(etc.mtcBefore);
+    			$("#etcAfter").text(etc.etcAfter);
+    			$("#mtcAfter").text(etc.mtcAfter);
+    			//
+    			var lt = data.msg.lt;
+    			var _ltllhj=0;
+    			var _ltfyhj=0;
+    			for(var i=0;i<lt.length;i++){
+    				var id = lt[i].sszd;
+    				_ltllhj=_ltllhj+lt[i].ltchj;
+    				_ltfyhj=parseFloat(_ltfyhj)+parseFloat(lt[i].ltcjehj);
+    				
+    				$("#_ltll dd[deptId='"+id+"'] span").text(lt[i].ltchj+" 辆");
+    				$("._ltfy dd[deptId='"+id+"'] span").text(lt[i].ltcjehj+" 万元");
+    			}
+    			$("#_ltllhj").text(_ltllhj);
+    			$("._ltfyhj").text(parseFloat(_ltfyhj).toFixed(2));
+    			
+    		}
+      });
+}
+function initData(type) {//
+	var colorPalette = ['#dd6b66','#759aa0','#e69d87','#8dc1a9','#ea7e53','#eedd78','#73a373','#73b9bc','#7289ab', '#91ca8c','#f49f42'];
+    option = {color:colorPalette,
+    	    tooltip : {formatter: "{a} <br/>{b} : {c}%"},
+    	    series: [{backgroundColor:'#fff',
+    	            name: '完成率',
+    	            type: 'gauge',
+    	            radius:'100%',
+    	            title:{textStyle:{color:'#fff'}},
+    	            axisLine: {lineStyle: {color: [[0.2, '#ff6374'],[0.8, '#00FFFF'],[1, '#00ff00']],width: 10}},
+    	            axisTick: {            // 坐标轴小标记
+    	                length: 15,        // 属性length控制线长
+    	                lineStyle: {color: 'auto'}
+    	            },
+    	            splitLine: {           // 分隔线
+    	                length: 20,         // 属性length控制线长
+    	                lineStyle: {color: 'auto'}
+    	            },
+    	            detail: {formatter:'{value}%'},// 
+    	            data: [{value:${rwb}, name: '完成率'}]
+    	        }]
+    	     };
+    var myChart = echarts.init(document.getElementById('wclDiv'));
+    myChart.setOption(option, true);
+}
+</script>
+</body>
+</html>

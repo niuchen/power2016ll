@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html><head>
+<meta name="viewport" content="width=device-width">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>特情明细信息</title>
+<link href="${ctx.contextPath}/res/app/css.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+table{border-collapse:collapse; border-spacing:0; border-left:1px solid #add9c0; border-top:1px solid #add9c0; }
+td{border-right:1px solid #add9c0; border-bottom:1px solid #add9c0;padding:3px 15px;  text-align:left; color:#add9c0;}
+input{margin-top:12px;line-height:20px;}
+</style>
+</head>
+<body style="background-color:#426586;width:auto;">
+<div class="htmleaf-container">
+	<div class="htmleaf-content bgcolor-3">
+		<div id="Main-Content">
+			<div class="Container">
+<div class="mainqp"  >
+	<div class="my1" style="margin-top: 0px;min-height:450px;">
+		<dl class="news_detail">
+		    <dd>
+				<div class="sfmo">
+					<div class="money" style="text-align: center;float:none;">标题:${info.bt}</div>
+				</div>
+			</dd>
+			<dd style="background:none;">
+				<div class="sfmo">
+						<div class="money" style="font-size:11px;">[${info.zdmc}] 发布日期:${info.lrsj?string('yyyy-MM-dd')}</div>
+				</div>
+			</dd>
+			<dd style="background:none;">
+				<div class="sfmo">
+						<div class="money" style="float:left;margin-left:10px;">${info.nr}</div>
+				</div>
+			</dd>
+			<dd style="background:none;">
+			   <div style="float:right;color: #fff; margin-top:150px;background:none;margin-right:15px;" class="widget_wrap">
+					<a class="on" href="${ctx.contextPath}/app/forth.htm?token=${token}"><label>返回</label></a>
+				</div>
+			</dd>
+		</dl>
+	</div>
+</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <title>日常数据上报新增数据</title>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.extension.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet"/>
+	<script src="${ctx.contextPath}/res/ui/validator.js"></script>
+	<script src="${ctx.contextPath}/res/datepicker/WdatePicker.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+	<style type="text/css">
+	.sfmessage{
+		width:125px;
+	}
+	.tdTitle {
+	    position: relative;
+	    left: 0px;
+	    text-align: right;
+	    white-space: nowrap;
+	    font-weight: normal;
+	    width: 140px;
+	    padding-right: 10px;
+	}
+	.numberTxt{
+		border:none;
+		border:1px;
+		text-align:right;
+		border-bottom-style:solid;
+		font-weight: bold;
+		font-size: 16px;
+		color:blue;
+		padding-right: 5px;
+	}
+	.moneyTxt{
+		border:none;
+		border:1px;
+		text-align:right;
+		border-bottom-style:solid;
+		font-weight: bold;
+		font-size: 16px;
+		color:red;
+		padding-right: 5px;
+	}
+	.total{
+		text-align:right;
+		font-size: 14px;
+	}
+	</style>
+</head>
+<body>
+    <form id="form1">
+<div style="margin-left: 10px; margin-right: 10px;">
+            <table class="form">
+             <input id="xh" name="xh" type="hidden" value=""/>
+            	<!--  <tr>
+            		<td class="tdTitle">数据归属信息</td>
+            	</tr>-->
+ 				<tr>
+                    <td class="tdTitle">站点/录入员<font face="宋体">*</font></td>
+                    <td class="formValue">
+                    	<span style="font-weight: bold;font-size: 14px;color: green;">${user.deptName} / ${user.realName}</span>
+                        <input id="sszd" type="hidden" value="${user.deptId}"/>
+                        <input id="zdmc" type="hidden" value="${user.deptName}"/>
+                        <input id="lryxh" type="hidden" value="${user.uid}"/>
+                        <input id="lrymc" type="hidden" value="${user.realName}"/>
+                    </td>
+                    <td class="tdTitle">收费日期<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <input id="sfrq" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',maxDate:'%y-%M-%d'})" value="${.now?string('yyyy-MM-dd')}"/>
+                    </td>
+                    <td class="tdTitle">值班站长<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <div id=zdzz type="select" class="ui-select" isvalid="yes" checkexpession="NotNull"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="tdTitle" valign="top" style="padding-top: 4px;">备注 </th>
+                    <td class="formValue" colspan="5">
+                        <textarea id="bz" class="form-control" style="height: 50px;"></textarea>
+                    </td>
+                </tr>
+         </table>
+           <table class="form">
+        <tr>
+                <td class="formTitle" style="width:120px;">实收ETC客车收入总计:</td>
+                    <td class="formValue" style="width:140px;">
+                        <input id="kcsrzj" type="text" class="form-control  sfmessage total" readonly="readonly" title="客车收入总计" name="kcsrzj" />
+                    </td>
+                    <td class="formTitle" style="width:120px;">实收ETC货车收入总计:</td>
+                    <td class="formValue" style="width:140px;">
+                        <input id="hcsrzj" type="text" class="form-control  sfmessage total" readonly="readonly" title="货车收入总计" name="hcsrzj" />
+                    </td>
+                    <td class="formTitle" style="width:120px;">实收ETC收入总计:</td>
+                    <td class="formValue" style="width:140px;">
+                        <input id="khcsrzj" type="text" class="form-control  sfmessage total" readonly="readonly" title="货车收入总计" name="hcsrzj" />
+                    </td>
+                </tr>
+        </table>
+        <table class="form">
+                <header>车流量汇总信息</header>
+                 
+				<tr>
+                    <td class="formTitle" style="width:120px">ETC客车出入口总计：</td>
+                    <td class="formValue">
+                        <input id="kccrkhj" type="text" class="form-control total" readonly="readonly" title="客车出入口总计" name="kccrkhj" />
+                    </td>
+                    <td class="formTitle" style="width:120px">ETC客车入口总计：</td>
+                    <td class="formValue">
+                        <input id="kcrkzj" type="text" class="form-control total" readonly="readonly" title="客车入口总计" name="kcrkzj" />
+                    </td>
+                    <td class="formTitle" style="width:120px">ETC客车出口总计：</td>
+                    <td class="formValue">
+                        <input id="kcckzj" type="text" class="form-control total" readonly="readonly" title="客车出口总计" name="kcckzj" />
+                    </td>
+                </tr>
+				<tr>
+                    <td class="formTitle" style="width:120px">ETC货车出入口总计：</td>
+                    <td class="formValue">
+                        <input id="hccrkhj" type="text" class="form-control total" readonly="readonly" title="货车出入口总计" name="hccrkhj" />
+                    </td>
+                    <td class="formTitle">ETC货车入口总计：</td>
+                    <td class="formValue">
+                        <input id="hcrkzj" type="text" class="form-control total" readonly="readonly" title="货车入口总计" name="hcrkzj" />
+                    </td>
+                    <td class="formTitle">ETC货车出口总计：</td>
+                    <td class="formValue">
+                        <input id="hcckzj" type="text" class="form-control total" readonly="readonly" title="货车出口总计" name="hcckzj" />
+                    </td>
+                </tr>
+				<tr>
+                    <td class="formTitle" style="width:120px">ETC出入口流量总计：</td>
+                    <td class="formValue">
+                        <input id="crkllhj" type="text" class="form-control total" readonly="readonly" title="出入口流量总计" name="crkllhj" />
+                    </td>
+                    <td class="formTitle">ETC入口流量总计：</td>
+                    <td class="formValue">
+                        <input id="rkllzj" type="text" class="form-control total" readonly="readonly" title="入口流量总计" name="rkllzj" />
+                    </td>
+                    <td class="formTitle">ETC出口流量总计：</td>
+                    <td class="formValue">
+                        <input id="ckllzj" type="text" class="form-control total" readonly="readonly" title="出口流量总计" name="ckllzj" />
+                    </td>
+                </tr>
+            </table>
+         
+        	<table class="form">
+					<header>收费客车信息</header>
+					<tr class="keyRow">
+                    <td class="tdTitle">ETC1型客车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="kccrhj1" type="text" class="form-control total" readonly="readonly" title="1型客车出入口合计" name="kccrhj1" />
+                    </td>
+                    <td class="tdTitle">ETC1型客车(入)：</td>
+                    <td class="formValue">
+                        <input id="kcr1" type="text" class="form-control numberTxt kc1Add kcr" title="请输入数量" name="kcr1" />
+                    </td>
+                	<td class="tdTitle">ETC1型客车(出)：</td>
+                    <td class="formValue">
+                        <input id="kcc1" type="text" class="form-control numberTxt kc1Add kcc" title="请输入数量" name="kcc1" />
+                    </td>
+                	<td class="tdTitle">ETC1型客车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="kcsr1" type="text" class="form-control moneyTxt kcsrAdd" title="请输入金额：元" name="kcsr1" />
+                    </td>
+                </tr>
+        		<tr class="keyRow">
+                    <td class="tdTitle">ETC2型客车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="kccrhj2" type="text" class="form-control total" readonly="readonly" title="2型客车出入口合计" name="kccrhj2" />
+                    </td>
+                    <td class="tdTitle">ETC2型客车(入)：</td>
+                    <td class="formValue">
+                        <input id="kcr2" type="text" class="form-control numberTxt kc2Add kcr" title="请输入数量" name="kcr2" />
+                    </td>
+                	<td class="tdTitle">ETC2型客车(出)：</td>
+                    <td class="formValue">
+                        <input id="kcc2" type="text" class="form-control numberTxt kc2Add kcc" title="请输入数量" name="kcc2" />
+                    </td>
+                	<td class="tdTitle">ETC2型客车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="kcsr2" type="text" class="form-control moneyTxt kcsrAdd" title="请输入金额：元" name="kcsr2" />
+                    </td>
+                </tr>
+                <tr class="keyRow">
+                    <td class="tdTitle">ETC3型客车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="kccrhj3" type="text" class="form-control total" readonly="readonly" title="3型客车出入口合计" name="kccrhj3" />
+                    </td>
+                    <td class="tdTitle">ETC3型客车(入)：</td>
+                    <td class="formValue">
+                        <input id="kcr3" type="text" class="form-control numberTxt kc3Add kcr" title="请输入数量" name="kcr3" />
+                    </td>
+                	<td class="tdTitle">ETC3型客车(出)：</td>
+                    <td class="formValue">
+                        <input id="kcc3" type="text" class="form-control numberTxt kc3Add kcc" title="请输入数量" name="kcc3" />
+                    </td>
+                	<td class="tdTitle">ETC3型客车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="kcsr3" type="text" class="form-control moneyTxt kcsrAdd" title="请输入金额：元" name="kcsr3" />
+                    </td>
+                </tr>
+                <tr class="keyRow">
+                    <td class="tdTitle">ETC4型客车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="kccrhj4" type="text" class="form-control total" readonly="readonly" title="4型客车出入口合计" name="kccrhj4" />
+                    </td>
+                    <td class="tdTitle">ETC4型客车(入)：</td>
+                    <td class="formValue">
+                        <input id="kcr4" type="text" class="form-control numberTxt kc4Add kcr" title="请输入数量" name="kcr4" />
+                    </td>
+                	<td class="tdTitle">ETC4型客车(出)：</td>
+                    <td class="formValue">
+                        <input id="kcc4" type="text" class="form-control numberTxt kc4Add kcc" title="请输入数量" name="kcc4" />
+                    </td>
+                	<td class="tdTitle">ETC4型客车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="kcsr4" type="text" class="form-control moneyTxt kcsrAdd" title="请输入金额：元" name="kcsr4" />
+                    </td>
+                </tr>
+        	</table>
+        	<table class="form">
+					<header>收费货车信息</header>
+					<tr class="keyRow">
+                    <td class="tdTitle">ETCA型货车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="hccrhj1" type="text" class="form-control total" readonly="readonly" title="1型货车出入口合计" name="hccrhj1" />
+                    </td>
+                    <td class="tdTitle">ETCA型货车(入)：</td>
+                    <td class="formValue">
+                        <input id="hcr1" type="text" class="form-control numberTxt hc1Add hcr" title="请输入数量" name="hcr1" />
+                    </td>
+                	<td class="tdTitle">ETCA型货车(出)：</td>
+                    <td class="formValue">
+                        <input id="hcc1" type="text" class="form-control numberTxt hc1Add hcc" title="请输入数量" name="hcc1" />
+                    </td>
+                	<td class="formTitle" style="width: 115px">ETCA型货车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="hcsr1" type="text" class="form-control moneyTxt hcsrAdd" title="请输入金额：元" name="hcsr1" />
+                    </td>
+                </tr>
+        		<tr class="keyRow">
+                    <td class="tdTitle">ETCB型货车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="hccrhj2" type="text" class="form-control total" readonly="readonly" title="2型货车出入口合计" name="hccrhj2" />
+                    </td>
+                    <td class="tdTitle">ETCB型货车(入)：</td>
+                    <td class="formValue">
+                        <input id="hcr2" type="text" class="form-control numberTxt hc2Add hcr" title="请输入数量" name="hcr2" />
+                    </td>
+                	<td class="tdTitle">ETCB型货车(出)：</td>
+                    <td class="formValue">
+                        <input id="hcc2" type="text" class="form-control numberTxt hc2Add hcc" title="请输入数量" name="hcc2" />
+                    </td>
+                	<td class="formTitle">ETCB型货车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="hcsr2" type="text" class="form-control moneyTxt hcsrAdd" title="请输入金额：元" name="hcsr2" />
+                    </td>
+                </tr>
+                <tr class="keyRow">
+                    <td class="tdTitle">ETCC型货车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="hccrhj3" type="text" class="form-control total" readonly="readonly" title="3型货车出入口合计" name="hccrhj3" />
+                    </td>
+                    <td class="tdTitle">ETCC型货车(入)：</td>
+                    <td class="formValue">
+                        <input id="hcr3" type="text" class="form-control numberTxt hc3Add hcr" title="请输入数量" name="hcr3" />
+                    </td>
+                	<td class="tdTitle">ETCC型货车(出)：</td>
+                    <td class="formValue">
+                        <input id="hcc3" type="text" class="form-control numberTxt hc3Add hcc" title="请输入数量" name="hcc3" />
+                    </td>
+                	<td class="formTitle">ETCC型货车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="hcsr3" type="text" class="form-control moneyTxt hcsrAdd" title="请输入金额：元" name="hcsr3" />
+                    </td>
+                </tr>
+                <tr class="keyRow">
+                    <td class="tdTitle">ETCD型货车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="hccrhj4" type="text" class="form-control total" readonly="readonly" title="4型货车出入口合计" name="hccrhj4" />
+                    </td>
+                    <td class="tdTitle">ETCD型货车(入)：</td>
+                    <td class="formValue">
+                        <input id="hcr4" type="text" class="form-control numberTxt hc4Add hcr" title="请输入数量" name="hcr4" />
+                    </td>
+                	<td class="tdTitle">ETCD型货车(出)：</td>
+                    <td class="formValue">
+                        <input id="hcc4" type="text" class="form-control numberTxt hc4Add hcc" title="请输入数量" name="hcc4" />
+                    </td>
+                	<td class="formTitle">ETCD型货车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="hcsr4" type="text" class="form-control moneyTxt hcsrAdd" title="请输入金额：元" name="hcsr4" />
+                    </td>
+                   
+                </tr>
+                <tr class="keyRow">
+                    <td class="tdTitle">ETCE型货车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="hccrhj5" type="text" class="form-control total" readonly="readonly" title="5型货车出入口合计" name="hccrhj5" />
+                    </td>
+                    <td class="tdTitle">ETCE型货车(入)：</td>
+                    <td class="formValue">
+                        <input id="hcr5" type="text" class="form-control numberTxt hc5Add hcr" title="请输入数量" name="hcr5" />
+                    </td>
+                	<td class="tdTitle">ETCE型货车(出)：</td>
+                    <td class="formValue">
+                        <input id="hcc5" type="text" class="form-control numberTxt hc5Add hcc" title="请输入数量" name="hcc5" />
+                    </td>
+                	<td class="formTitle">ETCE型货车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="hcsr5" type="text" class="form-control moneyTxt hcsrAdd" title="请输入金额：元" name="hcsr5" />
+                    </td>
+                   
+                </tr>
+                <tr class="keyRow">
+                    <td class="tdTitle">ETCF型货车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="hccrhj6" type="text" class="form-control total" readonly="readonly" title="6型货车出入口合计" name="hccrhj6" />
+                    </td>
+                    <td class="tdTitle">ETCF型货车(入)：</td>
+                    <td class="formValue">
+                        <input id="hcr6" type="text" class="form-control numberTxt hc6Add hcr" title="请输入数量" name="hcr6" />
+                    </td>
+                	<td class="tdTitle">ETCF型货车(出)：</td>
+                    <td class="formValue">
+                        <input id="hcc6" type="text" class="form-control numberTxt hc6Add hcc" title="请输入数量" name="hcc6" />
+                    </td>
+                    <td class="formTitle">ETCF型货车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="hcsr6" type="text" class="form-control moneyTxt hcsrAdd" title="请输入金额：元" name="hcsr6" />
+                    </td>
+                </tr>
+        	</table>
+</div>
+    </form>
+    <script>
+_hj=function(){
+	//1型客车出入合计
+	var kccrhj1 = 0;
+	$(".kc1Add").each(function(){
+		kccrhj1 = Calc.Add(kccrhj1,$(this).val());
+    });
+	$("#kccrhj1").val(kccrhj1);
+	
+	//2型客车出入合计
+	var kccrhj2 = 0;
+	$(".kc2Add").each(function(){
+		kccrhj2 = Calc.Add(kccrhj2,$(this).val());
+    });
+	$("#kccrhj2").val(kccrhj2);
+	
+	//3型客车出入合计
+	var kccrhj3 = 0;
+	$(".kc3Add").each(function(){
+		kccrhj3 = Calc.Add(kccrhj3,$(this).val());
+    });
+	$("#kccrhj3").val(kccrhj3);
+	
+	//4型客车出入合计
+	var kccrhj4 = 0;
+	$(".kc4Add").each(function(){
+		kccrhj4 = Calc.Add(kccrhj4,$(this).val());
+    });
+	$("#kccrhj4").val(kccrhj4);
+	
+	//客车出入口合计
+	var kcsum = 0;
+	kcsum = kcsum + Number($("#kccrhj1").val())+ Number($("#kccrhj2").val())+ Number($("#kccrhj3").val())+ Number($("#kccrhj4").val());
+	$("#kccrkhj").val(kcsum);
+	
+	//客车入口总计
+	var kcr = 0;
+	$(".kcr").each(function(){
+		kcr = Calc.Add(kcr,$(this).val());
+    });
+	$("#kcrkzj").val(kcr);
+	
+	//客车出口总计
+	var kcc = 0;
+	$(".kcc").each(function(){
+		kcc = Calc.Add(kcc,$(this).val());
+    });
+	$("#kcckzj").val(kcc);
+	
+	//1型货车出入合计
+	var hccrhj1 = 0;
+	$(".hc1Add").each(function(){
+		hccrhj1 = Calc.Add(hccrhj1,$(this).val());
+    });
+	$("#hccrhj1").val(hccrhj1);
+	
+	//2型货车出入合计
+	var hccrhj2 = 0;
+	$(".hc2Add").each(function(){
+		hccrhj2 = Calc.Add(hccrhj2,$(this).val());
+    });
+	$("#hccrhj2").val(hccrhj2);
+	
+	//3型货车出入合计
+	var hccrhj3 = 0;
+	$(".hc3Add").each(function(){
+		hccrhj3 = Calc.Add(hccrhj3,$(this).val());
+    });
+	$("#hccrhj3").val(hccrhj3);
+	
+	//4型货车出入合计
+	var hccrhj4 = 0;
+	$(".hc4Add").each(function(){
+		hccrhj4 = Calc.Add(hccrhj4,$(this).val());
+    });
+	$("#hccrhj4").val(hccrhj4);
+	
+	//5型货车出入合计
+	var hccrhj5 = 0;
+	$(".hc5Add").each(function(){
+		hccrhj5 = Calc.Add(hccrhj5,$(this).val());
+    });
+	$("#hccrhj5").val(hccrhj5);
+	
+	//6型货车出入合计
+	var hccrhj6 = 0;
+	$(".hc6Add").each(function(){
+		hccrhj6 = Calc.Add(hccrhj6,$(this).val());
+    });
+	$("#hccrhj6").val(hccrhj6);
+	
+	//货车出入口总计
+	var hcsum = 0;
+	hcsum = hcsum + Number($("#hccrhj1").val()) + Number($("#hccrhj2").val()) + Number($("#hccrhj3").val()) + Number($("#hccrhj4").val()) + Number($("#hccrhj5").val()) + Number($("#hccrhj6").val());
+	$("#hccrkhj").val(hcsum);
+	
+	//货车入口总计
+	var hcr = 0;
+	$(".hcr").each(function(){
+		hcr = Calc.Add(hcr,$(this).val());
+    });
+	$("#hcrkzj").val(hcr);
+	
+	//货车出口总计
+	var hcc = 0;
+	$(".hcc").each(function(){
+		hcc = Calc.Add(hcc,$(this).val());
+    });
+	$("#hcckzj").val(hcc);
+	
+	//公务出入合计
+	var gwcrhj = 0;
+	$(".gwAdd").each(function(){
+		gwcrhj = Calc.Add(gwcrhj,$(this).val());
+    });
+	$("#gwcrhj").val(gwcrhj);
+	
+	//军车出入合计
+	var jccrhj = 0;
+	$(".jcAdd").each(function(){
+		jccrhj = Calc.Add(jccrhj,$(this).val());
+    });
+	$("#jccrhj").val(jccrhj);
+	
+	//警车出入合计
+	var jchecrhj = 0;
+	$(".jcheAdd").each(function(){
+		jchecrhj = Calc.Add(jchecrhj,$(this).val());
+    });
+	$("#jchecrhj").val(jchecrhj);
+	
+	//免费出入合计
+	var mfcrhj = 0;
+	$(".mfAdd").each(function(){
+		mfcrhj = Calc.Add(mfcrhj,$(this).val());
+    });
+	$("#mfcrhj").val(mfcrhj);
+	
+	//车队出入合计
+	var cdhj = 0;
+	$(".cdAdd").each(function(){
+		cdhj = Calc.Add(cdhj,$(this).val());
+    });
+	$("#cdhj").val(cdhj);
+	
+	//闯关出入合计
+	var cghj = 0;
+	$(".cgAdd").each(function(){
+		cghj = Calc.Add(cghj,$(this).val());
+    });
+	$("#cghj").val(cghj);
+	
+	//免征出入口总计
+	var mzsum = 0;
+	mzsum = mzsum + Number($("#gwcrhj").val()) + Number($("#jccrhj").val()) + Number($("#jchecrhj").val()) + Number($("#mfcrhj").val()) + Number($("#cdhj").val()) + Number($("#cghj").val());
+	$("#mzcrkhj").val(mzsum);
+	
+	//免征入口总计
+	var mzr = 0;
+	$(".mzr").each(function(){
+		mzr = Calc.Add(mzr,$(this).val());
+    });
+	$("#mzrkzj").val(mzr);
+	
+	//免征出口总计
+	var mzc = 0;
+	$(".mzc").each(function(){
+		mzc = Calc.Add(mzc,$(this).val());
+    });
+	$("#mzckzj").val(mzc);
+	
+	//出入口流量总计
+	var crksum = 0;
+	crksum = crksum + Number($("#kccrkhj").val()) + Number($("#hccrkhj").val());
+	$("#crkllhj").val(crksum);
+	
+	//入口流量总计
+	var rksum = 0;
+	rksum = rksum + Number($("#kcrkzj").val()) + Number($("#hcrkzj").val());
+	$("#rkllzj").val(rksum);
+	
+	//出口流量总计
+	var cksum = 0;
+	cksum = cksum + Number($("#kcckzj").val()) + Number($("#hcckzj").val()) ;
+	$("#ckllzj").val(cksum);
+	
+	//人公车道出入合计
+	var hj = 0;
+	$(".Add").each(function(){
+		hj = Calc.Add(hj,$(this).val());
+    });
+	$("#crhj").val(hj);
+	
+	//人公车道出入合计
+	var mtchj = 0;
+	$(".mtcAdd").each(function(){
+		mtchj = Calc.Add(mtchj,$(this).val());
+    });
+	$("#mtccrhj").val(mtchj);
+	
+}
+_je=function(){
+	//收费合计
+	var sfhj = 0;
+	$(".sfhjAdd").each(function(){
+		sfhj = Calc.Add(sfhj,$(this).val());
+    });
+	$("#sfhj").val(parseFloat(sfhj).toFixed(2));
+	
+	//现金合计
+	var xjhj = 0;
+	$(".xjhjAdd").each(function(){
+		xjhj = Calc.Add(xjhj,$(this).val());
+    });
+	$("#xjhj").val(parseFloat(xjhj).toFixed(2));
+	
+	//客车收入总计
+	var kcsrzj = 0;
+	$(".kcsrAdd").each(function(){
+		kcsrzj = Calc.Add(kcsrzj,$(this).val());
+    });
+	$("#kcsrzj").val(parseFloat(kcsrzj).toFixed(2));
+	
+	//货车收入总计
+	var hcsrzj = 0;
+	$(".hcsrAdd").each(function(){
+		hcsrzj = Calc.Add(hcsrzj,$(this).val());
+    });
+	$("#hcsrzj").val(parseFloat(hcsrzj).toFixed(2));
+	//客货车收入总计
+	var khcsrzj = 0;
+	khcsrzj = khcsrzj + Number($("#kcsrzj").val()) + Number($("#hcsrzj").val());
+	$("#khcsrzj").val(parseFloat(khcsrzj).toFixed(2));
+}
+    var keyValue = request('keyValue');
+    $(function () {
+        initControl();
+        //
+        $(".numberTxt").checkNum({integerLength: 10,decimalLength:0});
+        $(".moneyTxt").checkNum({integerLength: 10,decimalLength:2});
+        //
+        $(".numberTxt").on('keyup blur',function (e) {_hj();});
+        $(".moneyTxt").on('keyup blur',function (e) {_je();});
+        $("#zcsr").focus();
+        $("a[data-toggle='tab']").on('click', function (e) {
+  		  //console.log($(this).html());
+  		  if($(this).html() === "收费客车信息"){
+  			 $("#kcr1").focus();
+  		  }else if($(this).html() === "收费货车信息"){
+  			 $("#hcr1").focus();
+  		  }else if($(this).html() === "免征车辆信息"){
+  			 $("#gwr").focus();
+  		  }
+  		});
+    })
+    //初始化控件
+    function initControl() {
+    	$("#zdzz").ComboBox({//获取站点站长
+            url: "${ctx.contextPath}/sys/user/getZdzzJson",
+            id: "id",
+            text: "name",
+            description: "==请选择==",
+            defaultValue:true //默认选中第一行
+        });
+        //获取表单
+        if (!!keyValue) {
+            $.SetForm({
+                url: "${ctx.contextPath}/charge/getetcRcsjFormJson",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#form1").SetWebControls(data);
+                    $("#zdzz").ComboBoxSetValue(data.zdzz);
+                    $("#sfrq").val(formatDate(new Date(data.sfrq), "yyyy-MM-dd"));
+                    if(data.zt>1){
+                		//dialogMsg("数据已锁定无法操作！", -1);
+                		$("#form1").find('.form-control,.ui-select,input').attr('disabled', 'disabled');
+                		top.$(".layui-layer-btn0").hide();
+                	}
+                }
+            });
+        }
+    }
+    //保存表单
+    function AcceptClick() {
+        if (!$('#form1').Validform()) {
+            return false;
+        }
+        var all = 0;
+        all = all+ Number($("#kcsrzj").val()) + Number($("#hcsrzj").val())+ Number($("#ck").val());
+        all = parseFloat(all).toFixed(2);
+        var xjhj = 0;
+        xjhj = xjhj+ Number($("#xjhj").val());
+        xjhj = parseFloat(xjhj).toFixed(2);
+        var postData = $("#form1").GetWebControls(keyValue);
+        //MTC出入口合计+ETC出入口合计=出入口流量总计
+        var crhj = 0
+        crhj = crhj+ Number($("#mtccrhj").val()) + Number($("#etccrhj").val());
+        var crhjj=0;
+        crhjj =crhjj+ Number($("#crkllhj").val());
+        //MTC出口合计+ETC出口合计=出口流量总计
+       // var chj = 0
+      //  chj = chj+ Number($("#mtcc").val()) + Number($("#etcc").val());
+      //  var chjj=0;
+      //  chjj =chjj+ Number($("#ckllzj").val());
+        //MTC入口合计+ETC入口合计=入口流量总计
+      //  var rhj = 0
+     //   rhj = rhj+ Number($("#mtcr").val()) + Number($("#etcr").val());
+     //   var rhjj=0;
+     //   rhjj =rhjj+ Number($("#rkllzj").val());
+       // console.log(postData);return;
+        //筛选未填写的表单
+        var wtxInputs = 0;
+        $(".numberTxt").each(function(){if($(this).val().length==0){wtxInputs++;}});
+    	$(".moneyTxt").each(function(){if($(this).val().length==0){wtxInputs++;}});
+        var _p = {url: "${ctx.contextPath}/charge/etcrcsjSubmit",
+                param: postData,
+                loading: "正在保存数据...",
+                success: function (data) {
+                    $.currentIframe().$("#gridTable").trigger("reloadGrid");
+                }
+          	};
+     /*   if(all!=xjhj){
+        	dialogAlert("实收现金客车收入总计（元）+实收现金货车车收入总计（元）+长款     ≠  正常收入（元）+计重加收金额+加收款（元）+长款<br/>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp数据录入有误,请核实数据");
+            return false;
+        }
+        if(crhj!=crhjj){
+        	dialogAlert("MTC出入口合计+ETC出入口合计     ≠  客车出入口合计+货车出入口合计<br/>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp数据录入有误,请核实数据");
+            return false;
+        }*/
+     //   if(chj!=chjj){
+      //  	dialogAlert("MTC出入口合计+ETC出入口合计     ≠  客车出入口合计+货车出入口合计,数据录入有误");
+     //       return false;
+    //    }
+     //   if(rhj!=rhjj){
+     //   	dialogAlert("MTC出入口合计+ETC出入口合计     ≠  客车出入口合计+货车出入口合计,数据录入有误");
+     //       return false;
+     //   }
+        if(wtxInputs>0){
+        	_p.msg="有【"+wtxInputs+"】项数据未填写将自动填充为 0，是否继续提交？";
+	        $.ConfirmAjax(_p);
+        }else{$.SaveForm(_p);}
+    }
+</script>
+<script src="${ctx.contextPath}/res/ui/keyMove.js"></script>
+</body>
+</html>

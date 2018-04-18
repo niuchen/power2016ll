@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.SysOrganizeMapper">
+  <resultMap id="BaseResultMap" type="com.power.common.entity.SysOrganize">
+    <id column="organizeid" jdbcType="VARCHAR" property="organizeid" />
+    <result column="category" jdbcType="INTEGER" property="category" />
+    <result column="parentid" jdbcType="VARCHAR" property="parentid" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="shortname" jdbcType="VARCHAR" property="shortname" />
+    <result column="fullname" jdbcType="VARCHAR" property="fullname" />
+    <result column="nature" jdbcType="VARCHAR" property="nature" />
+    <result column="outerphone" jdbcType="VARCHAR" property="outerphone" />
+    <result column="innerphone" jdbcType="VARCHAR" property="innerphone" />
+    <result column="fax" jdbcType="VARCHAR" property="fax" />
+    <result column="postalcode" jdbcType="VARCHAR" property="postalcode" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="managerid" jdbcType="VARCHAR" property="managerid" />
+    <result column="manager" jdbcType="VARCHAR" property="manager" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="county" jdbcType="VARCHAR" property="county" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="webaddress" jdbcType="VARCHAR" property="webaddress" />
+    <result column="foundedtime" jdbcType="TIMESTAMP" property="foundedtime" />
+    <result column="businessscope" jdbcType="VARCHAR" property="businessscope" />
+    <result column="sortcode" jdbcType="INTEGER" property="sortcode" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="deletemark" jdbcType="INTEGER" property="deletemark" />
+    <result column="enabledmark" jdbcType="INTEGER" property="enabledmark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="createdate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="createuserid" jdbcType="VARCHAR" property="createuserid" />
+    <result column="createusername" jdbcType="VARCHAR" property="createusername" />
+    <result column="modifydate" jdbcType="TIMESTAMP" property="modifydate" />
+    <result column="modifyuserid" jdbcType="VARCHAR" property="modifyuserid" />
+    <result column="modifyusername" jdbcType="VARCHAR" property="modifyusername" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    organizeid, category, parentid, code, shortname, fullname, nature, outerphone, innerphone, 
+    fax, postalcode, email, managerid, manager, province, city, county, address, webaddress, 
+    foundedtime, businessscope, sortcode, level, deletemark, enabledmark, description, 
+    createdate, createuserid, createusername, modifydate, modifyuserid, modifyusername
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_organize
+    where organizeid = #{organizeid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_organize
+    where organizeid = #{organizeid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.SysOrganize">
+    insert into sys_organize (organizeid, category, parentid, 
+      code, shortname, fullname, 
+      nature, outerphone, innerphone, 
+      fax, postalcode, email, 
+      managerid, manager, province, 
+      city, county, address, 
+      webaddress, foundedtime, businessscope, 
+      sortcode, level, deletemark, 
+      enabledmark, description, createdate, 
+      createuserid, createusername, modifydate, 
+      modifyuserid, modifyusername)
+    values (#{organizeid,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, #{parentid,jdbcType=VARCHAR}, 
+      #{code,jdbcType=VARCHAR}, #{shortname,jdbcType=VARCHAR}, #{fullname,jdbcType=VARCHAR}, 
+      #{nature,jdbcType=VARCHAR}, #{outerphone,jdbcType=VARCHAR}, #{innerphone,jdbcType=VARCHAR}, 
+      #{fax,jdbcType=VARCHAR}, #{postalcode,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{managerid,jdbcType=VARCHAR}, #{manager,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{county,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{webaddress,jdbcType=VARCHAR}, #{foundedtime,jdbcType=TIMESTAMP}, #{businessscope,jdbcType=VARCHAR}, 
+      #{sortcode,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, #{deletemark,jdbcType=INTEGER}, 
+      #{enabledmark,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, 
+      #{createuserid,jdbcType=VARCHAR}, #{createusername,jdbcType=VARCHAR}, #{modifydate,jdbcType=TIMESTAMP}, 
+      #{modifyuserid,jdbcType=VARCHAR}, #{modifyusername,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.SysOrganize">
+    insert into sys_organize
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="organizeid != null">
+        organizeid,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="parentid != null">
+        parentid,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="shortname != null">
+        shortname,
+      </if>
+      <if test="fullname != null">
+        fullname,
+      </if>
+      <if test="nature != null">
+        nature,
+      </if>
+      <if test="outerphone != null">
+        outerphone,
+      </if>
+      <if test="innerphone != null">
+        innerphone,
+      </if>
+      <if test="fax != null">
+        fax,
+      </if>
+      <if test="postalcode != null">
+        postalcode,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="managerid != null">
+        managerid,
+      </if>
+      <if test="manager != null">
+        manager,
+      </if>
+      <if test="province != null">
+        province,
+      </if>
+      <if test="city != null">
+        city,
+      </if>
+      <if test="county != null">
+        county,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="webaddress != null">
+        webaddress,
+      </if>
+      <if test="foundedtime != null">
+        foundedtime,
+      </if>
+      <if test="businessscope != null">
+        businessscope,
+      </if>
+      <if test="sortcode != null">
+        sortcode,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="deletemark != null">
+        deletemark,
+      </if>
+      <if test="enabledmark != null">
+        enabledmark,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="createdate != null">
+        createdate,
+      </if>
+      <if test="createuserid != null">
+        createuserid,
+      </if>
+      <if test="createusername != null">
+        createusername,
+      </if>
+      <if test="modifydate != null">
+        modifydate,
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null">
+        modifyusername,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="organizeid != null">
+        #{organizeid,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=INTEGER},
+      </if>
+      <if test="parentid != null">
+        #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="shortname != null">
+        #{shortname,jdbcType=VARCHAR},
+      </if>
+      <if test="fullname != null">
+        #{fullname,jdbcType=VARCHAR},
+      </if>
+      <if test="nature != null">
+        #{nature,jdbcType=VARCHAR},
+      </if>
+      <if test="outerphone != null">
+        #{outerphone,jdbcType=VARCHAR},
+      </if>
+      <if test="innerphone != null">
+        #{innerphone,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="postalcode != null">
+        #{postalcode,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="managerid != null">
+        #{managerid,jdbcType=VARCHAR},
+      </if>
+      <if test="manager != null">
+        #{manager,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null">
+        #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="webaddress != null">
+        #{webaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="foundedtime != null">
+        #{foundedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="businessscope != null">
+        #{businessscope,jdbcType=VARCHAR},
+      </if>
+      <if test="sortcode != null">
+        #{sortcode,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="deletemark != null">
+        #{deletemark,jdbcType=INTEGER},
+      </if>
+      <if test="enabledmark != null">
+        #{enabledmark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuserid != null">
+        #{createuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="createusername != null">
+        #{createusername,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuserid != null">
+        #{modifyuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyusername != null">
+        #{modifyusername,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.SysOrganize">
+    update sys_organize
+    <set>
+      <if test="category != null">
+        category = #{category,jdbcType=INTEGER},
+      </if>
+      <if test="parentid != null">
+        parentid = #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="shortname != null">
+        shortname = #{shortname,jdbcType=VARCHAR},
+      </if>
+      <if test="fullname != null">
+        fullname = #{fullname,jdbcType=VARCHAR},
+      </if>
+      <if test="nature != null">
+        nature = #{nature,jdbcType=VARCHAR},
+      </if>
+      <if test="outerphone != null">
+        outerphone = #{outerphone,jdbcType=VARCHAR},
+      </if>
+      <if test="innerphone != null">
+        innerphone = #{innerphone,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        fax = #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="postalcode != null">
+        postalcode = #{postalcode,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="managerid != null">
+        managerid = #{managerid,jdbcType=VARCHAR},
+      </if>
+      <if test="manager != null">
+        manager = #{manager,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null">
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="city != null">
+        city = #{city,jdbcType=VARCHAR},
+      </if>
+      <if test="county != null">
+        county = #{county,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="webaddress != null">
+        webaddress = #{webaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="foundedtime != null">
+        foundedtime = #{foundedtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="businessscope != null">
+        businessscope = #{businessscope,jdbcType=VARCHAR},
+      </if>
+      <if test="sortcode != null">
+        sortcode = #{sortcode,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="deletemark != null">
+        deletemark = #{deletemark,jdbcType=INTEGER},
+      </if>
+      <if test="enabledmark != null">
+        enabledmark = #{enabledmark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        createdate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuserid != null">
+        createuserid = #{createuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="createusername != null">
+        createusername = #{createusername,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        modifydate = #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid = #{modifyuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyusername != null">
+        modifyusername = #{modifyusername,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where organizeid = #{organizeid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.SysOrganize">
+    update sys_organize
+    set category = #{category,jdbcType=INTEGER},
+      parentid = #{parentid,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      shortname = #{shortname,jdbcType=VARCHAR},
+      fullname = #{fullname,jdbcType=VARCHAR},
+      nature = #{nature,jdbcType=VARCHAR},
+      outerphone = #{outerphone,jdbcType=VARCHAR},
+      innerphone = #{innerphone,jdbcType=VARCHAR},
+      fax = #{fax,jdbcType=VARCHAR},
+      postalcode = #{postalcode,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      managerid = #{managerid,jdbcType=VARCHAR},
+      manager = #{manager,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      county = #{county,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      webaddress = #{webaddress,jdbcType=VARCHAR},
+      foundedtime = #{foundedtime,jdbcType=TIMESTAMP},
+      businessscope = #{businessscope,jdbcType=VARCHAR},
+      sortcode = #{sortcode,jdbcType=INTEGER},
+      level = #{level,jdbcType=INTEGER},
+      deletemark = #{deletemark,jdbcType=INTEGER},
+      enabledmark = #{enabledmark,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      createdate = #{createdate,jdbcType=TIMESTAMP},
+      createuserid = #{createuserid,jdbcType=VARCHAR},
+      createusername = #{createusername,jdbcType=VARCHAR},
+      modifydate = #{modifydate,jdbcType=TIMESTAMP},
+      modifyuserid = #{modifyuserid,jdbcType=VARCHAR},
+      modifyusername = #{modifyusername,jdbcType=VARCHAR}
+    where organizeid = #{organizeid,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <!-- 条件查询/全部查询 -->
+  <select id="showCompany" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_organize
+    <where>
+    	deletemark = 0
+     	<if test="fullname != null">and fullname like concat('%',#{fullname,jdbcType=VARCHAR},'%')</if>
+   	 	<if test="shortname != null">and shortname like concat('%',#{shortname,jdbcType=VARCHAR},'%')</if>
+     	<if test="category != null">and category like concat('%',#{category,jdbcType=VARCHAR},'%')</if>
+     	<if test="manager != null">and manager like concat('%',#{manager,jdbcType=VARCHAR},'%')</if>
+     </where>
+     order by sortcode
+  </select>
+  <!-- 判断机构是否存在下级机构或部门 -->
+  <select id="getCanDel" parameterType="String" resultType="Integer">
+	SELECT SUM(tt.t1) FROM (
+		(SELECT COUNT(1) as t1 FROM sys_organize WHERE deletemark = 0 and parentid = #{comid}) UNION 
+		(SELECT COUNT(1) as t2 FROM sys_department WHERE deletemark = 0 and organizeid = #{comid})) tt
+</select>
+</mapper>

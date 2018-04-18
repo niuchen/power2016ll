@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <title>记重车辆月报管理</title>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet">
+	<link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet">
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet">
+    <link href="${ctx.contextPath}/res/jqgrid/jqgrid.css" rel="stylesheet">
+	<link href="${ctx.contextPath}/res/wdTree/tree.css" rel="stylesheet"/>
+	
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+	<script src="${ctx.contextPath}/res/jqgrid/jqgrid.min.js"></script>
+	<script src="${ctx.contextPath}/res/datepicker/WdatePicker.js"></script>
+	<script src="${ctx.contextPath}/res/wdTree/tree.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+    
+    <style>
+        body {margin: 10px;margin-bottom: 0px;}
+    </style>	
+</head>
+<body>
+<script>
+    var _nowDate = new Date(Date.parse("${.now}".replace(/-/g, "/").replace("T", " ").split(".")[0]));
+    var _now = formatDate(_nowDate,'yyyy-MM')
+    $(function () {
+    	var st = _nowDate.getFullYear();
+    	$("#StartTime").val(st);
+        $("#EndTime").val(st);
+        $("#SelectedStartTime").html($("#StartTime").val());
+        $("#SelectedEndTime").html($("#EndTime").val());
+        InitialPage();
+        GetGrid();
+      	//中心/站点
+      	$("#deptId").ComboBoxTree({
+      		url: "${ctx.contextPath}/sys/dept/deptTree",
+            description: "==请选择==",
+            height: "180px",
+            click: function (item) {
+                if (item.sort == 'org') {
+                    $("#orgId").val(item.id);
+                }else{
+                	$("#orgId").val("");
+                }
+            }
+        });
+    });
+    //初始化页面
+    function InitialPage() {
+        //resize重设(表格、树形)宽高
+        $(window).resize(function (e) {
+            window.setTimeout(function () {
+                $('#gridTable').setGridWidth(($('.gridPanel').width()));
+                $("#gridTable").setGridHeight($(window).height() - 136.5);
+            }, 200);
+            e.stopPropagation();
+        });
+        //
+        //点击时间范围（今天、近7天、近一个月、近三个月）
+        $("#time_horizon a.btn-default").click(function () {
+            $("#time_horizon a.btn-default").removeClass("active");
+            $(this).addClass("active");
+            var st = _now;
+            switch ($(this).attr('data-value')) {
+                case "1"://本月
+                	st = _now;
+                	$("#EndTime").val(_now);
+                    break;
+                case "2"://本年
+                	st = _nowDate.getFullYear();
+                	$("#EndTime").val(st);
+                    break;
+                default:break;
+            }
+            $("#StartTime").val(st);
+            $("#SelectedStartTime").html($("#StartTime").val());
+            $("#SelectedEndTime").html($("#EndTime").val());
+            SearchEvent();
+        });
+        //
+        $("#SystemLogType li").click(function () {
+            $("#SystemLogType li").removeClass("active");
+            $(this).addClass("active");
+            SearchEvent();
+        });
+        //查询点击事件
+        $("#btn_Search").click(function () {
+            SearchEvent();
+            $(".ui-filter-text").trigger("click");
+            $("#SelectedStartTime").html($("#StartTime").val());
+            $("#SelectedEndTime").html($("#EndTime").val());
+        });
+    }
+    //
+    //查询表格函数
+    function SearchEvent() {
+        var queryJson = $("#filter-form").GetWebControls();
+        $("#gridTable").jqGrid('setGridParam', {
+        	postData: { st: queryJson.StartTime,
+            	et: queryJson.EndTime,
+            	deptId: queryJson.deptId,
+            	orgId: queryJson.orgId,
+            	lock: queryJson.lock,
+            },
+            page: 1
+        }).trigger('reloadGrid');
+    }
+    //加载表格
+    function GetGrid() {
+    	var queryJson = $("#filter-form").GetWebControls();
+        var selectedRowIndex = 0;
+        var $gridTable = $('#gridTable');
+        $gridTable.jqGrid({
+            url: "${ctx.contextPath}/yb/hmdData",
+            postData: { st: queryJson.StartTime,
+            	et: queryJson.EndTime,
+            	lrymc: queryJson.lrymc,
+            	zdzz: queryJson.zdzz,
+            	},
+            datatype: "json",
+            mtype:"POST",
+            prmNames:{rows:"pS"},
+            jsonReader : {total: "pages",records: "total"},
+            height: $(window).height() - 140.5,
+            autowidth: true,
+            multiselect: true,
+            //
+            colModel: [
+                { label: '主键', name: 'xh', hidden: true },
+                { label: '状态', name: 'zt', width: 40, align: 'center',sortable:false,
+                	formatter: function (cellvalue, options, rowObject) {
+                		var re = "";
+                		if (cellvalue == 1) {re = '<i class="fa fa-unlock fa-lg"></i>';} else if (cellvalue == 2) {re = '<i class="fa fa-lock fa-lg"></i>';}
+                		return re;
+                    }
+                },
+                { label: '上报年月', name: 'sfrq', index: 'sfrq', width: 80, align: 'center',
+                	formatter: function (cellvalue, options, rowObject) {
+                        return cellvalue==null?"":formatDate(new Date(cellvalue), 'yyyy-MM');
+                    }
+                },
+                { label: '站点名称', name: 'zdmc', index: 'zdmc', width: 100, align: 'left' ,sortable:false},
+                { label: '通行卡号', name: 'hmdthkh', index: 'hmdthkh', width: 100, align: 'right' ,sortable:false},
+                { label: '发卡时间', name: 'hmdfksj', index: 'hmdfksj', width: 150, align: 'center',sortable:false,
+                	formatter: function (cellvalue, options, rowObject) {
+                    return cellvalue==null?"":formatDate(new Date(cellvalue), 'yyyy-MM-dd hh:mm:ss');
+                }},
+                { label: '卡盒号', name: 'hmdkhh', index: 'hmdkhh', width: 100, align: 'right' ,sortable:false},
+                { label: '发卡站名', name: 'hmdfkzm', index: 'hmdfkzm', width: 100, align: 'right' ,sortable:false},
+                { label: '发卡员工号', name: 'hmdfkygh', index: 'hmdfkygh', width: 100, align: 'right' ,sortable:false},
+                { label: '车型', name: 'cxmc', index: 'hmdcx', width: 100, align: 'right' ,sortable:false},
+                { label: '付费类型', name: 'hmdffcx', index: 'hmdffcx', width: 100, align: 'right' ,sortable:false},
+                { label: '车牌', name: 'hmdcp', index: 'hmdcp', width: 100, align: 'right' ,sortable:false},
+                { label: '是否已录入“灰名单”系统', name: 'sfmc', index: 'sfmc', width: 100, align: 'right' ,sortable:false},
+                { label: '录入人员', name: 'lrymc', index: 'lrymc', width: 80, align: 'center',sortable:false },
+                { label: '操作时间', name: 'lrsj', index: 'lrsj', width: 150, align: 'center',sortable:false,
+                	formatter: function (cellvalue, options, rowObject) {
+                    return cellvalue==null?"":formatDate(new Date(cellvalue), 'yyyy-MM-dd hh:mm:ss');
+                }},
+                { label: '值班站长', name: 'zdzz', index: 'zdzz', width: 80, align: 'center',sortable:false,
+                	formatter: function (cellvalue, options, rowObject) {
+                    	return top.clientuserData[cellvalue] == null ? "" : top.clientuserData[cellvalue].realname;
+                	}
+                },
+                { label: "备注信息", name: "bz", index: "bz", width: 200, align: "left" ,sortable:false}
+            ],
+            viewrecords: true,
+            rowNum: 20,
+            rowList: [20, 50, 100,1000,10000],
+            pager: "#gridPager",
+            shrinkToFit: false,
+            gridview: true,
+            onSelectRow: function () {
+                selectedRowIndex = $("#" + this.id).getGridParam('selrow');
+            },
+            loadComplete: function() {
+                $("tr.jqgrow:odd").addClass('rowOdd');
+            },
+            gridComplete: function () {
+            	//_gridHj();
+            },ondblClickRow:function(rowid,iRow,iCol,e){
+            	if(!rowid || rowid==0)return;
+            	btn_detail($gridTable.getRowData(rowid).xh);
+            }
+        });
+        //$gridTable.authorizeColModel()
+        $("#btn_Reset").click(function () {
+        	 $("#deptId").ComboBoxTreeSetValue("");
+        	 $("#lock").val("");
+        });
+        //查询回车
+        $('#txt_Keyword').bind('keypress', function (event) {
+            if (event.keyCode == "13") {
+                $('#btn_Search').trigger("click");
+            }
+        });
+    }
+    _gridHj=function(){
+    	var $gridTable = $('#gridTable');
+    	//判断是否空行
+    	if($gridTable.getGridParam("reccount")<1){return;}
+    	
+        var ckhj = $gridTable.getCol("jzclckhj", false, "sum");
+        var jehj = $gridTable.getCol("jzclsrhj", false, "sum");
+        var chj1 = $gridTable.getCol("zzlc1", false, "sum");
+        var srhj1 = $gridTable.getCol("zzlsr1", false, "sum");
+        var chj2 = $gridTable.getCol("zzlc2", false, "sum");
+        var srhj2 = $gridTable.getCol("zzlsr2", false, "sum");
+        var chj3 = $gridTable.getCol("zzlc3", false, "sum");
+        var srhj3 = $gridTable.getCol("zzlsr3", false, "sum");
+        var chj4 = $gridTable.getCol("zzlc4", false, "sum");
+        var srhj4 = $gridTable.getCol("zzlsr4", false, "sum");
+        var json = {
+                "zdmc": "合计：",
+                "jzclckhj": ckhj,
+                "jzclsrhj": parseFloat(jehj).toFixed(2),
+                "zzlc1": chj1,
+                "zzlsr1": parseFloat(srhj1).toFixed(2),
+                "zzlc2": chj2,
+                "zzlsr2": parseFloat(srhj2).toFixed(2),
+                "zzlc3": chj3,
+                "zzlsr3": parseFloat(srhj3).toFixed(2),
+                "zzlc4": chj4,
+                "zzlsr4": parseFloat(srhj4).toFixed(2)
+            };
+     	$gridTable.jqGrid("addRowData",0,json,"last","",true);// addRowData
+     	//
+     	$("tr[id='0']",$gridTable).css({"background":"#dadada"});
+    }
+    //新增
+    function btn_add() {
+        dialogOpen({
+            id: "Form",
+            title: '灰名单月数据上报',
+            url: "${ctx.contextPath}/yb/hmdForm",
+            width: "850px",
+            height: "650px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].AcceptClick();
+            }
+        });
+    };
+    //编辑
+    function btn_edit() {
+        var keyValue = $("#gridTable").jqGridRowValue("xh");
+        if (checkedRow(keyValue)) {
+	        var zt = $("#gridTable").jqGridRowValue("zt");
+	        //判断是否锁定
+	        if(zt.indexOf("-lock")>0){dialogMsg('数据已锁定无法修改，请联系中心管理员！',-1);return;}
+            dialogOpen({
+                id: "Form",
+                title: '灰名单月数据--修改',
+                url: "${ctx.contextPath}/yb/hmdForm?keyValue="+keyValue,
+                width: "850px",
+                height: "650px",
+                callBack: function (iframeId) {
+                    top.frames[iframeId].AcceptClick();
+                }
+            });
+        }
+    }
+    //删除
+    function btn_delete() {
+        var keyValue = $("#gridTable").jqGridRowValue("xh");
+        if (checkedRow(keyValue)) {
+            $.RemoveForm({
+                url: "${ctx.contextPath}/yb/delHmd",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#gridTable").trigger("reloadGrid");
+                }
+            })
+        } else {
+            dialogMsg('请选择需要删除的数据行！', 0);
+        }
+    }
+    //详细
+    function btn_detail(keyValue) {
+        //var keyValue = $("#gridTable").jqGridRowValue("xh");
+        dialogOpen({
+            id: "Detail",
+            title: '灰名单月数据--详细信息',
+            url: "${ctx.contextPath}/yb/hmdForm?detail=1&keyValue="+keyValue,
+            width: "850px",
+            height: "650px",
+            btn: null
+        });
+    }
+    //数据锁定
+    function btn_lock(){
+    	var xhs = $('#gridTable').jqGridRowValue("xh");
+    	if(xhs.length<1 || xhs==','){//
+    		dialogMsg('请选择需要锁定的数据行！', 0);
+    		return;
+    	}//数据锁定
+    	$.ConfirmAjax({
+    		msg:"数据锁定后将无法修改，是否继续提交？",
+            url: "${ctx.contextPath}/yb/hmdLock",
+            param: { xhs: xhs },
+            success: function (data) {
+                $("#gridTable").trigger("reloadGrid");
+            }
+        });
+    }
+</script>
+
+<div class="titlePanel">
+    <div class="title-search">
+        <table>
+            <tr>
+               <td>查询条件</td>
+               <td style="padding-left: 10px;">
+                   <div class="ui-filter" style="width: 150px;">
+                       <div class="ui-filter-text">
+                           <strong id="SelectedStartTime"></strong> 至 <strong id="SelectedEndTime"></strong>
+                       </div>
+                       <div class="ui-filter-list" style="width: 300px;">
+                           <table class="form" id="filter-form">
+                           	<input id="orgId" type="hidden" class="form-control" value="">
+                               <tr>
+                                   <th class="formTitle">录入时间：</th>
+                                   <td class="formValue">
+                                       <div style="float: left; width: 45%;">
+                                           <input id="StartTime" readonly type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'%y-%M'})">
+                                       </div>
+                                       <div style="float: left; width: 10%; text-align: center;">至</div>
+                                       <div style="float: left; width: 45%;">
+                                           <input id="EndTime" readonly type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'%y-%M'})">
+                                       </div>
+                                   </td>
+                               </tr>
+                               <tr>
+                                   <td class="formTitle">站点：</td>
+                                   <td class="formValue">
+                                       <div id="deptId" type="selectTree" class="ui-select"></div>
+                                   </td>
+                               </tr>
+                               <tr>
+                                   <td class="formTitle">状态：</td>
+                                   <td class="formValue">
+                                       <select style="width:183px;" id="lock">
+                                       	<option value="">==全部==</option>
+                                       	<option value="1">未锁定</option>
+                                       	<option value="2">已锁定</option>
+                                       </select>
+                                   </td>
+                               </tr>
+                           </table>
+                           <div class="ui-filter-list-bottom">
+                               <a id="btn_Reset" class="btn btn-default">&nbsp;重&nbsp;&nbsp;置</a>
+                               <a id="btn_Search" class="btn btn-primary">&nbsp;查&nbsp;&nbsp;询</a>
+                           </div>
+                       </div>
+                   </div>
+               </td>
+               <td style="padding-left: 10px;">
+                   <div id="time_horizon" class="btn-group">
+                       <a class="btn btn-default" data-value="1">本月</a>
+                       <a class="btn btn-default active" data-value="2">本年</a>
+                   </div>
+               </td>
+           </tr>
+        </table>
+    </div>
+    <div class="toolbar">
+        <div class="btn-group">
+            <a id="b-ref" class="btn btn-default" onclick="reload();"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
+            <a id="b-add" class="btn btn-default" onclick="btn_add()"><i class="fa fa-plus"></i>&nbsp;新增</a>
+            <a id="b-edit" class="btn btn-default" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑</a>
+            <a id="b-delete" class="btn btn-default" onclick="btn_delete()"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+        </div>
+        <div class="btn-group">
+            <a id="b-lock" class="btn btn-default" onclick="btn_lock()"><i class="fa fa-lock"></i>&nbsp;数据锁定</a>
+        </div>
+        <script>$('.toolbar').authorizeButton()</script>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridTable"></table>
+    <div id="gridPager"></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.ReportMapper">
+  <!-- 年月 流量/费用 统计  -->
+  <select id="getLlfyData" parameterType="map" resultType="com.power.base.sys.entity.KeyValue">
+  	SELECT sum(crkllhj) AS id,sum(sfhj)AS name
+	FROM v_rcsj
+	WHERE YEAR(sfrq)= YEAR(NOW()) and zt>0
+	<if test="depts!=null">and sszd in (${depts})</if>
+	UNION ALL
+	SELECT sum(crkllhj) AS id,sum(sfhj)AS name
+	FROM v_rcsj 
+	WHERE YEAR(sfrq)= YEAR(NOW()) AND MONTH(sfrq)= MONTH(NOW()) and zt>0
+	<if test="depts!=null">and sszd in (${depts})</if> 
+  </select>
+  <!-- SELECT sum(crkllhj) AS id,sum(sfhj)AS name
+	FROM fx_rcsj
+	WHERE YEAR(sfrq)= YEAR(NOW()) and zt>0
+	<if test="depts!=null">and sszd in (${depts})</if>
+	UNION
+	SELECT sum(crkllhj) AS id,sum(sfhj)AS name
+	FROM fx_rcsj 
+	WHERE YEAR(sfrq)= YEAR(NOW()) AND MONTH(sfrq)= MONTH(NOW()) and zt>0
+	<if test="depts!=null">and sszd in (${depts})</if> 
+	
+	
+	
+	SELECT sum(b.crkllhj) AS id,sum(a.sfhj)AS name
+	FROM fx_rcsj a LEFT JOIN fx_rcclhz b ON a.sfrq = b.sfrq
+	WHERE YEAR(a.sfrq)= YEAR(NOW()) and a.zt>0 and b.zt>0
+	<if test="depts!=null">and sszd in (${depts})</if>
+		UNION
+	SELECT sum(b.crkllhj) AS id,sum(a.sfhj)AS name
+	FROM fx_rcsj a LEFT JOIN fx_rcclhz b ON a.sfrq = b.sfrq 
+	WHERE YEAR(a.sfrq)= YEAR(NOW()) AND MONTH(a.sfrq)= MONTH(NOW()) and a.zt>0 and b.zt>0-->
+  <!-- 银行缴款日报   数据已锁定 -->
+  <select id="getJkrbData" parameterType="map" resultType="com.power.report.entity.JkrbDataVO">
+  	SELECT dept.code as sfzdm,dept.fullname as zdmc,tt.* from (
+	SELECT sszd,date_format(sj.sfrq,'%Y-%m-%d') as sfrq,
+	CONCAT(date_format(sj.sjrq,'%Y%m月%d日'),CASE bz1 WHEN 104002 THEN '2班' ELSE '1班' END) as jfrq1,
+	CONCAT(date_format(sj.sjrq2,'%Y%m月%d日'),CASE bz2 WHEN 104002 THEN '2班' ELSE '1班' END) as jfrq2,
+	sj.yjje1,sj.sjje1,sj.ydxj1,
+	sj.yjje2,sj.sjje2,sj.ydxj2,sj.yjjehj,sj.sjjehj,sj.ydhj,
+	bz
+	from fx_yhsj sj
+	WHERE sj.zt>1 
+	<if test="st!=null and et==null">and substring(sfrq,1,length(#{st}))&gt;=#{st}</if>
+   	<if test="et!=null and st==null">and substring(sfrq,1,length(#{et}))&lt;=#{et}</if>
+   	<if test="st!=null and et!=null">and substring(sfrq,1,length(#{st})) between #{st} and #{et}</if>
+   	<if test="depts != null">and sszd in (${depts})</if>
+	) tt ,sys_department dept
+	WHERE tt.sszd = dept.departmentid
+	ORDER BY tt.sfrq,dept.sortcode
+  </select>
+  
+  <!-- 路段 客、货、免征车流量汇总   数据已锁定-->
+  <select id="getKhcllData" parameterType="map" resultType="com.power.report.entity.KhcllfyListVO">
+  	SELECT tt.nd,tt.yf,
+	GROUP_CONCAT(tt.fullname,":",tt.kc,"-",tt.hc,"-",tt.mzc) AS llhj
+	 FROM (
+	SELECT ld.sortcode,ld.fullname,YEAR(sj.sfrq) nd,MONTH(sj.sfrq) yf,SUM(kccrkhj) kc,SUM(hccrkhj) hc,SUM(mzcrkhj) mzc 
+	from sys_department ld,sys_department dept LEFT JOIN fx_rcsj sj ON sj.sszd = dept.departmentid
+	WHERE ld.departmentid = dept.parentid
+	AND ld.parentid=0
+	AND sj.zt>1
+	<if test="st!=null and et==null">and substring(sj.sfrq,1,length(#{st}))&gt;=#{st}</if>
+   	<if test="et!=null and st==null">and substring(sj.sfrq,1,length(#{et}))&lt;=#{et}</if>
+   	<if test="st!=null and et!=null">and substring(sj.sfrq,1,length(#{st})) between #{st} and #{et}</if>
+   	<if test="dt!=null">and date_format(sj.sfrq, '%Y%m')&lt;#{dt}</if>
+	GROUP BY ld.fullname,nd,yf
+	ORDER BY nd,yf,ld.sortcode
+	) tt
+	GROUP BY tt.nd,tt.yf
+	ORDER BY tt.nd,tt.yf
+  </select>
+  <!-- 路段 客、货、免征车 费用 汇总   数据已锁定-->
+  <select id="getKhcsrData" parameterType="map" resultType="com.power.report.entity.KhcllfyListVO">
+  	SELECT tt.nd,tt.yf,
+	GROUP_CONCAT(tt.fullname,":",tt.kcje,"-",tt.hcje) AS llhj
+	 FROM (
+	SELECT ld.sortcode,ld.fullname,YEAR(sj.sfrq) nd,MONTH(sj.sfrq) yf,SUM(kcsrzj) kcje,SUM(hcsrzj) hcje 
+	from sys_department ld,sys_department dept LEFT JOIN fx_rcsj sj ON sj.sszd = dept.departmentid
+	WHERE ld.departmentid = dept.parentid
+	AND ld.parentid=0
+	AND sj.zt>1
+	<if test="st!=null and et==null">and substring(sj.sfrq,1,length(#{st}))&gt;=#{st}</if>
+   	<if test="et!=null and st==null">and substring(sj.sfrq,1,length(#{et}))&lt;=#{et}</if>
+   	<if test="st!=null and et!=null">and substring(sj.sfrq,1,length(#{st})) between #{st} and #{et}</if>
+   	<if test="dt!=null">and date_format(sj.sfrq, '%Y%m')&lt;#{dt}</if>
+	GROUP BY ld.fullname,nd,yf
+	ORDER BY nd,yf,ld.sortcode
+	) tt
+	GROUP BY tt.nd,tt.yf
+	ORDER BY tt.nd,tt.yf
+  </select>
+  <!-- 绿通数据查询统计/ 本月/全部 流量/金额  数据已锁定 -->
+  <select id="getLtsjData" parameterType="map" resultType="com.power.common.entity.FxLtsj">
+	SELECT SUM(ltc1) ltc1,SUM(ltcje1) ltcje1,SUM(ltc2) ltc2,SUM(ltcje2) ltcje2,SUM(ltc3) ltc3,SUM(ltcje3) ltcje3,
+	SUM(ltc4) ltc4,SUM(ltcje4) ltcje4,SUM(ltc5) ltc5,SUM(ltcje5) ltcje5,SUM(ltc6) ltc6,SUM(ltcje6) ltcje6,SUM(ltchj) ltchj,SUM(ltcjehj) ltcjehj
+	from fx_ltsj 
+	WHERE zt >1
+	<if test="st!=null and et==null">and substring(sfrq,1,length(#{st}))&gt;=#{st}</if>
+   	<if test="et!=null and st==null">and substring(sfrq,1,length(#{et}))&lt;=#{et}</if>
+   	<if test="st!=null and et!=null">and substring(sfrq,1,length(#{st})) between #{st} and #{et}</if>
+   	<if test="depts!=null">and sszd in (${depts})</if>
+	UNION
+	SELECT SUM(ltc1) ltc1,SUM(ltcje1) ltcje1,SUM(ltc2) ltc2,SUM(ltcje2) ltcje2,SUM(ltc3) ltc3,SUM(ltcje3) ltcje3,
+	SUM(ltc4) ltc4,SUM(ltcje4) ltcje4,SUM(ltc5) ltc5,SUM(ltcje5) ltcje5,SUM(ltc6) ltc6,SUM(ltcje6) ltcje6,SUM(ltchj) ltchj,SUM(ltcjehj) ltcjehj
+	from fx_ltsj 
+	WHERE zt >1
+	<if test="depts!=null">and sszd in (${depts})</if>
+  </select>
+  
+  <!-- 绿通年月 流量/费用 统计  -->
+  <select id="getltmxbData" parameterType="map" resultType="com.power.report.entity.LtmxbDataVO">
+   <!-- 默认/选择处 数据已锁定 -->
+  	<if test="orgNature==102002">
+    SELECT ttt.fullName,GROUP_CONCAT(ttt.yf,':',ttt.bnljmzll,"-",ttt.bnljmzje) as hj FROM (
+	SELECT org.fullName,tt.yf, SUM(bnljmzll) AS bnljmzll,SUM(bnljmzje) AS  bnljmzje FROM
+	(
+	SELECT YEAR(sfrq) yf,sum(ltchj) AS bnljmzll,sum(ltcjehj)AS bnljmzje,sszd
+		FROM fx_ltsj
+		WHERE zt>1 AND YEAR(sfrq)=(#{preYear})
+	GROUP BY yf,sszd
+	UNION
+	SELECT date_format(sfrq,'%Y%m') yf,sum(ltchj) AS bymzll,sum(ltcjehj)AS bymzje,sszd
+		FROM fx_ltsj
+		WHERE zt>1 AND date_format(sfrq, '%Y%m') IN (#{month},#{preSt})
+	GROUP BY yf,sszd
+	UNION
+	SELECT 'all'as yf, sum(ltchj) AS bnljmzll,sum(ltcjehj)AS bnljmzje,sszd
+		FROM fx_ltsj
+		WHERE zt>1
+	GROUP BY yf,sszd
+		)tt ,sys_department dept,sys_organize org
+		WHERE tt.sszd = dept.departmentid
+		AND org.organizeid = dept.organizeid
+	GROUP BY org.organizeid,tt.yf)ttt
+	GROUP BY ttt.fullName</if>
+	 <!-- 选中心 数据已锁定 -->
+	<if test="orgNature==102001">
+	SELECT ttt.fullname,GROUP_CONCAT(ttt.yf,':',ttt.bnljmzll,"-",ttt.bnljmzje) as hj FROM(
+	SELECT ld.fullName,tt.yf,tt.sszd, SUM(bnljmzll) AS bnljmzll,SUM(bnljmzje) AS  bnljmzje FROM 
+	(
+	SELECT YEAR(sfrq) yf,sum(ltchj) AS bnljmzll,sum(ltcjehj)AS bnljmzje,sszd
+		FROM fx_ltsj
+		WHERE zt>1 AND YEAR(sfrq)=(#{preYear})
+	GROUP BY yf,sszd
+	UNION
+	SELECT date_format(sfrq,'%Y%m') yf,sum(ltchj) AS bymzll,sum(ltcjehj)AS bymzje,sszd
+		FROM fx_ltsj
+		WHERE zt>1 AND date_format(sfrq, '%Y%m') IN (#{month},#{preSt})
+	GROUP BY yf,sszd
+	UNION
+	SELECT 'all'as yf, sum(ltchj) AS bnljmzll,sum(ltcjehj)AS bnljmzje,sszd
+		FROM fx_ltsj
+		WHERE zt>1 
+	GROUP BY yf,sszd
+		)tt ,sys_department dept,sys_department ld
+		WHERE tt.sszd = dept.departmentid
+		AND dept.parentid = ld.departmentid
+	GROUP BY ld.departmentid,tt.yf)ttt
+		where ttt.sszd in (${depts})
+	GROUP BY ttt.fullName</if>
+	 <!-- 选路段/站 数据已锁定 -->
+	<if test="orgNature==103002 or orgNature==103001">
+	SELECT sszd,zdmc as fullName,GROUP_CONCAT(yf,':',tt.bnljmzll,"-",tt.bnljmzje) as hj FROM
+	(
+	SELECT YEAR(sfrq) yf,sum(ltchj) AS bnljmzll,sum(ltcjehj)AS bnljmzje,zdmc,sszd
+		FROM fx_ltsj
+		WHERE zt>1 AND YEAR(sfrq)=(#{preYear})
+	GROUP BY yf,zdmc
+	UNION
+	SELECT date_format(sfrq,'%Y%m') yf,sum(ltchj) AS bymzll,sum(ltcjehj)AS bymzje,zdmc,sszd
+		FROM fx_ltsj
+		WHERE zt>1 AND date_format(sfrq, '%Y%m') IN (#{month},#{preSt})
+	GROUP BY yf,zdmc
+	UNION
+	SELECT 'all'as yf, sum(ltchj) AS bnljmzll,sum(ltcjehj)AS bnljmzje,zdmc,sszd
+		FROM fx_ltsj
+		WHERE zt>1 
+	GROUP BY yf,zdmc
+		)tt
+		WHERE sszd in (${depts})
+	GROUP BY tt.sszd
+	</if>
+  </select>
+  <!-- 道路信息表  数据已锁定-->
+  <select id="getDlxxbData" parameterType="map" resultType="com.power.report.entity.DlxxbDataVO">
+  <!-- 选择默认/处  数据已锁定 -->
+  <if test="orgNature==102002">
+  	SELECT sszd,org.fullname as zdmc,SUM(t.crkllhj)AS crkllhj,SUM(t.gwcrhj)AS gwcrhj, SUM(t.jccrhj)AS jccrhj, SUM(t.jchecrhj)AS jchecrhj,SUM(t.mfcrhj)AS mfcrhj,SUM(t.cdhj)AS cdhj,SUM(t.cghj)AS cghj,SUM(ltc)AS ltc 
+		FROM fx_rcsj t,sys_department dept,sys_organize org
+		WHERE date_format(sfrq, '%Y%m') = (#{st}) and zt>1 and t.sszd = dept.departmentid
+		AND org.organizeid = dept.organizeid
+	GROUP BY org.organizeid
+  </if>
+  <!-- 选择中心 数据已锁定 -->
+  <if test="orgNature==102001">
+  	SELECT sszd,ld.fullname as zdmc,SUM(crkllhj)AS crkllhj,SUM(gwcrhj)AS gwcrhj, SUM(jccrhj)AS jccrhj, SUM(jchecrhj)AS jchecrhj,SUM(mfcrhj)AS mfcrhj,SUM(cdhj)AS cdhj,SUM(cghj)AS cghj,SUM(ltc)AS ltc
+		FROM fx_rcsj,sys_department dept,sys_department ld
+			where zt>1 and date_format(sfrq,'%Y%m') in (#{st})
+			and sszd = dept.departmentid
+			AND dept.parentid = ld.departmentid
+				<if test="depts!=null">and sszd in (${depts})</if>
+	GROUP BY ld.departmentid
+  </if>
+  <!-- 选路段/站 数据已锁定 -->
+	<if test="orgNature==103002 or orgNature==103001">
+  	SELECT sszd,zdmc,SUM(crkllhj)AS crkllhj,SUM(gwcrhj)AS gwcrhj, SUM(jccrhj)AS jccrhj, SUM(jchecrhj)AS jchecrhj,SUM(mfcrhj)AS mfcrhj,SUM(cdhj)AS cdhj,SUM(cghj)AS cghj,SUM(ltc)AS ltc 
+		FROM fx_rcsj
+		where zt>1 and date_format(sfrq,'%Y%m') in (#{st})
+			<if test="depts!=null">and sszd in (${depts})</if>
+	GROUP BY sszd
+  </if>
+  </select>
+        
+	<!-- 交通量月报 数据已锁定 -->
+	<select id="getjtlybData" parameterType="map" resultType="com.power.report.entity.JtlybVO">
+	<if test="orgNature==102002">
+	SELECT org.fullName,SUM(t.rkllzj) as yjtlr,SUM(t.ckllzj) as yjtlc,SUM(t.kcr1) as kcr1,SUM(t.kcc1) as kcc1,
+	SUM(t.kcr2) as kcr2,SUM(t.kcc2) as kcc2,SUM(t.kcr3) as kcr3,SUM(t.kcc3) as kcc3,SUM(t.kcr4) as kcr4,SUM(t.kcc4) as kcc4,
+	SUM(t.hcr1) as hcr1,SUM(t.hcc1) as hcc1,SUM(t.hcr2) as hcr2,SUM(t.hcc2) as hcc2,SUM(t.hcr3) as hcr3,SUM(t.hcc3) as hcc3,
+	SUM(t.hcr4) as hcr4,SUM(t.hcc4) as hcc4,SUM(t.hcr5) as hcr5,SUM(t.hcc5) as hcc5,SUM(t.hcr6) as hcr6,SUM(t.hcc6) as hcc6,
+	SUM(t.mzrkzj) as mzr,SUM(t.mzckzj) as mzc
+		FROM fx_rcsj t,sys_department dept,sys_organize org
+		WHERE date_format(sfrq, '%Y%m') = (#{st}) and zt>1 and t.sszd = dept.departmentid
+		AND org.organizeid = dept.organizeid
+	GROUP BY org.organizeid
+	</if>
+	<!-- 选中心 数据已锁定-->
+	<if test="orgNature==102001">
+	SELECT ld.fullname,SUM(t.rkllzj) as yjtlr,SUM(t.ckllzj) as yjtlc,SUM(t.kcr1) as kcr1,SUM(t.kcc1) as kcc1,
+	SUM(t.kcr2) as kcr2,SUM(t.kcc2) as kcc2,SUM(t.kcr3) as kcr3,SUM(t.kcc3) as kcc3,SUM(t.kcr4) as kcr4,SUM(t.kcc4) as kcc4,
+	SUM(t.hcr1) as hcr1,SUM(t.hcc1) as hcc1,SUM(t.hcr2) as hcr2,SUM(t.hcc2) as hcc2,SUM(t.hcr3) as hcr3,SUM(t.hcc3) as hcc3,
+	SUM(t.hcr4) as hcr4,SUM(t.hcc4) as hcc4,SUM(t.hcr5) as hcr5,SUM(t.hcc5) as hcc5,SUM(t.hcr6) as hcr6,SUM(t.hcc6) as hcc6,
+	SUM(t.mzrkzj) as mzr,SUM(t.mzckzj) as mzc
+		FROM fx_rcsj t ,sys_department dept,sys_department ld
+		WHERE date_format(sfrq, '%Y%m') = (#{st}) and t.sszd = dept.departmentid
+		AND dept.parentid = ld.departmentid
+		and zt>1
+	<if test="depts!=null">and sszd in (${depts})</if>
+	GROUP BY ld.departmentid
+	</if>
+	<!-- 选择路段/站 数据已锁定-->
+	<if test="orgNature==103002 or orgNature==103001">
+	SELECT t.zdmc as fullname,SUM(t.rkllzj) as yjtlr,SUM(t.ckllzj) as yjtlc,SUM(t.kcr1) as kcr1,SUM(t.kcc1) as kcc1,
+	SUM(t.kcr2) as kcr2,SUM(t.kcc2) as kcc2,SUM(t.kcr3) as kcr3,SUM(t.kcc3) as kcc3,SUM(t.kcr4) as kcr4,SUM(t.kcc4) as kcc4,
+	SUM(t.hcr1) as hcr1,SUM(t.hcc1) as hcc1,SUM(t.hcr2) as hcr2,SUM(t.hcc2) as hcc2,SUM(t.hcr3) as hcr3,SUM(t.hcc3) as hcc3,
+	SUM(t.hcr4) as hcr4,SUM(t.hcc4) as hcc4,SUM(t.hcr5) as hcr5,SUM(t.hcc5) as hcc5,SUM(t.hcr6) as hcr6,SUM(t.hcc6) as hcc6,
+		SUM(t.mzrkzj) as mzr,SUM(t.mzckzj) as mzc
+		FROM fx_rcsj t where date_format(sfrq, '%Y%m') = (#{st}) and zt>1
+	<if test="depts!=null">and sszd in (${depts})</if>
+	GROUP BY t.sszd
+	</if>
+ 	 </select>
+	 <select id="getCrkcllData" parameterType="map" resultType="com.power.report.entity.CrkcllDataVO">
+	<!-- 默认/选择处  数据已锁定-->
+	<if test="orgNature==102002">
+	select org.fullname as zdmc,SUM(kcr1)as kcr1,SUM(kcr2)as kcr2,SUM(kcr3)as kcr3,SUM(kcr4)as kcr4,
+	SUM(hcr1)as hcr1,SUM(hcr2)as hcr2,SUM(hcr3)as hcr3,SUM(hcr4)as hcr4,SUM(hcr5)as hcr5,SUM(hcr6)as hcr6,
+	SUM(kcc1)as kcc1,SUM(kcc2)as kcc2,SUM(kcc3)as kcc3,SUM(kcc4)as kcc4,
+	SUM(hcc1)as hcc1,SUM(hcc2)as hcc2,SUM(hcc3)as hcc3,SUM(hcc4)as hcc4,SUM(hcc5)as hcc5,SUM(hcc6)as hcc6,sszd
+		FROM fx_rcsj ,sys_department dept,sys_organize org
+		WHERE 
+		zt>1 and date_format(sfrq, '%Y%m') = (#{st}) 
+		and sszd = dept.departmentid
+		AND org.organizeid = dept.organizeid
+	GROUP BY org.organizeid
+	</if>
+	<!-- 选中心 数据已锁定-->
+	<if test="orgNature==102001">
+	select ld.fullname as zdmc,SUM(kcr1)as kcr1,SUM(kcr2)as kcr2,SUM(kcr3)as kcr3,SUM(kcr4)as kcr4,
+	SUM(hcr1)as hcr1,SUM(hcr2)as hcr2,SUM(hcr3)as hcr3,SUM(hcr4)as hcr4,SUM(hcr5)as hcr5,SUM(hcr6)as hcr6,
+	SUM(kcc1)as kcc1,SUM(kcc2)as kcc2,SUM(kcc3)as kcc3,SUM(kcc4)as kcc4,
+	SUM(hcc1)as hcc1,SUM(hcc2)as hcc2,SUM(hcc3)as hcc3,SUM(hcc4)as hcc4,SUM(hcc5)as hcc5,SUM(hcc6)as hcc6,sszd
+		FROM fx_rcsj ,sys_department dept,sys_department ld
+		WHERE zt>1 and date_format(sfrq, '%Y%m') = (#{st}) 
+		and sszd = dept.departmentid
+		AND dept.parentid = ld.departmentid
+	<if test="depts!=null">and sszd in (${depts})</if>
+	GROUP BY ld.departmentid
+	</if>
+	<!-- 选择路段/站  数据已锁定-->
+	<if test="orgNature==103002 or orgNature==103001">
+	select SUM(kcr1)as kcr1,SUM(kcr2)as kcr2,SUM(kcr3)as kcr3,SUM(kcr4)as kcr4,
+	SUM(hcr1)as hcr1,SUM(hcr2)as hcr2,SUM(hcr3)as hcr3,SUM(hcr4)as hcr4,SUM(hcr5)as hcr5,SUM(hcr6)as hcr6,
+	SUM(kcc1)as kcc1,SUM(kcc2)as kcc2,SUM(kcc3)as kcc3,SUM(kcc4)as kcc4,
+	SUM(hcc1)as hcc1,SUM(hcc2)as hcc2,SUM(hcc3)as hcc3,SUM(hcc4)as hcc4,SUM(hcc5)as hcc5,SUM(hcc6)as hcc6,sszd ,zdmc
+		FROM fx_rcsj
+		where zt>1 and date_format(sfrq, '%Y%m') = (#{st})
+	<if test="depts!=null">and sszd in (${depts})</if>
+	GROUP BY sszd
+	</if>
+  </select>
+ 
+<!-- 通行费收入月报表 -->
+ <resultMap id="BaseResultMap" type="com.power.report.entity.TxfsrVO" >
+ 	<result column="mc" property="fullname" jdbcType="VARCHAR" />
+ 	<result column="f" property="flag" jdbcType="INTEGER" />
+ 	<result column="cqsr" property="cqsr" jdbcType="DECIMAL" />
+ 	<result column="chsr" property="chsr" jdbcType="DECIMAL" />
+ 	<result column="sqchsr" property="sychsr" jdbcType="DECIMAL" />
+ 	<result column="tqchsr" property="qnchsr" jdbcType="DECIMAL" />
+ 	<result column="bnchsr" property="bnljchsr" jdbcType="DECIMAL" />
+ </resultMap>
+ <select id="gettxfsrData" resultMap="BaseResultMap"  parameterType="map" statementType="CALLABLE">
+ 	{call p_chsr_all(#{yearMonth,mode=IN,jdbcType=VARCHAR},#{year,mode=IN,jdbcType=INTEGER},#{preMonth,mode=IN,jdbcType=VARCHAR},#{preYearMonth,mode=IN,jdbcType=VARCHAR})}
+ </select>
+	<!-- 超载计重收入明细表 数据已锁定 -->
+  <select id="getCzjzbData" parameterType="map" resultType="com.power.report.entity.CzjzbDataVO">
+	SELECT ttt.zdmc,GROUP_CONCAT(ttt.yf,':',ttt.chjzjsje) as hj FROM (
+	SELECT  tt.zdmc,tt.yf,  SUM(tt.chjzjsje)as chjzjsje FROM
+	(
+	SELECT YEAR(sfrq) yf, zdmc, SUM(chjzjsje)as chjzjsje ,ldmc,sszd
+	from fx_chsjyb
+	WHERE zt>1 AND YEAR(sfrq) = #{year}
+	GROUP BY ldmc,yf
+	UNION
+	SELECT date_format(sfrq,'%Y%m') yf,zdmc, SUM(chjzjsje)as jzjs ,ldmc,sszd
+	from fx_chsjyb
+	WHERE zt>1 AND date_format(sfrq, '%Y%m') IN (#{yearMonth},#{preMonth},#{preYearMonth}) 
+	GROUP BY ldmc,yf
+	)tt
+	GROUP BY zdmc,tt.yf)ttt
+	GROUP BY zdmc
+  </select>
+  <!-- 通行费收入及票据月报表 -->
+  <select id="getTxfsrpjData" parameterType="map" resultType="com.power.report.entity.TxfsrpjVO">
+	SELECT ttt.sszd,ttt.zdmc as fullName,GROUP_CONCAT(yf,':',ttt.xjhj,"-",ttt.jsk,"-",ttt.ck,"-",ttt.jzsr,"-",ttt.etccq) as hj FROM(
+	SELECT tt.yf,tt.sszd,tt.zdmc,SUM(xjhj)AS xjhj,SUM(jsk)AS jsk,SUM(ck)AS ck,SUM(jzsr)AS jzsr,SUM(etccq)AS etccq FROM
+	(
+	SELECT YEAR(sfrq) yf,zdmc,sszd, SUM(xjhj)AS xjhj ,SUM(jsk)AS jsk,SUM(ck)AS ck,SUM(jzsr)AS jzsr,SUM(etccq)AS etccq
+		from fx_rcsj
+		where zt>1 and YEAR(sfrq) = #{year} 
+		<if test="depts!=null">and sszd in (${depts})</if>
+	GROUP BY yf,zdmc
+	UNION 
+ 	SELECT date_format(sfrq,'%Y%m') yf,zdmc,sszd, SUM(xjhj)AS xjhj ,SUM(jsk)AS jsk,SUM(ck)AS ck,SUM(jzsr)AS jzsr,SUM(etccq)AS etccq
+		from fx_rcsj
+		where zt>1 and date_format(sfrq,'%Y%m') in (#{yearMonth})
+		<if test="depts!=null">and sszd in (${depts})</if>
+	GROUP BY yf,zdmc
+	UNION
+	SELECT 'all'AS yf,zdmc,sszd, SUM(xjhj)AS xjhj ,SUM(jsk)AS jsk,SUM(ck)AS ck,SUM(jzsr)AS jzsr,SUM(etccq)AS etccq
+		from fx_rcsj
+		where zt>1 
+		<if test="depts!=null">and sszd in (${depts})</if>
+	GROUP BY yf,zdmc)tt
+	GROUP BY tt.yf)ttt
+	GROUP BY ttt.sszd
+  </select>
+  <!-- 绿通5日报 -->
+  <select id="getLtmstxfData" parameterType="map" resultType="com.power.report.entity.LtmstxfVO">
+	SELECT GROUP_CONCAT(tt.zdmc,':',tt.je,"-",tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(ltcjehj) as je,SUM(ltchj) as ll from fx_ltsj
+	WHERE zt>1 and date_format(sfrq,'%Y%m%d') BETWEEN ${StartTime} and ${EndTime}
+	GROUP BY zdmc)tt
+  </select>
+  <!-- 绿通5日报本月 -->
+   <select id="getLtmstxfbnData" parameterType="map" resultType="com.power.report.entity.LtmstxfVO">
+    SELECT GROUP_CONCAT(tt.zdmc,':',tt.je,"-",tt.ll) as hj
+	FROM
+	(SELECT  zdmc,SUM(ltcjehj) as je,SUM(ltchj) as ll from fx_ltsj
+	WHERE zt>1 and YEAR(sfrq) = #{year} 
+	GROUP BY zdmc)tt
+   </select>
+   <!-- 绿通5日报本年 -->
+    <select id="getLtmstxfbyData" parameterType="map" resultType="com.power.report.entity.LtmstxfVO">
+   SELECT GROUP_CONCAT(tt.zdmc,':',tt.je,"-",tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(ltcjehj) as je,SUM(ltchj) as ll from fx_ltsj
+	WHERE zt>1 and date_format(sfrq,'%Y%m') in (#{yearMonth})
+	GROUP BY zdmc)tt
+   
+   </select>
+   <!-- 绿通5日报 自开通-->
+    <select id="getLtmstxfzktData" parameterType="map" resultType="com.power.report.entity.LtmstxfVO">
+    SELECT GROUP_CONCAT(tt.zdmc,':',tt.je,"-",tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(ltcjehj) as je,SUM(ltchj) as ll from fx_ltsj
+	WHERE zt>1 
+	GROUP BY zdmc)tt
+   </select>
+   <!-- 通行费流量排名表-->
+    <select id="getJellpmData" parameterType="map" resultType="com.power.report.entity.JellpmDataVO">
+    SELECT GROUP_CONCAT(tt.zdmc,':',tt.je,"-",tt.ll) as hj
+	FROM
+	(SELECT zdmc,SUM(ltcjehj) as je,SUM(ltchj) as ll from fx_ltsj
+	WHERE zt>1 
+	GROUP BY zdmc)tt
+   </select>
+  
+   <!-- 阶段性免征流量表-->
+    <select id="getJdxmzData" parameterType="map" resultType="com.power.report.entity.JdxmzDataVO">
+SELECT 
+depa.fullname AS zdmc,
+IFNULL(t2.clr,0) AS rk,
+CONCAT(ROUND(IFNULL((IFNULL(t2.clr,0)-IFNULL(t1.clr,0))/IFNULL(t1.clr,0)*100,0),2),'%') AS rkhb,
+IFNULL(t2.clc,0) AS ck,
+CONCAT(ROUND(IFNULL((t2.clc-t1.clc)/IFNULL(t1.clc,0)*100,0),2),'%') AS ckhb,
+IFNULL(t2.clhj,0) AS crk,
+CONCAT(ROUND(IFNULL((IFNULL(t2.clhj,0)-IFNULL(t1.clhj,0))/IFNULL(t1.clhj,0)*100,0),2),'%') AS crkhb 
+FROM (SELECT dep.fullname from sys_department dep where LENGTH(dep.code) = 5 and dep.organizeid = '64ea2da703594effa3ffe1e764c9b924' ORDER BY dep.code) depa
+LEFT JOIN (SELECT * from fx_jdxmz WHERE sfrq = DATE_SUB(str_to_date(#{st},'%Y-%m-%d'),INTERVAL 1 DAY)) t1 ON depa.fullname = t1.zdmc AND t1.bz = #{mzsj} AND t1.zt>1
+LEFT JOIN (SELECT *  from fx_jdxmz WHERE sfrq = str_to_date(#{st},'%Y-%m-%d')) t2 ON depa.fullname = t2.zdmc AND t2.bz = #{mzsj} AND t2.zt>1
+UNION ALL
+SELECT 
+'洛栾段小计',
+SUM(IFNULL(t2.clr,0)) AS rk,
+CONCAT(SUM(ROUND(IFNULL((IFNULL(t2.clr,0)-IFNULL(t1.clr,0))/IFNULL(t1.clr,0)*100,0),2)),'%') AS rkhb,
+SUM(IFNULL(t2.clc,0)) AS ck,
+CONCAT(SUM(ROUND(IFNULL((IFNULL(t2.clc,0)-IFNULL(t1.clc,0))/IFNULL(t1.clc,0)*100,0),2)),'%') AS ckhb,
+SUM(IFNULL(t2.clhj,0)) AS crk,
+CONCAT(SUM(ROUND(IFNULL((IFNULL(t2.clhj,0)-IFNULL(t1.clhj,0))/IFNULL(t1.clhj,0)*100,0),2)),'%') AS crkhb 
+FROM (SELECT dep.fullname from sys_department dep where LENGTH(dep.code) = 5 and dep.organizeid = '64ea2da703594effa3ffe1e764c9b924' ORDER BY dep.code) depa
+LEFT JOIN (SELECT * from fx_jdxmz WHERE sfrq = DATE_SUB(str_to_date(#{st},'%Y-%m-%d'),INTERVAL 1 DAY)) t1 ON depa.fullname = t1.zdmc AND t1.bz = #{mzsj} AND t1.zt>1
+LEFT JOIN (SELECT *  from fx_jdxmz WHERE sfrq = str_to_date(#{st},'%Y-%m-%d')) t2 ON depa.fullname = t2.zdmc AND t2.bz = #{mzsj} AND t2.zt>1
+UNION ALL
+SELECT 
+depa.fullname AS zdmc,
+IFNULL(t2.clr,0) AS rk,
+CONCAT(ROUND(IFNULL((t2.clr-t1.clr)/IFNULL(t1.clr,0)*100,0),2),'%') AS rkhb,
+IFNULL(t2.clc,0) AS ck,
+CONCAT(ROUND(IFNULL((t2.clc-t1.clc)/IFNULL(t1.clc,0)*100,0),2),'%') AS ckhb,
+IFNULL(t2.clhj,0) AS crk,
+CONCAT(ROUND(IFNULL((t2.clhj-t1.clhj)/IFNULL(t1.clhj,0)*100,0),2),'%') AS crkhb
+FROM (SELECT dep.fullname from sys_department dep where LENGTH(dep.code) = 5 and dep.organizeid = '728126e40163413994ad525f3f3892a4' ORDER BY dep.code) depa
+LEFT JOIN (SELECT * from fx_jdxmz WHERE sfrq = DATE_SUB(str_to_date(#{st},'%Y-%m-%d'),INTERVAL 1 DAY)) t1 ON depa.fullname = t1.zdmc AND t1.bz = #{mzsj} AND t1.zt>1
+LEFT JOIN (SELECT *  from fx_jdxmz WHERE sfrq = str_to_date(#{st},'%Y-%m-%d')) t2 ON depa.fullname = t2.zdmc AND t2.bz = #{mzsj} AND t2.zt>1
+UNION ALL
+SELECT 
+'洛卢段小计',
+SUM(IFNULL(t2.clr,0)) AS rk,
+CONCAT(SUM(ROUND(IFNULL((IFNULL(t2.clr,0)-IFNULL(t1.clr,0))/IFNULL(t1.clr,0)*100,0),2)),'%') AS rkhb,
+SUM(IFNULL(t2.clc,0)) AS ck,
+CONCAT(SUM(ROUND(IFNULL((IFNULL(t2.clc,0)-IFNULL(t1.clc,0))/IFNULL(t1.clc,0)*100,0),2)),'%') AS ckhb,
+SUM(IFNULL(t2.clhj,0)) AS crk,
+CONCAT(SUM(ROUND(IFNULL((IFNULL(t2.clhj,0)-IFNULL(t1.clhj,0))/IFNULL(t1.clhj,0)*100,0),2)),'%') AS crkhb
+FROM (SELECT dep.fullname from sys_department dep where LENGTH(dep.code) = 5 and dep.organizeid = '728126e40163413994ad525f3f3892a4' ORDER BY dep.code) depa
+LEFT JOIN (SELECT * from fx_jdxmz WHERE sfrq = DATE_SUB(str_to_date(#{st},'%Y-%m-%d'),INTERVAL 1 DAY)) t1 ON depa.fullname = t1.zdmc AND t1.bz = #{mzsj} AND t1.zt>1
+LEFT JOIN (SELECT *  from fx_jdxmz WHERE sfrq = str_to_date(#{st},'%Y-%m-%d')) t2 ON depa.fullname = t2.zdmc AND t2.bz = #{mzsj} AND t2.zt>1
+UNION ALL
+SELECT 
+'合计',
+SUM(IFNULL(t2.clr,0)) AS rk,
+CONCAT(SUM(ROUND(IFNULL((IFNULL(t2.clr,0)-IFNULL(t1.clr,0))/IFNULL(t1.clr,0)*100,0),2)),'%') AS rkhb,
+SUM(IFNULL(t2.clc,0)) AS ck,
+CONCAT(SUM(ROUND(IFNULL((IFNULL(t2.clc,0)-IFNULL(t1.clc,0))/IFNULL(t1.clc,0)*100,0),2)),'%') AS ckhb,
+SUM(IFNULL(t2.clhj,0)) AS crk,
+CONCAT(SUM(ROUND(IFNULL((IFNULL(t2.clhj,0)-IFNULL(t1.clhj,0))/IFNULL(t1.clhj,0)*100,0),2)),'%') AS crkhb
+FROM (SELECT dep.fullname from sys_department dep where LENGTH(dep.code) = 5  ORDER BY dep.code) depa
+LEFT JOIN (SELECT * from fx_jdxmz WHERE sfrq = DATE_SUB(str_to_date(#{st},'%Y-%m-%d'),INTERVAL 1 DAY)) t1 ON depa.fullname = t1.zdmc AND t1.bz = #{mzsj} AND t1.zt>1
+LEFT JOIN (SELECT *  from fx_jdxmz WHERE sfrq = str_to_date(#{st},'%Y-%m-%d')) t2 ON depa.fullname = t2.zdmc AND t2.bz = #{mzsj} AND t2.zt>1
+
+    
+    </select>
+</mapper>

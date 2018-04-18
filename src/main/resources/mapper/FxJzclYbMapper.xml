@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.FxJzclYbMapper" >
+  <resultMap id="BaseResultMap" type="com.power.common.entity.FxJzclYb" >
+    <id column="xh" property="xh" jdbcType="BIGINT" />
+    <result column="sszd" property="sszd" jdbcType="VARCHAR" />
+    <result column="zdmc" property="zdmc" jdbcType="VARCHAR" />
+    <result column="zdzz" property="zdzz" jdbcType="VARCHAR" />
+    <result column="zt" property="zt" jdbcType="INTEGER" />
+    <result column="bz" property="bz" jdbcType="VARCHAR" />
+    <result column="sfrq" property="sfrq" jdbcType="TIMESTAMP" />
+    <result column="lryxh" property="lryxh" jdbcType="VARCHAR" />
+    <result column="lrymc" property="lrymc" jdbcType="VARCHAR" />
+    <result column="lrsj" property="lrsj" jdbcType="TIMESTAMP" />
+    <result column="jzclsrhj" property="jzclsrhj" jdbcType="DECIMAL" />
+    <result column="qzczsrhj" property="qzczsrhj" jdbcType="DECIMAL" />
+    <result column="jzclckhj" property="jzclckhj" jdbcType="INTEGER" />
+    <result column="zzlc1" property="zzlc1" jdbcType="INTEGER" />
+    <result column="zzlsr1" property="zzlsr1" jdbcType="DECIMAL" />
+    <result column="zzlc2" property="zzlc2" jdbcType="INTEGER" />
+    <result column="zzlsr2" property="zzlsr2" jdbcType="DECIMAL" />
+    <result column="zzlczsr2" property="zzlczsr2" jdbcType="DECIMAL" />
+    <result column="zzlc3" property="zzlc3" jdbcType="INTEGER" />
+    <result column="zzlsr3" property="zzlsr3" jdbcType="DECIMAL" />
+    <result column="zzlczsr3" property="zzlczsr3" jdbcType="DECIMAL" />
+    <result column="zzlc4" property="zzlc4" jdbcType="INTEGER" />
+    <result column="zzlsr4" property="zzlsr4" jdbcType="DECIMAL" />
+    <result column="zzlczsr4" property="zzlczsr4" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    xh, sszd, zdmc, zdzz, zt, bz, sfrq, lryxh, lrymc, lrsj, jzclsrhj, qzczsrhj, jzclckhj, 
+    zzlc1, zzlsr1, zzlc2, zzlsr2, zzlczsr2, zzlc3, zzlsr3, zzlczsr3, zzlc4, zzlsr4, zzlczsr4
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from fx_jzclyb
+    where xh = #{xh,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from fx_jzclyb
+    where xh = #{xh,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.FxJzclYb" >
+   <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_jzclyb ( sszd, zdmc, 
+      zdzz, zt, bz, sfrq, 
+      lryxh, lrymc, lrsj, 
+      jzclsrhj, qzczsrhj, jzclckhj, 
+      zzlc1, zzlsr1, zzlc2, 
+      zzlsr2, zzlczsr2, zzlc3, 
+      zzlsr3, zzlczsr3, zzlc4, 
+      zzlsr4, zzlczsr4)
+    values ( #{sszd,jdbcType=VARCHAR}, #{zdmc,jdbcType=VARCHAR}, 
+      #{zdzz,jdbcType=VARCHAR}, #{zt,jdbcType=INTEGER}, #{bz,jdbcType=VARCHAR}, #{sfrq,jdbcType=TIMESTAMP}, 
+      #{lryxh,jdbcType=VARCHAR}, #{lrymc,jdbcType=VARCHAR}, #{lrsj,jdbcType=TIMESTAMP}, 
+      #{jzclsrhj,jdbcType=DECIMAL}, #{qzczsrhj,jdbcType=DECIMAL}, #{jzclckhj,jdbcType=INTEGER}, 
+      #{zzlc1,jdbcType=INTEGER}, #{zzlsr1,jdbcType=DECIMAL}, #{zzlc2,jdbcType=INTEGER}, 
+      #{zzlsr2,jdbcType=DECIMAL}, #{zzlczsr2,jdbcType=DECIMAL}, #{zzlc3,jdbcType=INTEGER}, 
+      #{zzlsr3,jdbcType=DECIMAL}, #{zzlczsr3,jdbcType=DECIMAL}, #{zzlc4,jdbcType=INTEGER}, 
+      #{zzlsr4,jdbcType=DECIMAL}, #{zzlczsr4,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.FxJzclYb" >
+   <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_jzclyb
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sszd != null" >
+        sszd,
+      </if>
+      <if test="zdmc != null" >
+        zdmc,
+      </if>
+      <if test="zdzz != null" >
+        zdzz,
+      </if>
+      <if test="zt != null" >
+        zt,
+      </if>
+      <if test="bz != null" >
+        bz,
+      </if>
+      <if test="sfrq != null" >
+        sfrq,
+      </if>
+      <if test="lryxh != null" >
+        lryxh,
+      </if>
+      <if test="lrymc != null" >
+        lrymc,
+      </if>
+      <if test="lrsj != null" >
+        lrsj,
+      </if>
+      <if test="jzclsrhj != null" >
+        jzclsrhj,
+      </if>
+      <if test="qzczsrhj != null" >
+        qzczsrhj,
+      </if>
+      <if test="jzclckhj != null" >
+        jzclckhj,
+      </if>
+      <if test="zzlc1 != null" >
+        zzlc1,
+      </if>
+      <if test="zzlsr1 != null" >
+        zzlsr1,
+      </if>
+      <if test="zzlc2 != null" >
+        zzlc2,
+      </if>
+      <if test="zzlsr2 != null" >
+        zzlsr2,
+      </if>
+      <if test="zzlczsr2 != null" >
+        zzlczsr2,
+      </if>
+      <if test="zzlc3 != null" >
+        zzlc3,
+      </if>
+      <if test="zzlsr3 != null" >
+        zzlsr3,
+      </if>
+      <if test="zzlczsr3 != null" >
+        zzlczsr3,
+      </if>
+      <if test="zzlc4 != null" >
+        zzlc4,
+      </if>
+      <if test="zzlsr4 != null" >
+        zzlsr4,
+      </if>
+      <if test="zzlczsr4 != null" >
+        zzlczsr4,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sszd != null" >
+        #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null" >
+        #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null" >
+        #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null" >
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null" >
+        #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null" >
+        #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null" >
+        #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null" >
+        #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jzclsrhj != null" >
+        #{jzclsrhj,jdbcType=DECIMAL},
+      </if>
+      <if test="qzczsrhj != null" >
+        #{qzczsrhj,jdbcType=DECIMAL},
+      </if>
+      <if test="jzclckhj != null" >
+        #{jzclckhj,jdbcType=INTEGER},
+      </if>
+      <if test="zzlc1 != null" >
+        #{zzlc1,jdbcType=INTEGER},
+      </if>
+      <if test="zzlsr1 != null" >
+        #{zzlsr1,jdbcType=DECIMAL},
+      </if>
+      <if test="zzlc2 != null" >
+        #{zzlc2,jdbcType=INTEGER},
+      </if>
+      <if test="zzlsr2 != null" >
+        #{zzlsr2,jdbcType=DECIMAL},
+      </if>
+      <if test="zzlczsr2 != null" >
+        #{zzlczsr2,jdbcType=DECIMAL},
+      </if>
+      <if test="zzlc3 != null" >
+        #{zzlc3,jdbcType=INTEGER},
+      </if>
+      <if test="zzlsr3 != null" >
+        #{zzlsr3,jdbcType=DECIMAL},
+      </if>
+      <if test="zzlczsr3 != null" >
+        #{zzlczsr3,jdbcType=DECIMAL},
+      </if>
+      <if test="zzlc4 != null" >
+        #{zzlc4,jdbcType=INTEGER},
+      </if>
+      <if test="zzlsr4 != null" >
+        #{zzlsr4,jdbcType=DECIMAL},
+      </if>
+      <if test="zzlczsr4 != null" >
+        #{zzlczsr4,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.FxJzclYb" >
+    update fx_jzclyb
+    <set >
+      <if test="sszd != null" >
+        sszd = #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null" >
+        zdmc = #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null" >
+        zdzz = #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        zt = #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null" >
+        bz = #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null" >
+        sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null" >
+        lryxh = #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null" >
+        lrymc = #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null" >
+        lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jzclsrhj != null" >
+        jzclsrhj = #{jzclsrhj,jdbcType=DECIMAL},
+      </if>
+      <if test="qzczsrhj != null" >
+        qzczsrhj = #{qzczsrhj,jdbcType=DECIMAL},
+      </if>
+      <if test="jzclckhj != null" >
+        jzclckhj = #{jzclckhj,jdbcType=INTEGER},
+      </if>
+      <if test="zzlc1 != null" >
+        zzlc1 = #{zzlc1,jdbcType=INTEGER},
+      </if>
+      <if test="zzlsr1 != null" >
+        zzlsr1 = #{zzlsr1,jdbcType=DECIMAL},
+      </if>
+      <if test="zzlc2 != null" >
+        zzlc2 = #{zzlc2,jdbcType=INTEGER},
+      </if>
+      <if test="zzlsr2 != null" >
+        zzlsr2 = #{zzlsr2,jdbcType=DECIMAL},
+      </if>
+      <if test="zzlczsr2 != null" >
+        zzlczsr2 = #{zzlczsr2,jdbcType=DECIMAL},
+      </if>
+      <if test="zzlc3 != null" >
+        zzlc3 = #{zzlc3,jdbcType=INTEGER},
+      </if>
+      <if test="zzlsr3 != null" >
+        zzlsr3 = #{zzlsr3,jdbcType=DECIMAL},
+      </if>
+      <if test="zzlczsr3 != null" >
+        zzlczsr3 = #{zzlczsr3,jdbcType=DECIMAL},
+      </if>
+      <if test="zzlc4 != null" >
+        zzlc4 = #{zzlc4,jdbcType=INTEGER},
+      </if>
+      <if test="zzlsr4 != null" >
+        zzlsr4 = #{zzlsr4,jdbcType=DECIMAL},
+      </if>
+      <if test="zzlczsr4 != null" >
+        zzlczsr4 = #{zzlczsr4,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.FxJzclYb" >
+    update fx_jzclyb
+    set sszd = #{sszd,jdbcType=VARCHAR},
+      zdmc = #{zdmc,jdbcType=VARCHAR},
+      zdzz = #{zdzz,jdbcType=VARCHAR},
+      zt = #{zt,jdbcType=INTEGER},
+      bz = #{bz,jdbcType=VARCHAR},
+      sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      lryxh = #{lryxh,jdbcType=VARCHAR},
+      lrymc = #{lrymc,jdbcType=VARCHAR},
+      lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      jzclsrhj = #{jzclsrhj,jdbcType=DECIMAL},
+      qzczsrhj = #{qzczsrhj,jdbcType=DECIMAL},
+      jzclckhj = #{jzclckhj,jdbcType=INTEGER},
+      zzlc1 = #{zzlc1,jdbcType=INTEGER},
+      zzlsr1 = #{zzlsr1,jdbcType=DECIMAL},
+      zzlc2 = #{zzlc2,jdbcType=INTEGER},
+      zzlsr2 = #{zzlsr2,jdbcType=DECIMAL},
+      zzlczsr2 = #{zzlczsr2,jdbcType=DECIMAL},
+      zzlc3 = #{zzlc3,jdbcType=INTEGER},
+      zzlsr3 = #{zzlsr3,jdbcType=DECIMAL},
+      zzlczsr3 = #{zzlczsr3,jdbcType=DECIMAL},
+      zzlc4 = #{zzlc4,jdbcType=INTEGER},
+      zzlsr4 = #{zzlsr4,jdbcType=DECIMAL},
+      zzlczsr4 = #{zzlczsr4,jdbcType=DECIMAL}
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  
+  <!-- getJzclYbData -->
+  <select id="getJzclYbData" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fx_jzclyb LEFT JOIN sys_department dept on sszd = dept.departmentid
+    <where>
+	   	<if test="lock !=null">and zt = #{lock} </if>
+	   	<if test="st!=null and et==null">and substring(sfrq,1,length(#{st}))&gt;=#{st}</if>
+	   	<if test="et!=null and st==null">and substring(sfrq,1,length(#{et}))&lt;=#{et}</if>
+	   	<if test="st!=null and et!=null">and substring(sfrq,1,length(#{st})) between #{st} and #{et}</if>
+	   	<if test="lrymc!=null">and lrymc like concat('%',#{lrymc},'%')</if>
+	   	<if test="zdzz!=null">and zdzz like concat('%',#{zdzz},'%')</if>
+	   	<if test="depts != null">and sszd in (${depts})</if>
+   	</where>
+   		<if test="order != null">order by ${order}</if>
+   	<if test="order == null">order by sfrq desc </if>
+   	,dept.sortcode asc
+  </select>
+  <!-- getCanDel -->
+  <select id="getCanDel" parameterType="map" resultType="int">
+  	SELECT count(*) FROM fx_jzclyb where zt = 1
+  	<if test="sfrq!=null">and substring(sfrq,1,length(#{sfrq}))=#{sfrq}</if>
+  	<if test="xh!=null">and xh!=#{xh}</if>
+  	<if test="sszd!=null">and sszd = #{sszd}</if>
+  </select>
+  
+</mapper>

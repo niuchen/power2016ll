@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd"
+	default-lazy-init="true">
+	<!--配置文件读入 ,多个用逗号隔开 -->
+	<context:property-placeholder location="classpath:/app.properties" />
+	<bean id="druid" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${mysql.jdbc.driverClassName}"/>
+	    <property name="url" value="${mysql.jdbc.url}" />
+	    <property name="username" value="${mysql.jdbc.username}" />
+	    <property name="password" value="${mysql.jdbc.password}" />
+	    <property name="initialSize" value="1" />
+	    <property name="maxActive" value="20" />
+	</bean>
+	<!-- 数据连接事务 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="druid" />
+	</bean>
+	<!-- SqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="druid" />
+		<property name="configLocation" value="classpath:/config/mybatis-config.xml"/>
+		<property name="typeAliasesPackage" value="com.power.common.entity"/>
+	</bean>
+	<!-- 采用spring与mybatis整合的第二种方法 -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0"  ref="sqlSessionFactory" />
+	</bean>
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="new*" />
+            <tx:method name="edit*" />
+            <tx:method name="del*"/>
+            <tx:method name="*" read-only="true"  />
+        </tx:attributes>
+    </tx:advice>
+    
+    <aop:config>
+    	<aop:advisor pointcut="execution(* com.power..service..* (..))" advice-ref="txAdvice"/>
+	</aop:config>
+	
+	<!-- 自动搜索@Component , @Service , @Repository等标注的类 不搜索@Controller的类 -->
+	<context:component-scan base-package="com.power" annotation-config="true">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	
+	<!-- 启用缓存 -->
+	<cache:annotation-driven cache-manager="springCacheManager" proxy-target-class="false"/>
+	<!-- 缓存配置 -->
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:/config/ehcache-app.xml" />
+	</bean>
+	<bean id="springCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+		<property name="cacheManager" ref="cacheManager"/>
+	</bean>
+	
+	<!-- shiro -->
+	<import resource="spring-shiro.xml"/>
+</beans>

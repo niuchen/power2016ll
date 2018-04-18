@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html><head>
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>我的桌面</title>
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+    <link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+    <script type="text/javascript" src="${ctx.contextPath}/res/echarts/echarts.min.js"></script>
+    <script type="text/javascript" src="${ctx.contextPath}/res/echarts/shine.min.js"></script>
+	
+</head>
+<body>
+    <div class="border" id="desktop" style="margin: 10px 10px 0px; overflow: auto; height: 533px; background: rgb(255, 255, 255);">
+        <div class="portal-panel">
+            <div class="row">
+                <div class="portal-panel-title">
+                    <i class="fa fa-balance-scale"></i>${title}&nbsp;统计指标
+                </div>
+                <div class="portal-panel-content" style="margin-top: 15px; overflow: hidden;">
+                    <div class="row">
+                        <div style="width: 20%; position: relative; float: left;">
+                            <div class="task-stat" style="background-color: #578ebe;">
+                                <div class="visual">
+                                    <i class="fa fa-pie-chart"></i>
+                                </div>
+                                <div class="details">
+                                    <div class="number" id="byljzs">0</div>
+                                    <div class="desc">本月累计征收</div>
+                                </div>
+                                <a class="more" style="background-color: #4884b8;" href="javascript:;" onclick="OpenNav(&#39;66f6301c-1789-4525-a7d2-2b83272aafa6&#39;)"> <i class="fa fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div style="width: 20%; position: relative; float: left;">
+                            <div class="task-stat" style="background-color: #e35b5a;">
+                                <div class="visual">
+                                    <i class="fa fa-bar-chart-o"></i>
+                                </div>
+                                <div class="details">
+                                	<div class="number" id="bnljzs">0</div>
+                                    <div class="desc">本年累计征收</div>
+                                </div>
+                                <a class="more" style="background-color: #e04a49;" href="javascript:;" onclick="OpenNav(&#39;1d3797f6-5cd2-41bc-b769-27f2513d61a9&#39;)"> <i class="fa fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div style="width: 20%; position: relative; float: left;">
+                            <div class="task-stat" style="background-color: #44b6ae;">
+                                <div class="visual">
+                                    <i class="fa fa-windows"></i>
+                                </div>
+                                <div class="details">
+                                	<div class="number" id="bycrkll">0</div>
+                                    <div class="desc">本月出入口流量合计</div>
+                                </div>
+                                <a class="more" style="background-color: #3ea7a0;" href="javascript:;" onclick="OpenNav(&#39;b352f049-4331-4b19-ac22-e379cb30bd55&#39;)"> <i class="fa fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div style="width: 20%; position: relative; float: left;">
+                            <div class="task-stat" style="background-color: #8775a7;">
+                                <div class="visual">
+                                    <i class="fa fa-globe"></i>
+                                </div>
+                                <div class="details">
+                                    <div class="number" id="bncrkll">0</div>
+                                    <div class="desc">本年出入口流量合计</div>
+                                </div>
+                                <a class="more" style="background-color: #7c699f;" href="javascript:;"> <i class="fa fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                       <!--
+                        <div style="width: 20%; position: relative; float: left;">
+                            <div class="task-stat" style="background-color: #3598dc;">
+                                <div class="visual">
+                                    <i class="fa fa-globe"></i>
+                                </div>
+                                <div class="details">
+                                    <div class="number">
+                                        16897.00
+                                    </div>
+                                    <div class="desc">免征费用合计</div>
+                                </div>
+                                <a class="more" style="background-color: #258fd7;" href="javascript:;"> <i class="fa fa-arrow-circle-right"></i>
+                                </a>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="overflow: hidden; height: 460px;">
+                <div style="width: 50%; float: left;">
+                    <div class="portal-panel-title">
+                        <i class="fa fa-bar-chart"></i>&nbsp;&nbsp;客车/货车 费用占比
+                    </div>
+                    <div class="portal-panel-content" style="margin-top: 10px;">
+                        <div id="khfyDiv" style=" height: 420px;width: 1020px;"></div>
+                    </div>
+                </div>
+                 
+                <div style="width: 50%; float: left;">
+                    <div class="portal-panel-title">
+                        &nbsp;&nbsp;
+                    </div>
+                    <div class="portal-panel-content" style="margin-top: 10px; ">
+                        <div id="container"></div>
+                    </div>
+                </div> 
+                <!-- -->
+            </div>
+        </div>
+    </div>
+<script>
+$(function () {
+    InitialPage();
+    //LoadInterfaceVisit();
+    //LoadDepartmentApp();
+    initData();
+})
+//初始化
+function InitialPage() {
+    $('#desktop').height($(window).height() - 22);
+    $(window).resize(function (e) {
+        window.setTimeout(function () {
+            $('#desktop').height($(window).height() - 22);
+        }, 200);
+        e.stopPropagation();
+    });
+}
+_xAxis=[{type: 'category',data: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+	axisLabel:{textStyle:{}},axisTick:{lineStyle:{}},axisLine:{lineStyle:{}},
+		splitLine:{show:true,lineStyle:{}}
+}];
+_yAxis=[{name: '元',type: 'value',axisLabel:{textStyle:{}},axisTick:{lineStyle:{}},axisLine:{lineStyle:{}}
+}];
+initData=function(){
+	$.post("${ctx.contextPath}/report/home.json",function(re){if(re.success){
+		var data = re.msg.fyzb;
+		var llfy = re.msg.llfy;
+		//
+		if(llfy[0]){
+			$("#bncrkll").text(llfy[0].id);
+			$("#bnljzs").text(llfy[0].name);
+		}
+		if(llfy[1]){
+			$("#bycrkll").text(llfy[1].id);
+			$("#byljzs").text(llfy[1].name);
+		}
+		//
+		var khfyb1=[];//客货费用比khfyb
+		var khfyb2=[];//客货费用比
+		var khllbData1=[];//客货流量比khllb
+		var khllbData2=[];//客货流量比
+		var etcData1=[];//ETC/MTC费用比etcfyb
+		var etcData2=[];//ETC/MTC费用比
+		for(var i=0;i<data.length;i++){
+			//客货
+			khfyb1.push(data[i].kcsrzj);
+			khfyb2.push(data[i].hcsrzj);
+		}
+		var khfy = {tooltip : {trigger: 'axis',axisPointer : {type : 'shadow'}},
+			    legend: {data: ['客车', '货车'],textStyle:{}},
+			    xAxis:_xAxis,
+			    yAxis:_yAxis,
+			    series: [{name: '客车',type: 'bar',stack: '总量',label: {normal: {show: true,position: 'insideRight'}},data: khfyb1},
+			             {name: '货车',type: 'bar',stack: '总量',label: {normal: {show: true,position: 'insideRight'}},data: khfyb2}]
+			};
+		  	var khfyChart = echarts.init(document.getElementById('khfyDiv'),'shine');
+		  	khfyChart.setOption(khfy, true);
+	
+	}});
+}
+
+//跳转到指定模块菜单
+function OpenNav(Navid) {
+    top.$("#nav").find('a#' + Navid).trigger("click");
+}
+</script>
+</body></html>

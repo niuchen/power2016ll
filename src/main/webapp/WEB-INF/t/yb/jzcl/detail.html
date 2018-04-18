@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>记重车辆月报数据</title>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.extension.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet"/>
+	<script src="${ctx.contextPath}/res/ui/validator.js"></script>
+	<script src="${ctx.contextPath}/res/datepicker/WdatePicker.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+	<style type="text/css">
+	.tdTitle {
+	    position: relative;
+	    left: 0px;
+	    text-align: right;
+	    white-space: nowrap;
+	    font-weight: normal;
+	    width: 180px;
+	    padding-right: 10px;
+	}
+	.numberTxt{
+		border:none;
+		border:1px;
+		text-align:right;
+		border-bottom-style:solid;
+		font-weight: bold;
+		font-size: 16px;
+		color:blue;
+		padding-right: 5px;
+	}
+	.moneyTxt{
+		border:none;
+		border:1px;
+		text-align:right;
+		border-bottom-style:solid;
+		font-weight: bold;
+		font-size: 16px;
+		color:red;
+		padding-right: 5px;
+	}
+	.alldata{
+	text-align:right;
+	font-size: 14px;
+	}
+	</style>
+</head>
+<body>
+    <form id="form1">
+<div style="margin-left: 10px; margin-right: 10px;">
+    <div class="tab-content" style="padding-top: 10px;">
+    <input id="xh" name="xh" type="hidden" value=""/>
+            <table class="form">
+                <tr>
+                    <td class="formTitle">站点/录入员<font face="宋体">*</font></td>
+                    <td class="formValue">
+                    	<span style="font-weight: bold;font-size: 14px;color: green;"><span id="zdmc"></span> / <span id="lrymc"></span></span>
+                    </td>
+                    <td class="formTitle">收费日期<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <input id="sfrq" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'%y-%M'})" value="${.now?string('yyyy-MM')}"/>
+                    </td>
+                    <td class="formTitle">值班站长<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <div id=zdzz type="select" class="ui-select" isvalid="yes" checkexpession="NotNull"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle" valign="top" style="padding-top: 4px;">备注 </th>
+                    <td class="formValue" colspan="5">
+                        <textarea id="bz" class="form-control" style="height: 50px;"></textarea>
+                    </td>
+                </tr>
+                 </table>
+                 <header>记重车辆详细信息</header>
+                  <table class="form">
+                  <tr style="margin-bottom: 20px;">
+                    <td class="tdTitle">计重车辆出口总计</td>
+                    <td class="formValue">
+                        <input id="jzclckhj" type="text" class="form-control alldata"  readonly="readonly"/>
+                    </td>
+                	<td class="tdTitle">计重车辆收入总额</td>
+                    <td class="formValue">
+                        <input id="jzclsrhj" type="text" class="form-control alldata"  readonly="readonly"/></td>
+                    </td>
+                </tr>
+                <tr class="keyRow">
+                    <td class="tdTitle">小于100%装载率(出):</td>
+                    <td class="formValue">
+                        <input id="zzlc1" type="text" class="form-control numberTxt" />
+                    </td>
+                    <td class="tdTitle">小于100%装载率收入(元):</td>
+                    <td class="formValue">
+                        <input id="zzlsr1" type="text" class="form-control moneyTxt" />
+                    </td>
+                </tr>
+                <tr class="keyRow">
+                    <td class="tdTitle">100%~130%装载率(出):</td>
+                    <td class="formValue">
+                        <input id="zzlc2" type="text" class="form-control numberTxt" />
+                    </td>
+                    <td class="tdTitle">100%~130%装载率收入(元):</td>
+                    <td class="formValue">
+                        <input id="zzlsr2" type="text" class="form-control moneyTxt" />
+                    </td>
+                </tr>
+                <tr class="keyRow">
+                    <td class="tdTitle">130%~200%装载率(出):</td>
+                    <td class="formValue">
+                        <input id="zzlc3" type="text" class="form-control numberTxt" />
+                    </td>
+                    <td class="tdTitle">130%~200%装载率收入(元):</td>
+                    <td class="formValue">
+                        <input id="zzlsr3" type="text" class="form-control moneyTxt" />
+                    </td>
+                </tr>
+                <tr class="keyRow">
+                    <td class="tdTitle">大于200%装载率(出):</td>
+                    <td class="formValue">
+                        <input id="zzlc4" type="text" class="form-control numberTxt" />
+                    </td>
+                    <td class="tdTitle">大于200%装载率收入(元):</td>
+                    <td class="formValue">
+                        <input id="zzlsr4" type="text" class="form-control moneyTxt" />
+                    </td>
+                </tr>
+                
+            </table>
+    </div>
+</div>
+    </form>
+<script>
+var keyValue = request('keyValue');
+$(function () {
+    initControl();
+})
+//初始化控件
+function initControl() {
+    //获取表单
+    if (!!keyValue) {
+    	$.SetForm({
+            url: "${ctx.contextPath}/yb/getJzclYbFormJson",
+            param: { keyValue: keyValue },
+            success: function (data) {
+                $("#form1").SetWebControls(data);
+                $("#zdmc").text(data.zdmc);
+                $("#lrymc").text(data.lrymc);
+                var zdzz = top.clientuserData[data.zdzz] == null ? "" : top.clientuserData[data.zdzz].realname;//站点站长
+                $("#zdzz").text(zdzz);
+                $("#sfrq").val(formatDate(new Date(data.sfrq), "yyyy-MM"));
+                $("#form1").find('.form-control,.ui-select,input').attr('disabled', 'disabled');
+            }
+        });
+    }
+}
+</script>
+</body>
+</html>

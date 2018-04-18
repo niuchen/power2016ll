@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>移动日支付上报-新增</title>
+     <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.extension.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet"/>
+	<script src="${ctx.contextPath}/res/ui/validator.js"></script>
+	<script src="${ctx.contextPath}/res/datepicker/WdatePicker.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+	<style type="text/css">
+	.td{
+	     height: 10px
+	     }
+	.formTitle{ 
+	    position: relative;
+	    left: 0px;
+	    text-align: right;
+	    white-space: nowrap;
+	    font-weight: normal;
+	    width: 30px;
+	    padding-right: 10px;
+	     margin:100px;
+	    }
+	.numberTxt{
+		border:none;
+		border:1px;
+		text-align:right;
+		border-bottom-style:solid;
+		font-weight: bold;
+		font-size: 16px;
+		color:red;
+		padding-right: 5px;
+	}
+	.moneyTxt{
+		border:none;
+		border:1px;
+		text-align:right;
+		border-bottom-style:solid;
+		font-weight: bold;
+		font-size: 16px;
+		color:red;
+		padding-right: 5px;
+	}
+	.xjTxt{
+		border:none;
+		border:1px;
+		text-align:right;
+		border-bottom-style:solid;
+		font-weight: bold;
+		font-size: 16px;
+		color:red;
+		padding-right: 5px;
+	}
+	.alldata{
+	text-align:right;
+	font-size: 14px;
+	}
+	</style>
+</head>
+<body>
+    <form id="form1">
+<div style="margin-left: 10px; margin-right: 10px;">
+    <div class="tab-content" style="padding-top: 10px;">
+    <table class="form">
+        <tabel class="form">
+        <input id="xh" name="xh" type="hidden" value=""/>
+        <tr height="5px">
+                    <td class="formTitle">所属站点<font face="宋体">*</font></td>
+                    <td class="formValue">
+                    	<span style="font-weight: bold;font-size: 14px;color: green;">${user.deptName} </span>
+                        <input id="sszd" type="hidden" value="${user.deptId}"/>
+                        <input id="zdmc" type="hidden" value="${user.deptName}"/>
+                        <input id="lryxh" type="hidden" value="${user.uid}"/>
+                        <input id="lrymc" type="hidden" value="${user.realName}"/>
+                    </td>
+                    <td class="formTitle">上报日期<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <input id="sfrq" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({maxDate:'%y-%M-%d'})" value="${.now?string('yyyy-MM-dd')}"/>
+                    </td>
+                    <td class="formTitle">值班站长<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <div id=zdzz type="select" class="ui-select" isvalid="yes" checkexpession="NotNull"></div>
+                    </td>
+                </tr>
+               
+                 
+                <tr>
+                  <td class="formTitle">录入人员<font face="宋体">*</font></td>
+                 <td class="formValue">
+                	<span style="font-weight: bold;font-size: 14px;color: green;">${user.realName} </span>
+                	</td>
+                    <th class="formTitle" valign="top" style="padding-top: 4px;">备注信息</th>
+                    <td class="formValue" colspan="5">
+                        <textarea id="bz" class="form-control" style="height: 50px;"></textarea>
+                    </td>
+                </tr>
+        </table>
+        <header>缴费信息</header>
+      <table class="form">
+       <tr class="keyRow" >
+        <td class="formTitle">收费日期</td>
+            <td class="formValue" style="width: 120px">
+                <input id="sjrq" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker()" />
+            </td>
+            <td style="width: 80px" class="formTitle">班次： 一班</td>
+                    
+                        <input id="bz1" type="hidden" value="104001"/>
+                    
+            <td class="formTitle">移动支付金额(元):</td>
+            <td class="formValue">
+                <input id="yjje1" type="text" class="form-control numberTxt"  />
+            </td>
+            <td class="formTitle">移动其他金额(元):</td>
+            <td class="formValue">
+                 <input id="sjje1" type="text" class="form-control moneyTxt" />
+            </td>
+             <td class="formTitle">移动小计(元):</td>
+            <td class="formValue">
+                 <input id="ydxj1" type="text" class="form-control xjTxt"/>
+            </td>
+        </tr>
+        <tr class="keyRow" height="5px">
+        <td class="formTitle">收费日期</td>
+            <td class="formValue" style="width: 120px">
+                <input id="sjrq2" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker()" />
+            </td>
+            <td style="width: 80px" class="formTitle">班次： 二班</td>
+                    
+                        <input id="bz2" type="hidden" value="104002"/>
+                    
+            <td class="formTitle">移动支付金额(元):</td>
+            <td class="formValue">
+                <input id="yjje2" type="text" class="form-control numberTxt" />
+            </td>
+            <td class="formTitle">移动其他金额(元):</td>
+            <td class="formValue">
+                 <input id="sjje2" type="text" class="form-control moneyTxt"/>
+            </td>
+             <td class="formTitle">移动小计(元):</td>
+            <td class="formValue">
+                 <input id="ydxj2" type="text" class="form-control xjTxt"/>
+            </td>
+        </tr>
+        <tr>
+        <th></th>
+        <td></td>
+        <th></th>
+        
+       
+            <td class="formTitle">移动支付金额合计(元):</td>
+            <td class="formValue">
+                <input id="yjjehj" type="text"  class="form-control alldata" readonly="readonly" />
+            </td>
+            <td class="formTitle">移动其他金额合计(元):</td>
+            <td class="formValue">
+                 <input id="sjjehj" type="text"  class="form-control alldata" readonly="readonly"/>
+            </td>
+             <td class="formTitle">移动合计(元):</td>
+            <td class="formValue">
+                 <input id="ydhj" type="text" class="form-control alldata" readonly="readonly"/>
+            </td>
+        </tr>
+    </table>
+</div>
+  </form>
+  <script>
+_hj=function(){
+	var hj = 0;
+	$(".numberTxt").each(function(){
+		hj = Calc.Add(hj,$(this).val());
+    });
+	$("#yjjehj").val(parseFloat(hj).toFixed(2));
+}
+_je=function(){
+	var hj =0;
+	$(".moneyTxt").each(function(){
+		hj = Calc.Add(hj,$(this).val());
+    });
+	$("#sjjehj").val(parseFloat(hj).toFixed(2));
+	
+	
+}
+_xj=function(){
+	var xj =0;
+	$(".xjTxt").each(function(){
+		xj = Calc.Add(xj,$(this).val());
+    });
+	$("#ydhj").val(parseFloat(xj).toFixed(2));
+}
+    var keyValue = request('keyValue');
+    $(function () {
+        initControl();
+        //
+        $(".numberTxt").checkNum({integerLength: 10,decimalLength:2});
+        $(".moneyTxt").checkNum({integerLength: 10,decimalLength:2});
+        $(".xjTxt").checkNum({integerLength: 10,decimalLength:2});
+        //
+        $(".numberTxt").on('keyup blur',function (e) {_hj();});
+        $(".moneyTxt").on('keyup blur',function (e) {_je();});
+        $(".xjTxt").on('keyup blur',function (e) {_xj();});
+        $("#yjje1").focus();
+    })
+    //初始化控件
+    function initControl() {
+    	$("#zdzz").ComboBox({//获取站点站长
+            url: "${ctx.contextPath}/sys/user/getZdzzJson",
+            id: "id",
+            text: "name",
+            description: "==请选择==",
+            defaultValue:true //默认选中第一行
+        });
+    	 $("#bz1").ComboBox({
+             url: "${ctx.contextPath}/sys/dict/getDictItem",
+             param: {classId: "104" },
+             id: "id",
+             text: "name",
+             description: "==请选择==",
+             height: "200px",
+         });
+    	 $("#bz2").ComboBox({
+             url: "${ctx.contextPath}/sys/dict/getDictItem",
+             param: {classId: "104" },
+             id: "id",
+             text: "name",
+             description: "==请选择==",
+             height: "200px",
+         });
+        //获取表单
+        if (!!keyValue) {
+            $.SetForm({
+                url: "${ctx.contextPath}/charge/getYdsjFormJson",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#form1").SetWebControls(data);
+                    $("#zdzz").ComboBoxSetValue(data.zdzz);
+                    $("#sfrq").val(formatDate(new Date(data.sfrq), "yyyy-MM-dd"));
+                    $("#sjrq").val(formatDate(new Date(data.sjrq), "yyyy-MM-dd"));
+                    $("#sjrq2").val(formatDate(new Date(data.sjrq2), "yyyy-MM-dd"));
+                    if(data.zt>1){
+                		//dialogMsg("数据已锁定无法操作！", -1);
+                		$("#form1").find('.form-control,.ui-select,input').attr('disabled', 'disabled');
+                		top.$(".layui-layer-btn0").hide();
+                	}
+                }
+            });
+        }
+    }
+    //保存表单
+    function AcceptClick() {
+        if (!$('#form1').Validform()) {
+            return false;
+        }
+        var postData = $("#form1").GetWebControls(keyValue);
+        //console.log(postData);return;
+        $.SaveForm({
+        	msg:"未填写的数据将自动填充为 0，是否继续提交？",
+            url: "${ctx.contextPath}/charge/newYdsjSubmit",
+            param: postData,
+            loading: "正在保存数据...",
+            success: function (data) {
+                $.currentIframe().$("#gridTable").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+<script src="${ctx.contextPath}/res/ui/keyMove.js"></script>
+</body>
+</html>

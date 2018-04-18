@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>新增用户</title>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.extension.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+    <script src="${ctx.contextPath}/res/datepicker/WdatePicker.js"></script>
+	<link href="${ctx.contextPath}/res/wizard/wizard.css" rel="stylesheet"/>
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet"/>
+	<link href="${ctx.contextPath}/res/wdTree/tree.css" rel="stylesheet"/>
+	<script src="${ctx.contextPath}/res/wdTree/tree.js"></script>
+	<script src="${ctx.contextPath}/res/ui/validator.js"></script>
+	<script src="${ctx.contextPath}/res/wizard/wizard.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+	
+</head>
+<body>
+    <form id="form1">
+<script>
+    var keyValue = request('keyValue');
+    var instanceId = "";
+    var formId = "";
+    $(function () {
+        initControl();
+    })
+    //初始化控件
+    function initControl() {
+        //公司
+        $("#organizeid").ComboBoxTree({
+            url: "${ctx.contextPath}/sys/org/orgTree",
+            description: "==请选择==",
+            height: "200px",
+            allowSearch: true,
+        }).bind("change", function () {
+            var value = $(this).attr('data-value');
+            //加载部门
+            $("#departmentid").attr("data-value","");
+            $("#departmentid").attr("data-text","==请选择==");
+            $("#departmentid").children(0).text("==请选择==");
+            $("#departmentid").ComboBoxTree({
+                url: "${ctx.contextPath}/sys/user/deptTree?organizeid=" + value,
+                description: "==请选择==",
+                allowSearch: true
+            });
+          /**  //加载角色
+            $("#roleid").ComboBox({
+                url: "${ctx.contextPath}/sys/role/getRoleItem?orgid=" + value,
+                id: "id",
+                text: "name",
+                description: "==请选择==",
+                allowSearch: true
+            });
+            //加载岗位
+            $("#postid").ComboBox({
+                url: "${ctx.contextPath}/sys/role/getPostItem?orgid=" + value,
+                id: "id",
+                text: "name",
+                description: "==请选择==",
+                allowSearch: true
+            });*/
+        });
+        //部门
+        $("#departmentid").ComboBoxTree({
+            description: "==请选择==",
+            height: "200px",
+            allowSearch: true
+        });
+        
+        //性别
+        $("#gender").ComboBox({
+            description: "==请选择==",
+        });
+         //班组
+        $("#dutyid").ComboBox({
+            url: "${ctx.contextPath}/sys/dict/getDictItem",
+            param: {classId: "104" },
+            id: "id",
+            text: "name",
+            description: "==请选择==",
+            height: "200px",
+        });
+        //职位
+        $("#postid").ComboBox({
+            url: "${ctx.contextPath}/sys/dict/getDictItem",
+            param: {classId: "105" },
+            id: "id",
+            text: "name",
+            description: "==请选择==",
+            height: "200px",
+        });
+        /**
+        //加载自定义表单
+        var moduleId = top.$.cookie('currentmoduleId');
+        $.SetForm({
+            url: "../../AuthorizeManage/ModuleForm/GetEntityJsonByModuleId",
+            param: { "keyValue": moduleId, "objectId": keyValue },
+            async: true,
+            success: function (data) {
+                $('#frmpreview').frmPreview({
+                    tablecotent: data.form.F_FormJson,
+                    width: 700
+                });
+                formId = data.form.F_FormId;
+                if (data.instance != null) {
+                    $('#frmpreview').frmSetData(JSON.parse(data.instance.F_FormInstanceJson));
+                    instanceId = data.instance.F_FormInstanceId;
+                }
+            }
+        });*/
+        //获取表单
+        if (!!keyValue) {
+            $.SetForm({
+                url: "${ctx.contextPath}/sys/user/getFormJson",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#form1").SetWebControls(data);
+                    $("#organizeid").trigger("change");
+                    $("#departmentid").ComboBoxTreeSetValue(data.departmentid).trigger("change");
+                   // $("#F_DutyId").ComboBoxSetValue(data.F_DutyId)
+                   // $("#F_RoleId").ComboBoxSetValue(data.F_RoleId)
+                   // $("#F_PostId").ComboBoxSetValue(data.F_PostId)
+                   // $("#F_ManagerId").ComboBoxSetValue(data.F_ManagerId);
+                  if(data.birthday){
+                   	$("#birthday").val(formatDate(new Date(data.birthday), "yyyy-MM-dd"));
+                   		}
+                    $("#password").val("******").attr('disabled', 'disabled');
+                }
+            });
+        }
+    }
+    //保存表单
+    function AcceptClick() {
+        if (!$('#form1').Validform()) {
+            return false;
+        }
+        var postData = $("#form1").GetWebControls(keyValue);
+       // postData["F_DutyName"] = $("#F_DutyId").attr('data-text');
+       // postData["F_PostName"] = $("#F_PostId").attr('data-text');
+       // postData["F_Manager"] = $("#F_ManagerId").attr('data-text');
+       // var _instanceData = $("#frmpreview").frmGetData();
+       // var moduleFormInstanceEntity = { "F_FormId": formId, "F_FormInstanceJson": JSON.stringify(_instanceData) };
+       //console.log(postData);return;
+        $.SaveForm({
+            url: "${ctx.contextPath}/sys/user/userSub",
+            param: postData,//{ "keyValue": keyValue, "strUserEntity": JSON.stringify(postData), "FormInstanceId": instanceId, "strModuleFormInstanceEntity": JSON.stringify(moduleFormInstanceEntity) },
+            loading: "正在保存数据...",
+            success: function (data) {
+                $.currentIframe().$("#gridTable").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+	 <input id="auditstatus" type="hidden" value="1" class="form-control" /></td>
+	  
+<div style="margin-left: 10px; margin-right: 10px;">
+   
+    <div class="tab-content" style="padding-top: 15px;">
+        <div id="BaseInfo" class="tab-pane active" style=" padding-right: 30px;">
+        <input id="userid" type="hidden" />
+        <ul class="nav nav-tabs">
+        <li class="active"><a href="#BaseInfo" data-toggle="tab">基本信息</a></li>
+        <li><a href="#ExpandInfo" data-toggle="tab">扩展属性</a></li>
+    </ul>
+            <table class="form">
+                <tr>
+                    <td class="formTitle">账户<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <input id="account" type="text" onblur="" class="form-control" placeholder="请输入账户" isvalid="yes" checkexpession="NotNull" />
+                    </td>
+                    <td class="formTitle">密码<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <input id="password" type="password" class="form-control" placeholder="请输入密码" isvalid="yes" checkexpession="NotNull" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="formTitle">组织<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <div id="organizeid" type="selectTree" class="ui-select" isvalid="yes" checkexpession="NotNull"></div>
+                    </td>
+                    <td class="formTitle">站点</td>
+                    <td class="formValue">
+                        <div id="departmentid" type="selectTree" class="ui-select"></div>
+                    </td>
+                </tr>
+                 <tr>
+                    <td class="formTitle">班组</td>
+                    <td class="formValue">
+                        <div id="dutyid" type="select" class="ui-select"></div>
+                    </td>
+                    <td class="formTitle">职位</td>
+                    <td class="formValue">
+                        <div id="postid" type="select" class="ui-select"></div>
+                    </td>
+                </tr>
+                <!--
+                <tr>
+                    <td class="formTitle">职位</td>
+                    <td class="formValue">
+                        <div id="F_PostId" type="select" class="ui-select"></div>
+                    </td>
+                    <td class="formTitle">主管</td>
+                    <td class="formValue">
+                        <div id="F_ManagerId" type="select" class="ui-select"></div>
+                    </td>
+                </tr>-->
+                <tr>
+                    <td class="formTitle">姓名<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <input id="realname" type="text" class="form-control" isvalid="yes" checkexpession="NotNull" />
+                                        <td class="formTitle">性别</td>
+                    <td class="formValue">
+                        <div id="gender" type="select" class="ui-select">
+                            <ul>
+                                <li data-value="1">男</li>
+                                <li data-value="0">女</li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                <td class="formTitle">微信</td>
+                    <td class="formValue">
+                        <input id="wechat" type="text" class="form-control" /></td>
+                    </td>
+                    <td class="formTitle">生日</td>
+                    <td class="formValue">
+                        <input id="birthday" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker()" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="formTitle">手机</td>
+                    <td class="formValue">
+                        <input id="mobile" type="text" class="form-control" /></td>
+                    <td class="formTitle">电话</td>
+                    <td class="formValue">
+                        <input id="telephone" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
+                    <td class="formTitle">邮箱</td>
+                    <td class="formValue">
+                        <input id="email" type="text" class="form-control" /></td>
+
+                    <td class="formTitle">QQ</td>
+                    <td class="formValue">
+                        <input id="QQ" type="text" class="form-control" /></td>
+                </tr>
+                <tr>
+                	<!--<td class="formTitle">微信</td>
+                    <td class="formValue">
+                        <input id="wechat" type="text" class="form-control" /></td>
+                    
+                      <td class="formTitle">MSN</td>
+                    <td class="formValue">
+                        <input id="" type="text" class="form-control" /></td>-->
+                </tr>
+                <tr>
+                    <th class="formTitle" valign="top" style="padding-top: 4px;">备注
+                    </th>
+                    <td class="formValue" colspan="3">
+                        <textarea id="description" class="form-control" style="height: 50px;"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="ExpandInfo" class="tab-pane" style="height:400px;overflow:auto;">
+            <div class="app_layout app_preview" style="border-top: 1px solid #ccc;" id="frmpreview"></div>
+        </div>
+    </div>
+</div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>灰名单月报数据</title>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.extension.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet"/>
+	<script src="${ctx.contextPath}/res/ui/validator.js"></script>
+	<script src="${ctx.contextPath}/res/datepicker/WdatePicker.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+	<style type="text/css">
+	.tdTitle {
+	    position: relative;
+	    left: 0px;
+	    text-align: right;
+	    white-space: nowrap;
+	    font-weight: normal;
+	    width: 180px;
+	    padding-right: 10px;
+	}
+	.numberTxt{
+		border:none;
+		border:1px;
+		text-align:right;
+		border-bottom-style:solid;
+		font-weight: bold;
+		font-size: 16px;
+		color:blue;
+		padding-right: 5px;
+	}
+	.moneyTxt{
+		border:none;
+		border:1px;
+		text-align:right;
+		border-bottom-style:solid;
+		font-weight: bold;
+		font-size: 16px;
+		color:blue;
+		padding-right: 5px;
+	}
+	.alldata{
+	text-align:right;
+	font-size: 14px;
+	}
+	</style>
+</head>
+<body>
+    <form id="form1">
+<div style="margin-left: 10px; margin-right: 10px;">
+    <div class="tab-content" style="padding-top: 10px;">
+     <table class="form">
+     <input id="xh" name="xh" type="hidden" value=""/>
+        <tr height="5px">
+                    <td class="formTitle">所属站别<font face="宋体">*</font></td>
+                    <td class="formValue">
+                    	<span style="font-weight: bold;font-size: 14px;color: green;">${user.deptName} </span>
+                        <input id="sszd" type="hidden" value="${user.deptId}"/>
+                        <input id="zdmc" type="hidden" value="${user.deptName}"/>
+                        <input id="lryxh" type="hidden" value="${user.uid}"/>
+                        <input id="lrymc" type="hidden" value="${user.realName}"/>
+                    </td>
+                    <td class="formTitle">上报年月<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <input id="sfrq" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({dateFmt:'yyyy-MM',maxDate:'%y-%M'})" value="${.now?string('yyyy-MM')}"/>
+                    </td>
+                    <td class="formTitle">值班站长<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <div id=zdzz type="select" class="ui-select" isvalid="yes" checkexpession="NotNull"></div>
+                    </td>
+                
+                 <td class="formTitle">录入人员<font face="宋体">*</font></td>
+                 <td class="formValue">
+                	<span style="font-weight: bold;font-size: 14px;color: green;">${user.realName} </span>
+                	</td>
+                	</tr>
+
+                <tr>
+                    <th class="formTitle" valign="top" style="padding-top: 4px;">备注信息</th>
+                    <td class="formValue" colspan="5">
+                        <textarea id="bz" class="form-control" style="height: 50px;"></textarea>
+                    </td>
+                </tr>
+                 </table>
+               
+                 <header>货车拟列入“灰名单”车辆</header>
+                  <table class="form">
+                <tr class="keyRow">
+                    <td class="tdTitle">通行卡号:</td>
+                    <td class="formValue">
+                        <input id="hmdthkh" type="text" class="form-control numberTxt" />
+                    </td>
+                     <td class="tdTitle">车型:</td>
+                    <td class="formValue">
+                        <div id="hmdcx" type="select" class="ui-select"></div>
+                    </td>
+                    
+                </tr>
+                <tr class="keyRow">
+                    <td class="tdTitle">卡盒号:</td>
+                    <td class="formValue">
+                        <input id="hmdkhh" type="text" class="form-control numberTxt" />
+                    </td>
+                    <td class="tdTitle">发卡站名:</td>
+                     <td class="formValue">
+                    	<span style="font-weight: bold;font-size: 14px;color: green;">${user.deptName} </span>
+                        <input id="hmdfkzm" type="hidden" value="${user.deptName}"/>
+                    </td>
+                </tr>
+                <tr class="keyRow">
+                    <td class="tdTitle">发卡员工号:</td>
+                    <td class="formValue">
+                        <input id="hmdfkygh" type="text" class="form-control numberTxt" />
+                    </td>
+                   <td class="tdTitle">发卡时间:</td>
+                    <td class="formValue">
+                        <input id="hmdfksjbm" type="text" class="form-control "  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',maxDate:'%y-%M-%d %H-%m-%s'})" value="${.now?string('yyyy-MM-dd HH:mm:ss')}"/>
+                    </td>
+                </tr>
+                <tr class="keyRow">
+                    <td class="tdTitle">付费类型:</td>
+                     <td class="formValue">
+                        <input id="hmdffcx" type="text" class="form-control moneyTxt" />
+                    </td>
+                     <td class="tdTitle">车牌:</td>
+                     <td class="formValue">
+                        <input id="hmdcp" type="text" class="form-control moneyTxt" />
+                        </td> 
+                        </tr>
+                        <tr class="keyRow">
+                     <td class="formTitle">是否已录入“灰名单”系统:</td>
+                    <td class="formValue">
+                        <div id="hmdsflr" type="select" class="ui-select"></div>
+                    </td>
+                </tr>
+                    </table>
+               
+    </div>
+</div>
+    </form>
+<script>
+_hj=function(){
+	var hj = 0;
+	$(".numberTxt").each(function(){
+		hj = Calc.Add(hj,$(this).val());
+    });
+	$("#jzclckhj").val(hj);
+}
+_je=function(){
+	var hj =0;
+	$(".moneyTxt").each(function(){
+		hj = Calc.Add(hj,$(this).val());
+    });
+	$("#jzclsrhj").val(parseFloat(hj).toFixed(2));
+}
+    var keyValue = request('keyValue');
+    $(function () {
+        initControl();
+        //
+       
+        //
+        $(".numberTxt").on('keyup blur',function (e) {_hj();});
+        $(".moneyTxt").on('keyup blur',function (e) {_je();});
+        //focus
+        $("#zzlc1").focus();
+    })
+    //初始化控件
+    function initControl() {
+    	$("#zdzz").ComboBox({//获取站点站长
+            url: "${ctx.contextPath}/sys/user/getZdzzJson",
+            id: "id",
+            text: "name",
+            description: "==请选择==",
+            defaultValue:true //默认选中第一行
+        });
+    	
+    	$("#hmdcx").ComboBox({//获取车型
+            url: "${ctx.contextPath}/yb/cxTree",
+            id: "id",
+            text: "text",
+            description: "==请选择==",
+            defaultValue:true //默认选中第一行
+        });
+    	$("#hmdsflr").ComboBox({//获取车型
+            url: "${ctx.contextPath}/yb/sfTree",
+            id: "id",
+            text: "text",
+            description: "==请选择==",
+            defaultValue:true //默认选中第一行
+        });
+        //获取表单
+        if (!!keyValue) {
+            $.SetForm({
+                url: "${ctx.contextPath}/yb/getHmdFormJson",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#form1").SetWebControls(data);
+                    $("#zdzz").ComboBoxSetValue(data.zdzz);
+                    $("#sfrq").val(formatDate(new Date(data.sfrq), "yyyy-MM"));
+                    $("#lskszsj").val(formatDate(new Date(data.sfrq), "yyyy-MM-dd hh:mm:ss"));
+                    $("#hmdfksj").val(formatDate(new Date(data.sfrq), "yyyy-MM-dd hh:mm:ss"));
+                    $("#cgcksj").val(formatDate(new Date(data.sfrq), "yyyy-MM-dd hh:mm:ss"));
+                    $("#cgtgsj").val(formatDate(new Date(data.sfrq), "yyyy-MM-dd hh:mm:ss"));
+                    $("#zhrq").val(formatDate(new Date(data.sfrq), "yyyy-MM-dd"));
+                    $("#lskrq").val(formatDate(new Date(data.sfrq), "yyyy-MM-dd"));
+                    if(data.zt>1){
+                		//dialogMsg("数据已锁定无法操作！", -1);
+                		$("#form1").find('.form-control,.ui-select,input').attr('disabled', 'disabled');
+                		top.$(".layui-layer-btn0").hide();
+                	}
+                }
+            });
+        }
+    }
+    //保存表单
+    function AcceptClick() {
+        if (!$('#form1').Validform()) {
+            return false;
+        }
+        var postData = $("#form1").GetWebControls(keyValue);
+        var text = $("#cgld").attr('data-text');
+        postData.ldmc = text;
+        var text = $("#hmdcx").attr('data-text');
+		 postData.cxmc = text;
+		 var text = $("#hmdsflr").attr('data-text');
+		 postData.sfmc = text;
+        //筛选未填写的表单
+        var wtxInputs = 0;
+        $(".numberTxt").each(function(){if($(this).val().length==0){wtxInputs++;}});
+    	$(".moneyTxt").each(function(){if($(this).val().length==0){wtxInputs++;}});
+        //console.log(postData);return;
+        var _p = {url: "${ctx.contextPath}/yb/hmdSubmit",
+                param: postData,
+                loading: "正在保存数据...",
+              //  
+                success: function (data) {
+                    $.currentIframe().$("#gridTable").trigger("reloadGrid");
+                }
+          	};
+        if(wtxInputs>0){
+        	_p.msg="有【"+wtxInputs+"】项数据未填写将自动填充为 0，是否继续提交？";
+	        $.ConfirmAjax(_p);
+        }else{$.SaveForm(_p);}
+    }
+</script>
+<script src="${ctx.contextPath}/res/ui/keyMove.js"></script>
+</body>
+</html>

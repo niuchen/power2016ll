@@ -1,0 +1,1127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.FxMfclYbMapper" >
+  <resultMap id="BaseResultMap" type="com.power.common.entity.FxMfclYb" >
+    <id column="xh" property="xh" jdbcType="BIGINT" />
+    <result column="sszd" property="sszd" jdbcType="VARCHAR" />
+    <result column="zdmc" property="zdmc" jdbcType="VARCHAR" />
+    <result column="zdzz" property="zdzz" jdbcType="VARCHAR" />
+    <result column="zt" property="zt" jdbcType="INTEGER" />
+    <result column="bz" property="bz" jdbcType="VARCHAR" />
+    <result column="sfrq" property="sfrq" jdbcType="TIMESTAMP" />
+    <result column="lryxh" property="lryxh" jdbcType="VARCHAR" />
+    <result column="lrymc" property="lrymc" jdbcType="VARCHAR" />
+    <result column="lrsj" property="lrsj" jdbcType="TIMESTAMP" />
+    <result column="mfcljmze" property="mfcljmze" jdbcType="DECIMAL" />
+    <result column="mfclcrkzj" property="mfclcrkzj" jdbcType="INTEGER" />
+    <result column="mfclrkzj" property="mfclrkzj" jdbcType="INTEGER" />
+    <result column="mfclckzj" property="mfclckzj" jdbcType="INTEGER" />
+    <result column="jcr" property="jcr" jdbcType="INTEGER" />
+    <result column="jcc" property="jcc" jdbcType="INTEGER" />
+    <result column="jcje" property="jcje" jdbcType="DECIMAL" />
+    <result column="jccrzj" property="jccrzj" jdbcType="INTEGER" />
+    <result column="jingcr" property="jingcr" jdbcType="INTEGER" />
+    <result column="jingcc" property="jingcc" jdbcType="INTEGER" />
+    <result column="jingcje" property="jingcje" jdbcType="DECIMAL" />
+    <result column="jingccrzj" property="jingccrzj" jdbcType="INTEGER" />
+    <result column="gwr" property="gwr" jdbcType="INTEGER" />
+    <result column="gwc" property="gwc" jdbcType="INTEGER" />
+    <result column="gwje" property="gwje" jdbcType="DECIMAL" />
+    <result column="gwcrzj" property="gwcrzj" jdbcType="INTEGER" />
+    <result column="xzmfr" property="xzmfr" jdbcType="INTEGER" />
+    <result column="xzmfc" property="xzmfc" jdbcType="INTEGER" />
+    <result column="xzmfje" property="xzmfje" jdbcType="DECIMAL" />
+    <result column="xzmfcrzj" property="xzmfcrzj" jdbcType="INTEGER" />
+    <result column="jjmfr" property="jjmfr" jdbcType="INTEGER" />
+    <result column="jjmfc" property="jjmfc" jdbcType="INTEGER" />
+    <result column="jjmfje" property="jjmfje" jdbcType="DECIMAL" />
+    <result column="jjmfcrzj" property="jjmfcrzj" jdbcType="INTEGER" />
+    <result column="fxjzr" property="fxjzr" jdbcType="INTEGER" />
+    <result column="fxjzc" property="fxjzc" jdbcType="INTEGER" />
+    <result column="fxjzje" property="fxjzje" jdbcType="DECIMAL" />
+    <result column="fxjzcrzj" property="fxjzcrzj" jdbcType="INTEGER" />
+    <result column="gar" property="gar" jdbcType="INTEGER" />
+    <result column="gac" property="gac" jdbcType="INTEGER" />
+    <result column="gaje" property="gaje" jdbcType="DECIMAL" />
+    <result column="gacrzj" property="gacrzj" jdbcType="INTEGER" />
+    <result column="xfr" property="xfr" jdbcType="INTEGER" />
+    <result column="xfc" property="xfc" jdbcType="INTEGER" />
+    <result column="xfje" property="xfje" jdbcType="DECIMAL" />
+    <result column="xfcrzj" property="xfcrzj" jdbcType="INTEGER" />
+    <result column="jhr" property="jhr" jdbcType="INTEGER" />
+    <result column="jhc" property="jhc" jdbcType="INTEGER" />
+    <result column="jhje" property="jhje" jdbcType="DECIMAL" />
+    <result column="jhcrzj" property="jhcrzj" jdbcType="INTEGER" />
+    <result column="kqjr" property="kqjr" jdbcType="INTEGER" />
+    <result column="kqjc" property="kqjc" jdbcType="INTEGER" />
+    <result column="kqjje" property="kqjje" jdbcType="DECIMAL" />
+    <result column="kqjcrzj" property="kqjcrzj" jdbcType="INTEGER" />
+    <result column="qtmfr" property="qtmfr" jdbcType="INTEGER" />
+    <result column="qtmfc" property="qtmfc" jdbcType="INTEGER" />
+    <result column="qtmfje" property="qtmfje" jdbcType="DECIMAL" />
+    <result column="qtmfcrzj" property="qtmfcrzj" jdbcType="INTEGER" />
+    <result column="etczyr" property="etczyr" jdbcType="INTEGER" />
+    <result column="etczyc" property="etczyc" jdbcType="INTEGER" />
+    <result column="etczyje" property="etczyje" jdbcType="DECIMAL" />
+    <result column="etczycrzj" property="etczycrzj" jdbcType="INTEGER" />
+    <result column="etcmfr" property="etcmfr" jdbcType="INTEGER" />
+    <result column="etcmfc" property="etcmfc" jdbcType="INTEGER" />
+    <result column="etcmfje" property="etcmfje" jdbcType="DECIMAL" />
+    <result column="etcmfcrzj" property="etcmfcrzj" jdbcType="INTEGER" />
+    <result column="cdr" property="cdr" jdbcType="INTEGER" />
+    <result column="cdc" property="cdc" jdbcType="INTEGER" />
+    <result column="cdcrzj" property="cdcrzj" jdbcType="INTEGER" />
+    <result column="cgr" property="cgr" jdbcType="INTEGER" />
+    <result column="cgc" property="cgc" jdbcType="INTEGER" />
+    <result column="cgcrzj" property="cgcrzj" jdbcType="INTEGER" />
+    <result column="ltr" property="ltr" jdbcType="INTEGER" />
+    <result column="ltc" property="ltc" jdbcType="INTEGER" />
+    <result column="ltje" property="ltje" jdbcType="DECIMAL" />
+    <result column="cjmzcrkzj" property="cjmzcrkzj" jdbcType="INTEGER" />
+    <result column="cjmzr" property="cjmzr" jdbcType="INTEGER" />
+    <result column="cjmzc" property="cjmzc" jdbcType="INTEGER" />
+    <result column="cjmzje" property="cjmzje" jdbcType="DECIMAL" />
+    <result column="qmmzcrkzj" property="qmmzcrkzj" jdbcType="INTEGER" />
+    <result column="qmmzr" property="qmmzr" jdbcType="INTEGER" />
+    <result column="qmmzc" property="qmmzc" jdbcType="INTEGER" />
+    <result column="qmmzje" property="qmmzje" jdbcType="DECIMAL" />
+    <result column="wymzcrkzj" property="wymzcrkzj" jdbcType="INTEGER" />
+    <result column="wymzr" property="wymzr" jdbcType="INTEGER" />
+    <result column="wymzc" property="wymzc" jdbcType="INTEGER" />
+    <result column="wymzje" property="wymzje" jdbcType="DECIMAL" />
+    <result column="gqmzcrkzj" property="gqmzcrkzj" jdbcType="INTEGER" />
+    <result column="gqmzr" property="gqmzr" jdbcType="INTEGER" />
+    <result column="gqmzc" property="gqmzc" jdbcType="INTEGER" />
+    <result column="gqmzje" property="gqmzje" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    xh, sszd, zdmc, zdzz, zt, bz, sfrq, lryxh, lrymc, lrsj, mfcljmze, mfclcrkzj, mfclrkzj, 
+    mfclckzj, jcr, jcc, jcje, jccrzj, jingcr, jingcc, jingcje, jingccrzj, gwr, gwc, gwje, 
+    gwcrzj, xzmfr, xzmfc, xzmfje, xzmfcrzj, jjmfr, jjmfc, jjmfje, jjmfcrzj, fxjzr, fxjzc, 
+    fxjzje, fxjzcrzj, gar, gac, gaje, gacrzj, xfr, xfc, xfje, xfcrzj, jhr, jhc, jhje, 
+    jhcrzj, kqjr, kqjc, kqjje, kqjcrzj, qtmfr, qtmfc, qtmfje, qtmfcrzj, etczyr, etczyc, 
+    etczyje, etczycrzj, etcmfr, etcmfc, etcmfje, etcmfcrzj, cdr, cdc, cdcrzj, cgr, cgc, 
+    cgcrzj, ltr, ltc, ltje, cjmzcrkzj, cjmzr, cjmzc, cjmzje, qmmzcrkzj, qmmzr, qmmzc, qmmzje, 
+    wymzcrkzj, wymzr, wymzc, wymzje, gqmzcrkzj, gqmzr, gqmzc, gqmzje
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from fx_mfclyb
+    where xh = #{xh,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from fx_mfclyb
+    where xh = #{xh,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.FxMfclYb" >
+   <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_mfclyb (sszd, zdmc, 
+      zdzz, zt, bz, sfrq, 
+      lryxh, lrymc, lrsj, 
+      mfcljmze, mfclcrkzj, mfclrkzj, 
+      mfclckzj, jcr, jcc, 
+      jcje, jccrzj, jingcr, 
+      jingcc, jingcje, jingccrzj, 
+      gwr, gwc, gwje, gwcrzj, 
+      xzmfr, xzmfc, xzmfje, 
+      xzmfcrzj, jjmfr, jjmfc, 
+      jjmfje, jjmfcrzj, fxjzr, 
+      fxjzc, fxjzje, fxjzcrzj, 
+      gar, gac, gaje, gacrzj, 
+      xfr, xfc, xfje, xfcrzj, 
+      jhr, jhc, jhje, jhcrzj, 
+      kqjr, kqjc, kqjje, 
+      kqjcrzj, qtmfr, qtmfc, 
+      qtmfje, qtmfcrzj, etczyr, 
+      etczyc, etczyje, etczycrzj, 
+      etcmfr, etcmfc, etcmfje, 
+      etcmfcrzj, cdr, cdc, 
+      cdcrzj, cgr, cgc, cgcrzj, ltr,
+      ltc, ltje, cjmzcrkzj, 
+      cjmzr, cjmzc, cjmzje, 
+      qmmzcrkzj, qmmzr, qmmzc, 
+      qmmzje, wymzcrkzj, wymzr, 
+      wymzc, wymzje, gqmzcrkzj, 
+      gqmzr, gqmzc, gqmzje
+      )
+    values (#{sszd,jdbcType=VARCHAR}, #{zdmc,jdbcType=VARCHAR}, 
+      #{zdzz,jdbcType=VARCHAR}, #{zt,jdbcType=INTEGER}, #{bz,jdbcType=VARCHAR}, #{sfrq,jdbcType=TIMESTAMP}, 
+      #{lryxh,jdbcType=VARCHAR}, #{lrymc,jdbcType=VARCHAR}, #{lrsj,jdbcType=TIMESTAMP}, 
+      #{mfcljmze,jdbcType=DECIMAL}, #{mfclcrkzj,jdbcType=INTEGER}, #{mfclrkzj,jdbcType=INTEGER}, 
+      #{mfclckzj,jdbcType=INTEGER}, #{jcr,jdbcType=INTEGER}, #{jcc,jdbcType=INTEGER}, 
+      #{jcje,jdbcType=DECIMAL}, #{jccrzj,jdbcType=INTEGER}, #{jingcr,jdbcType=INTEGER}, 
+      #{jingcc,jdbcType=INTEGER}, #{jingcje,jdbcType=DECIMAL}, #{jingccrzj,jdbcType=INTEGER}, 
+      #{gwr,jdbcType=INTEGER}, #{gwc,jdbcType=INTEGER}, #{gwje,jdbcType=DECIMAL}, #{gwcrzj,jdbcType=INTEGER}, 
+      #{xzmfr,jdbcType=INTEGER}, #{xzmfc,jdbcType=INTEGER}, #{xzmfje,jdbcType=DECIMAL}, 
+      #{xzmfcrzj,jdbcType=INTEGER}, #{jjmfr,jdbcType=INTEGER}, #{jjmfc,jdbcType=INTEGER}, 
+      #{jjmfje,jdbcType=DECIMAL}, #{jjmfcrzj,jdbcType=INTEGER}, #{fxjzr,jdbcType=INTEGER}, 
+      #{fxjzc,jdbcType=INTEGER}, #{fxjzje,jdbcType=DECIMAL}, #{fxjzcrzj,jdbcType=INTEGER}, 
+      #{gar,jdbcType=INTEGER}, #{gac,jdbcType=INTEGER}, #{gaje,jdbcType=DECIMAL}, #{gacrzj,jdbcType=INTEGER}, 
+      #{xfr,jdbcType=INTEGER}, #{xfc,jdbcType=INTEGER}, #{xfje,jdbcType=DECIMAL}, #{xfcrzj,jdbcType=INTEGER}, 
+      #{jhr,jdbcType=INTEGER}, #{jhc,jdbcType=INTEGER}, #{jhje,jdbcType=DECIMAL}, #{jhcrzj,jdbcType=INTEGER}, 
+      #{kqjr,jdbcType=INTEGER}, #{kqjc,jdbcType=INTEGER}, #{kqjje,jdbcType=DECIMAL}, 
+      #{kqjcrzj,jdbcType=INTEGER}, #{qtmfr,jdbcType=INTEGER}, #{qtmfc,jdbcType=INTEGER}, 
+      #{qtmfje,jdbcType=DECIMAL}, #{qtmfcrzj,jdbcType=INTEGER}, #{etczyr,jdbcType=INTEGER}, 
+      #{etczyc,jdbcType=INTEGER}, #{etczyje,jdbcType=DECIMAL}, #{etczycrzj,jdbcType=INTEGER}, 
+      #{etcmfr,jdbcType=INTEGER}, #{etcmfc,jdbcType=INTEGER}, #{etcmfje,jdbcType=DECIMAL}, 
+      #{etcmfcrzj,jdbcType=INTEGER}, #{cdr,jdbcType=INTEGER}, #{cdc,jdbcType=INTEGER}, 
+      #{cdcrzj,jdbcType=INTEGER}, #{cgr,jdbcType=INTEGER}, #{cgc,jdbcType=INTEGER}, #{cgcrzj,jdbcType=INTEGER},  #{ltr,jdbcType=INTEGER},
+      #{ltc,jdbcType=INTEGER}, #{ltje,jdbcType=DECIMAL}, #{cjmzcrkzj,jdbcType=INTEGER}, 
+      #{cjmzr,jdbcType=INTEGER}, #{cjmzc,jdbcType=INTEGER}, #{cjmzje,jdbcType=DECIMAL}, 
+      #{qmmzcrkzj,jdbcType=INTEGER}, #{qmmzr,jdbcType=INTEGER}, #{qmmzc,jdbcType=INTEGER}, 
+      #{qmmzje,jdbcType=DECIMAL}, #{wymzcrkzj,jdbcType=INTEGER}, #{wymzr,jdbcType=INTEGER}, 
+      #{wymzc,jdbcType=INTEGER}, #{wymzje,jdbcType=DECIMAL}, #{gqmzcrkzj,jdbcType=INTEGER}, 
+      #{gqmzr,jdbcType=INTEGER}, #{gqmzc,jdbcType=INTEGER}, #{gqmzje,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.FxMfclYb" >
+  <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_mfclyb
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+     
+      <if test="sszd != null" >
+        sszd,
+      </if>
+      <if test="zdmc != null" >
+        zdmc,
+      </if>
+      <if test="zdzz != null" >
+        zdzz,
+      </if>
+      <if test="zt != null" >
+        zt,
+      </if>
+      <if test="bz != null" >
+        bz,
+      </if>
+      <if test="sfrq != null" >
+        sfrq,
+      </if>
+      <if test="lryxh != null" >
+        lryxh,
+      </if>
+      <if test="lrymc != null" >
+        lrymc,
+      </if>
+      <if test="lrsj != null" >
+        lrsj,
+      </if>
+      <if test="mfcljmze != null" >
+        mfcljmze,
+      </if>
+      <if test="mfclcrkzj != null" >
+        mfclcrkzj,
+      </if>
+      <if test="mfclrkzj != null" >
+        mfclrkzj,
+      </if>
+      <if test="mfclckzj != null" >
+        mfclckzj,
+      </if>
+      <if test="jcr != null" >
+        jcr,
+      </if>
+      <if test="jcc != null" >
+        jcc,
+      </if>
+      <if test="jcje != null" >
+        jcje,
+      </if>
+      <if test="jccrzj != null" >
+        jccrzj,
+      </if>
+      <if test="jingcr != null" >
+        jingcr,
+      </if>
+      <if test="jingcc != null" >
+        jingcc,
+      </if>
+      <if test="jingcje != null" >
+        jingcje,
+      </if>
+      <if test="jingccrzj != null" >
+        jingccrzj,
+      </if>
+      <if test="gwr != null" >
+        gwr,
+      </if>
+      <if test="gwc != null" >
+        gwc,
+      </if>
+      <if test="gwje != null" >
+        gwje,
+      </if>
+      <if test="gwcrzj != null" >
+        gwcrzj,
+      </if>
+      <if test="xzmfr != null" >
+        xzmfr,
+      </if>
+      <if test="xzmfc != null" >
+        xzmfc,
+      </if>
+      <if test="xzmfje != null" >
+        xzmfje,
+      </if>
+      <if test="xzmfcrzj != null" >
+        xzmfcrzj,
+      </if>
+      <if test="jjmfr != null" >
+        jjmfr,
+      </if>
+      <if test="jjmfc != null" >
+        jjmfc,
+      </if>
+      <if test="jjmfje != null" >
+        jjmfje,
+      </if>
+      <if test="jjmfcrzj != null" >
+        jjmfcrzj,
+      </if>
+      <if test="fxjzr != null" >
+        fxjzr,
+      </if>
+      <if test="fxjzc != null" >
+        fxjzc,
+      </if>
+      <if test="fxjzje != null" >
+        fxjzje,
+      </if>
+      <if test="fxjzcrzj != null" >
+        fxjzcrzj,
+      </if>
+      <if test="gar != null" >
+        gar,
+      </if>
+      <if test="gac != null" >
+        gac,
+      </if>
+      <if test="gaje != null" >
+        gaje,
+      </if>
+      <if test="gacrzj != null" >
+        gacrzj,
+      </if>
+      <if test="xfr != null" >
+        xfr,
+      </if>
+      <if test="xfc != null" >
+        xfc,
+      </if>
+      <if test="xfje != null" >
+        xfje,
+      </if>
+      <if test="xfcrzj != null" >
+        xfcrzj,
+      </if>
+      <if test="jhr != null" >
+        jhr,
+      </if>
+      <if test="jhc != null" >
+        jhc,
+      </if>
+      <if test="jhje != null" >
+        jhje,
+      </if>
+      <if test="jhcrzj != null" >
+        jhcrzj,
+      </if>
+      <if test="kqjr != null" >
+        kqjr,
+      </if>
+      <if test="kqjc != null" >
+        kqjc,
+      </if>
+      <if test="kqjje != null" >
+        kqjje,
+      </if>
+      <if test="kqjcrzj != null" >
+        kqjcrzj,
+      </if>
+      <if test="qtmfr != null" >
+        qtmfr,
+      </if>
+      <if test="qtmfc != null" >
+        qtmfc,
+      </if>
+      <if test="qtmfje != null" >
+        qtmfje,
+      </if>
+      <if test="qtmfcrzj != null" >
+        qtmfcrzj,
+      </if>
+      <if test="etczyr != null" >
+        etczyr,
+      </if>
+      <if test="etczyc != null" >
+        etczyc,
+      </if>
+      <if test="etczyje != null" >
+        etczyje,
+      </if>
+      <if test="etczycrzj != null" >
+        etczycrzj,
+      </if>
+      <if test="etcmfr != null" >
+        etcmfr,
+      </if>
+      <if test="etcmfc != null" >
+        etcmfc,
+      </if>
+      <if test="etcmfje != null" >
+        etcmfje,
+      </if>
+      <if test="etcmfcrzj != null" >
+        etcmfcrzj,
+      </if>
+      <if test="cdr != null" >
+        cdr,
+      </if>
+      <if test="cdc != null" >
+        cdc,
+      </if>
+      <if test="cdcrzj != null" >
+        cdcrzj,
+      </if>
+      <if test="cgr != null" >
+        cgr,
+      </if>
+      <if test="cgc != null" >
+        cgc,
+      </if>
+      <if test="cgcrzj != null" >
+        cgcrzj,
+      </if>
+      <if test="ltr != null" >
+        ltr,
+      </if>
+      <if test="ltc != null" >
+        ltc,
+      </if>
+      <if test="ltje != null" >
+        ltje,
+      </if>
+      <if test="cjmzcrkzj != null" >
+        cjmzcrkzj,
+      </if>
+      <if test="cjmzr != null" >
+        cjmzr,
+      </if>
+      <if test="cjmzc != null" >
+        cjmzc,
+      </if>
+      <if test="cjmzje != null" >
+        cjmzje,
+      </if>
+      <if test="qmmzcrkzj != null" >
+        qmmzcrkzj,
+      </if>
+      <if test="qmmzr != null" >
+        qmmzr,
+      </if>
+      <if test="qmmzc != null" >
+        qmmzc,
+      </if>
+      <if test="qmmzje != null" >
+        qmmzje,
+      </if>
+      <if test="wymzcrkzj != null" >
+        wymzcrkzj,
+      </if>
+      <if test="wymzr != null" >
+        wymzr,
+      </if>
+      <if test="wymzc != null" >
+        wymzc,
+      </if>
+      <if test="wymzje != null" >
+        wymzje,
+      </if>
+      <if test="gqmzcrkzj != null" >
+        gqmzcrkzj,
+      </if>
+      <if test="gqmzr != null" >
+        gqmzr,
+      </if>
+      <if test="gqmzc != null" >
+        gqmzc,
+      </if>
+      <if test="gqmzje != null" >
+        gqmzje,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sszd != null" >
+        #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null" >
+        #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null" >
+        #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null" >
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null" >
+        #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null" >
+        #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null" >
+        #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null" >
+        #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mfcljmze != null" >
+        #{mfcljmze,jdbcType=DECIMAL},
+      </if>
+      <if test="mfclcrkzj != null" >
+        #{mfclcrkzj,jdbcType=INTEGER},
+      </if>
+      <if test="mfclrkzj != null" >
+        #{mfclrkzj,jdbcType=INTEGER},
+      </if>
+      <if test="mfclckzj != null" >
+        #{mfclckzj,jdbcType=INTEGER},
+      </if>
+      <if test="jcr != null" >
+        #{jcr,jdbcType=INTEGER},
+      </if>
+      <if test="jcc != null" >
+        #{jcc,jdbcType=INTEGER},
+      </if>
+      <if test="jcje != null" >
+        #{jcje,jdbcType=DECIMAL},
+      </if>
+      <if test="jccrzj != null" >
+        #{jccrzj,jdbcType=INTEGER},
+      </if>
+      <if test="jingcr != null" >
+        #{jingcr,jdbcType=INTEGER},
+      </if>
+      <if test="jingcc != null" >
+        #{jingcc,jdbcType=INTEGER},
+      </if>
+      <if test="jingcje != null" >
+        #{jingcje,jdbcType=DECIMAL},
+      </if>
+      <if test="jingccrzj != null" >
+        #{jingccrzj,jdbcType=INTEGER},
+      </if>
+      <if test="gwr != null" >
+        #{gwr,jdbcType=INTEGER},
+      </if>
+      <if test="gwc != null" >
+        #{gwc,jdbcType=INTEGER},
+      </if>
+      <if test="gwje != null" >
+        #{gwje,jdbcType=DECIMAL},
+      </if>
+      <if test="gwcrzj != null" >
+        #{gwcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="xzmfr != null" >
+        #{xzmfr,jdbcType=INTEGER},
+      </if>
+      <if test="xzmfc != null" >
+        #{xzmfc,jdbcType=INTEGER},
+      </if>
+      <if test="xzmfje != null" >
+        #{xzmfje,jdbcType=DECIMAL},
+      </if>
+      <if test="xzmfcrzj != null" >
+        #{xzmfcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="jjmfr != null" >
+        #{jjmfr,jdbcType=INTEGER},
+      </if>
+      <if test="jjmfc != null" >
+        #{jjmfc,jdbcType=INTEGER},
+      </if>
+      <if test="jjmfje != null" >
+        #{jjmfje,jdbcType=DECIMAL},
+      </if>
+      <if test="jjmfcrzj != null" >
+        #{jjmfcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="fxjzr != null" >
+        #{fxjzr,jdbcType=INTEGER},
+      </if>
+      <if test="fxjzc != null" >
+        #{fxjzc,jdbcType=INTEGER},
+      </if>
+      <if test="fxjzje != null" >
+        #{fxjzje,jdbcType=DECIMAL},
+      </if>
+      <if test="fxjzcrzj != null" >
+        #{fxjzcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="gar != null" >
+        #{gar,jdbcType=INTEGER},
+      </if>
+      <if test="gac != null" >
+        #{gac,jdbcType=INTEGER},
+      </if>
+      <if test="gaje != null" >
+        #{gaje,jdbcType=DECIMAL},
+      </if>
+      <if test="gacrzj != null" >
+        #{gacrzj,jdbcType=INTEGER},
+      </if>
+      <if test="xfr != null" >
+        #{xfr,jdbcType=INTEGER},
+      </if>
+      <if test="xfc != null" >
+        #{xfc,jdbcType=INTEGER},
+      </if>
+      <if test="xfje != null" >
+        #{xfje,jdbcType=DECIMAL},
+      </if>
+      <if test="xfcrzj != null" >
+        #{xfcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="jhr != null" >
+        #{jhr,jdbcType=INTEGER},
+      </if>
+      <if test="jhc != null" >
+        #{jhc,jdbcType=INTEGER},
+      </if>
+      <if test="jhje != null" >
+        #{jhje,jdbcType=DECIMAL},
+      </if>
+      <if test="jhcrzj != null" >
+        #{jhcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="kqjr != null" >
+        #{kqjr,jdbcType=INTEGER},
+      </if>
+      <if test="kqjc != null" >
+        #{kqjc,jdbcType=INTEGER},
+      </if>
+      <if test="kqjje != null" >
+        #{kqjje,jdbcType=DECIMAL},
+      </if>
+      <if test="kqjcrzj != null" >
+        #{kqjcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="qtmfr != null" >
+        #{qtmfr,jdbcType=INTEGER},
+      </if>
+      <if test="qtmfc != null" >
+        #{qtmfc,jdbcType=INTEGER},
+      </if>
+      <if test="qtmfje != null" >
+        #{qtmfje,jdbcType=DECIMAL},
+      </if>
+      <if test="qtmfcrzj != null" >
+        #{qtmfcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="etczyr != null" >
+        #{etczyr,jdbcType=INTEGER},
+      </if>
+      <if test="etczyc != null" >
+        #{etczyc,jdbcType=INTEGER},
+      </if>
+      <if test="etczyje != null" >
+        #{etczyje,jdbcType=DECIMAL},
+      </if>
+      <if test="etczycrzj != null" >
+        #{etczycrzj,jdbcType=INTEGER},
+      </if>
+      <if test="etcmfr != null" >
+        #{etcmfr,jdbcType=INTEGER},
+      </if>
+      <if test="etcmfc != null" >
+        #{etcmfc,jdbcType=INTEGER},
+      </if>
+      <if test="etcmfje != null" >
+        #{etcmfje,jdbcType=DECIMAL},
+      </if>
+      <if test="etcmfcrzj != null" >
+        #{etcmfcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="cdr != null" >
+        #{cdr,jdbcType=INTEGER},
+      </if>
+      <if test="cdc != null" >
+        #{cdc,jdbcType=INTEGER},
+      </if>
+      <if test="cdcrzj != null" >
+        #{cdcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="cgr != null" >
+        #{cgr,jdbcType=INTEGER},
+      </if>
+      <if test="cgc != null" >
+        #{cgc,jdbcType=INTEGER},
+      </if>
+      <if test="cgcrzj != null" >
+        #{cgcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="ltr != null" >
+        #{ltr,jdbcType=INTEGER},
+      </if>
+      <if test="ltc != null" >
+        #{ltc,jdbcType=INTEGER},
+      </if>
+      <if test="ltje != null" >
+        #{ltje,jdbcType=DECIMAL},
+      </if>
+      <if test="cjmzcrkzj != null" >
+        #{cjmzcrkzj,jdbcType=INTEGER},
+      </if>
+      <if test="cjmzr != null" >
+        #{cjmzr,jdbcType=INTEGER},
+      </if>
+      <if test="cjmzc != null" >
+        #{cjmzc,jdbcType=INTEGER},
+      </if>
+      <if test="cjmzje != null" >
+        #{cjmzje,jdbcType=DECIMAL},
+      </if>
+      <if test="qmmzcrkzj != null" >
+        #{qmmzcrkzj,jdbcType=INTEGER},
+      </if>
+      <if test="qmmzr != null" >
+        #{qmmzr,jdbcType=INTEGER},
+      </if>
+      <if test="qmmzc != null" >
+        #{qmmzc,jdbcType=INTEGER},
+      </if>
+      <if test="qmmzje != null" >
+        #{qmmzje,jdbcType=DECIMAL},
+      </if>
+      <if test="wymzcrkzj != null" >
+        #{wymzcrkzj,jdbcType=INTEGER},
+      </if>
+      <if test="wymzr != null" >
+        #{wymzr,jdbcType=INTEGER},
+      </if>
+      <if test="wymzc != null" >
+        #{wymzc,jdbcType=INTEGER},
+      </if>
+      <if test="wymzje != null" >
+        #{wymzje,jdbcType=DECIMAL},
+      </if>
+      <if test="gqmzcrkzj != null" >
+        #{gqmzcrkzj,jdbcType=INTEGER},
+      </if>
+      <if test="gqmzr != null" >
+        #{gqmzr,jdbcType=INTEGER},
+      </if>
+      <if test="gqmzc != null" >
+        #{gqmzc,jdbcType=INTEGER},
+      </if>
+      <if test="gqmzje != null" >
+        #{gqmzje,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.FxMfclYb" >
+    update fx_mfclyb
+    <set >
+      <if test="sszd != null" >
+        sszd = #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null" >
+        zdmc = #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null" >
+        zdzz = #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        zt = #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null" >
+        bz = #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null" >
+        sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null" >
+        lryxh = #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null" >
+        lrymc = #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null" >
+        lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mfcljmze != null" >
+        mfcljmze = #{mfcljmze,jdbcType=DECIMAL},
+      </if>
+      <if test="mfclcrkzj != null" >
+        mfclcrkzj = #{mfclcrkzj,jdbcType=INTEGER},
+      </if>
+      <if test="mfclrkzj != null" >
+        mfclrkzj = #{mfclrkzj,jdbcType=INTEGER},
+      </if>
+      <if test="mfclckzj != null" >
+        mfclckzj = #{mfclckzj,jdbcType=INTEGER},
+      </if>
+      <if test="jcr != null" >
+        jcr = #{jcr,jdbcType=INTEGER},
+      </if>
+      <if test="jcc != null" >
+        jcc = #{jcc,jdbcType=INTEGER},
+      </if>
+      <if test="jcje != null" >
+        jcje = #{jcje,jdbcType=DECIMAL},
+      </if>
+      <if test="jccrzj != null" >
+        jccrzj = #{jccrzj,jdbcType=INTEGER},
+      </if>
+      <if test="jingcr != null" >
+        jingcr = #{jingcr,jdbcType=INTEGER},
+      </if>
+      <if test="jingcc != null" >
+        jingcc = #{jingcc,jdbcType=INTEGER},
+      </if>
+      <if test="jingcje != null" >
+        jingcje = #{jingcje,jdbcType=DECIMAL},
+      </if>
+      <if test="jingccrzj != null" >
+        jingccrzj = #{jingccrzj,jdbcType=INTEGER},
+      </if>
+      <if test="gwr != null" >
+        gwr = #{gwr,jdbcType=INTEGER},
+      </if>
+      <if test="gwc != null" >
+        gwc = #{gwc,jdbcType=INTEGER},
+      </if>
+      <if test="gwje != null" >
+        gwje = #{gwje,jdbcType=DECIMAL},
+      </if>
+      <if test="gwcrzj != null" >
+        gwcrzj = #{gwcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="xzmfr != null" >
+        xzmfr = #{xzmfr,jdbcType=INTEGER},
+      </if>
+      <if test="xzmfc != null" >
+        xzmfc = #{xzmfc,jdbcType=INTEGER},
+      </if>
+      <if test="xzmfje != null" >
+        xzmfje = #{xzmfje,jdbcType=DECIMAL},
+      </if>
+      <if test="xzmfcrzj != null" >
+        xzmfcrzj = #{xzmfcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="jjmfr != null" >
+        jjmfr = #{jjmfr,jdbcType=INTEGER},
+      </if>
+      <if test="jjmfc != null" >
+        jjmfc = #{jjmfc,jdbcType=INTEGER},
+      </if>
+      <if test="jjmfje != null" >
+        jjmfje = #{jjmfje,jdbcType=DECIMAL},
+      </if>
+      <if test="jjmfcrzj != null" >
+        jjmfcrzj = #{jjmfcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="fxjzr != null" >
+        fxjzr = #{fxjzr,jdbcType=INTEGER},
+      </if>
+      <if test="fxjzc != null" >
+        fxjzc = #{fxjzc,jdbcType=INTEGER},
+      </if>
+      <if test="fxjzje != null" >
+        fxjzje = #{fxjzje,jdbcType=DECIMAL},
+      </if>
+      <if test="fxjzcrzj != null" >
+        fxjzcrzj = #{fxjzcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="gar != null" >
+        gar = #{gar,jdbcType=INTEGER},
+      </if>
+      <if test="gac != null" >
+        gac = #{gac,jdbcType=INTEGER},
+      </if>
+      <if test="gaje != null" >
+        gaje = #{gaje,jdbcType=DECIMAL},
+      </if>
+      <if test="gacrzj != null" >
+        gacrzj = #{gacrzj,jdbcType=INTEGER},
+      </if>
+      <if test="xfr != null" >
+        xfr = #{xfr,jdbcType=INTEGER},
+      </if>
+      <if test="xfc != null" >
+        xfc = #{xfc,jdbcType=INTEGER},
+      </if>
+      <if test="xfje != null" >
+        xfje = #{xfje,jdbcType=DECIMAL},
+      </if>
+      <if test="xfcrzj != null" >
+        xfcrzj = #{xfcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="jhr != null" >
+        jhr = #{jhr,jdbcType=INTEGER},
+      </if>
+      <if test="jhc != null" >
+        jhc = #{jhc,jdbcType=INTEGER},
+      </if>
+      <if test="jhje != null" >
+        jhje = #{jhje,jdbcType=DECIMAL},
+      </if>
+      <if test="jhcrzj != null" >
+        jhcrzj = #{jhcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="kqjr != null" >
+        kqjr = #{kqjr,jdbcType=INTEGER},
+      </if>
+      <if test="kqjc != null" >
+        kqjc = #{kqjc,jdbcType=INTEGER},
+      </if>
+      <if test="kqjje != null" >
+        kqjje = #{kqjje,jdbcType=DECIMAL},
+      </if>
+      <if test="kqjcrzj != null" >
+        kqjcrzj = #{kqjcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="qtmfr != null" >
+        qtmfr = #{qtmfr,jdbcType=INTEGER},
+      </if>
+      <if test="qtmfc != null" >
+        qtmfc = #{qtmfc,jdbcType=INTEGER},
+      </if>
+      <if test="qtmfje != null" >
+        qtmfje = #{qtmfje,jdbcType=DECIMAL},
+      </if>
+      <if test="qtmfcrzj != null" >
+        qtmfcrzj = #{qtmfcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="etczyr != null" >
+        etczyr = #{etczyr,jdbcType=INTEGER},
+      </if>
+      <if test="etczyc != null" >
+        etczyc = #{etczyc,jdbcType=INTEGER},
+      </if>
+      <if test="etczyje != null" >
+        etczyje = #{etczyje,jdbcType=DECIMAL},
+      </if>
+      <if test="etczycrzj != null" >
+        etczycrzj = #{etczycrzj,jdbcType=INTEGER},
+      </if>
+      <if test="etcmfr != null" >
+        etcmfr = #{etcmfr,jdbcType=INTEGER},
+      </if>
+      <if test="etcmfc != null" >
+        etcmfc = #{etcmfc,jdbcType=INTEGER},
+      </if>
+      <if test="etcmfje != null" >
+        etcmfje = #{etcmfje,jdbcType=DECIMAL},
+      </if>
+      <if test="etcmfcrzj != null" >
+        etcmfcrzj = #{etcmfcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="cdr != null" >
+        cdr = #{cdr,jdbcType=INTEGER},
+      </if>
+      <if test="cdc != null" >
+        cdc = #{cdc,jdbcType=INTEGER},
+      </if>
+      <if test="cdcrzj != null" >
+        cdcrzj = #{cdcrzj,jdbcType=INTEGER},
+      </if>
+      <if test="cgr != null" >
+        cgr = #{cgr,jdbcType=INTEGER},
+      </if>
+      <if test="cgc != null" >
+        cgc = #{cgc,jdbcType=INTEGER},
+      </if>
+      <if test="cgcrzj != null" >
+        cgcrzj = #{cgcrzj,jdbcType=INTEGER},
+      </if>
+       <if test="ltr != null" >
+        ltr = #{ltr,jdbcType=INTEGER},
+      </if>
+      <if test="ltc != null" >
+        ltc = #{ltc,jdbcType=INTEGER},
+      </if>
+      <if test="ltje != null" >
+        ltje = #{ltje,jdbcType=DECIMAL},
+      </if>
+      <if test="cjmzcrkzj != null" >
+        cjmzcrkzj = #{cjmzcrkzj,jdbcType=INTEGER},
+      </if>
+      <if test="cjmzr != null" >
+        cjmzr = #{cjmzr,jdbcType=INTEGER},
+      </if>
+      <if test="cjmzc != null" >
+        cjmzc = #{cjmzc,jdbcType=INTEGER},
+      </if>
+      <if test="cjmzje != null" >
+        cjmzje = #{cjmzje,jdbcType=DECIMAL},
+      </if>
+      <if test="qmmzcrkzj != null" >
+        qmmzcrkzj = #{qmmzcrkzj,jdbcType=INTEGER},
+      </if>
+      <if test="qmmzr != null" >
+        qmmzr = #{qmmzr,jdbcType=INTEGER},
+      </if>
+      <if test="qmmzc != null" >
+        qmmzc = #{qmmzc,jdbcType=INTEGER},
+      </if>
+      <if test="qmmzje != null" >
+        qmmzje = #{qmmzje,jdbcType=DECIMAL},
+      </if>
+      <if test="wymzcrkzj != null" >
+        wymzcrkzj = #{wymzcrkzj,jdbcType=INTEGER},
+      </if>
+      <if test="wymzr != null" >
+        wymzr = #{wymzr,jdbcType=INTEGER},
+      </if>
+      <if test="wymzc != null" >
+        wymzc = #{wymzc,jdbcType=INTEGER},
+      </if>
+      <if test="wymzje != null" >
+        wymzje = #{wymzje,jdbcType=DECIMAL},
+      </if>
+      <if test="gqmzcrkzj != null" >
+        gqmzcrkzj = #{gqmzcrkzj,jdbcType=INTEGER},
+      </if>
+      <if test="gqmzr != null" >
+        gqmzr = #{gqmzr,jdbcType=INTEGER},
+      </if>
+      <if test="gqmzc != null" >
+        gqmzc = #{gqmzc,jdbcType=INTEGER},
+      </if>
+      <if test="gqmzje != null" >
+        gqmzje = #{gqmzje,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.FxMfclYb" >
+    update fx_mfclyb
+    set sszd = #{sszd,jdbcType=VARCHAR},
+      zdmc = #{zdmc,jdbcType=VARCHAR},
+      zdzz = #{zdzz,jdbcType=VARCHAR},
+      zt = #{zt,jdbcType=INTEGER},
+      bz = #{bz,jdbcType=VARCHAR},
+      sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      lryxh = #{lryxh,jdbcType=VARCHAR},
+      lrymc = #{lrymc,jdbcType=VARCHAR},
+      lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      mfcljmze = #{mfcljmze,jdbcType=DECIMAL},
+      mfclcrkzj = #{mfclcrkzj,jdbcType=INTEGER},
+      mfclrkzj = #{mfclrkzj,jdbcType=INTEGER},
+      mfclckzj = #{mfclckzj,jdbcType=INTEGER},
+      jcr = #{jcr,jdbcType=INTEGER},
+      jcc = #{jcc,jdbcType=INTEGER},
+      jcje = #{jcje,jdbcType=DECIMAL},
+      jccrzj = #{jccrzj,jdbcType=INTEGER},
+      jingcr = #{jingcr,jdbcType=INTEGER},
+      jingcc = #{jingcc,jdbcType=INTEGER},
+      jingcje = #{jingcje,jdbcType=DECIMAL},
+      jingccrzj = #{jingccrzj,jdbcType=INTEGER},
+      gwr = #{gwr,jdbcType=INTEGER},
+      gwc = #{gwc,jdbcType=INTEGER},
+      gwje = #{gwje,jdbcType=DECIMAL},
+      gwcrzj = #{gwcrzj,jdbcType=INTEGER},
+      xzmfr = #{xzmfr,jdbcType=INTEGER},
+      xzmfc = #{xzmfc,jdbcType=INTEGER},
+      xzmfje = #{xzmfje,jdbcType=DECIMAL},
+      xzmfcrzj = #{xzmfcrzj,jdbcType=INTEGER},
+      jjmfr = #{jjmfr,jdbcType=INTEGER},
+      jjmfc = #{jjmfc,jdbcType=INTEGER},
+      jjmfje = #{jjmfje,jdbcType=DECIMAL},
+      jjmfcrzj = #{jjmfcrzj,jdbcType=INTEGER},
+      fxjzr = #{fxjzr,jdbcType=INTEGER},
+      fxjzc = #{fxjzc,jdbcType=INTEGER},
+      fxjzje = #{fxjzje,jdbcType=DECIMAL},
+      fxjzcrzj = #{fxjzcrzj,jdbcType=INTEGER},
+      gar = #{gar,jdbcType=INTEGER},
+      gac = #{gac,jdbcType=INTEGER},
+      gaje = #{gaje,jdbcType=DECIMAL},
+      gacrzj = #{gacrzj,jdbcType=INTEGER},
+      xfr = #{xfr,jdbcType=INTEGER},
+      xfc = #{xfc,jdbcType=INTEGER},
+      xfje = #{xfje,jdbcType=DECIMAL},
+      xfcrzj = #{xfcrzj,jdbcType=INTEGER},
+      jhr = #{jhr,jdbcType=INTEGER},
+      jhc = #{jhc,jdbcType=INTEGER},
+      jhje = #{jhje,jdbcType=DECIMAL},
+      jhcrzj = #{jhcrzj,jdbcType=INTEGER},
+      kqjr = #{kqjr,jdbcType=INTEGER},
+      kqjc = #{kqjc,jdbcType=INTEGER},
+      kqjje = #{kqjje,jdbcType=DECIMAL},
+      kqjcrzj = #{kqjcrzj,jdbcType=INTEGER},
+      qtmfr = #{qtmfr,jdbcType=INTEGER},
+      qtmfc = #{qtmfc,jdbcType=INTEGER},
+      qtmfje = #{qtmfje,jdbcType=DECIMAL},
+      qtmfcrzj = #{qtmfcrzj,jdbcType=INTEGER},
+      etczyr = #{etczyr,jdbcType=INTEGER},
+      etczyc = #{etczyc,jdbcType=INTEGER},
+      etczyje = #{etczyje,jdbcType=DECIMAL},
+      etczycrzj = #{etczycrzj,jdbcType=INTEGER},
+      etcmfr = #{etcmfr,jdbcType=INTEGER},
+      etcmfc = #{etcmfc,jdbcType=INTEGER},
+      etcmfje = #{etcmfje,jdbcType=DECIMAL},
+      etcmfcrzj = #{etcmfcrzj,jdbcType=INTEGER},
+      cdr = #{cdr,jdbcType=INTEGER},
+      cdc = #{cdc,jdbcType=INTEGER},
+      cdcrzj = #{cdcrzj,jdbcType=INTEGER},
+      cgr = #{cgr,jdbcType=INTEGER},
+      cgc = #{cgc,jdbcType=INTEGER},
+      cgcrzj = #{cgcrzj,jdbcType=INTEGER},
+      ltr = #{ltr,jdbcType=INTEGER},
+      ltc = #{ltc,jdbcType=INTEGER},
+      ltje = #{ltje,jdbcType=DECIMAL},
+      cjmzcrkzj = #{cjmzcrkzj,jdbcType=INTEGER},
+      cjmzr = #{cjmzr,jdbcType=INTEGER},
+      cjmzc = #{cjmzc,jdbcType=INTEGER},
+      cjmzje = #{cjmzje,jdbcType=DECIMAL},
+      qmmzcrkzj = #{qmmzcrkzj,jdbcType=INTEGER},
+      qmmzr = #{qmmzr,jdbcType=INTEGER},
+      qmmzc = #{qmmzc,jdbcType=INTEGER},
+      qmmzje = #{qmmzje,jdbcType=DECIMAL},
+      wymzcrkzj = #{wymzcrkzj,jdbcType=INTEGER},
+      wymzr = #{wymzr,jdbcType=INTEGER},
+      wymzc = #{wymzc,jdbcType=INTEGER},
+      wymzje = #{wymzje,jdbcType=DECIMAL},
+      gqmzcrkzj = #{gqmzcrkzj,jdbcType=INTEGER},
+      gqmzr = #{gqmzr,jdbcType=INTEGER},
+      gqmzc = #{gqmzc,jdbcType=INTEGER},
+      gqmzje = #{gqmzje,jdbcType=DECIMAL}
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  
+  <!-- getMfclData -->
+  <select id="getMfclData" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fx_mfclyb LEFT JOIN sys_department dept on sszd = dept.departmentid
+    <where>
+	   	<if test="lock !=null">and zt = #{lock} </if>
+	   	<if test="st!=null and et==null">and substring(sfrq,1,length(#{st}))&gt;=#{st}</if>
+	   	<if test="et!=null and st==null">and substring(sfrq,1,length(#{et}))&lt;=#{et}</if>
+	   	<if test="st!=null and et!=null">and substring(sfrq,1,length(#{st})) between #{st} and #{et}</if>
+	   	<if test="lrymc!=null">and lrymc like concat('%',#{lrymc},'%')</if>
+	   	<if test="zdzz!=null">and zdzz like concat('%',#{zdzz},'%')</if>
+	   	<if test="depts != null">and sszd in (${depts})</if>
+   	</where>
+   	<if test="order != null">order by ${order}</if>
+   	<if test="order == null">order by sfrq desc </if> 
+   		,dept.sortcode asc
+  </select>
+  <!-- getCanDel -->
+  <select id="getCanDel" parameterType="map" resultType="int">
+  	SELECT count(*) FROM fx_mfclyb where zt = 1
+  	<if test="sfrq!=null">and substring(sfrq,1,length(#{sfrq}))=#{sfrq}</if>
+  	<if test="xh!=null">and xh!=#{xh}</if>
+  	<if test="sszd!=null">and sszd = #{sszd}</if>
+  </select>
+</mapper>

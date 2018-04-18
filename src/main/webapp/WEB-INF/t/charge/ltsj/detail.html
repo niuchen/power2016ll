@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>日常数据上报</title>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.extension.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet"/>
+	<script src="${ctx.contextPath}/res/ui/validator.js"></script>
+	<script src="${ctx.contextPath}/res/datepicker/WdatePicker.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+	<style type="text/css">
+	.tdTitle {
+	    position: relative;
+	    left: 0px;
+	    text-align: right;
+	    white-space: nowrap;
+	    font-weight: normal;
+	    width: 180px;
+	    padding-right: 10px;
+	}
+	.numberTxt{
+		border:none;
+		border:1px;
+		text-align:right;
+		border-bottom-style:solid;
+		font-weight: bold;
+		font-size: 16px;
+		color:blue;
+		padding-right: 5px;
+	}
+	.ncpTxt{
+		border:none;
+		border:1px;
+		text-align:right;
+		border-bottom-style:solid;
+		font-weight: bold;
+		font-size: 16px;
+		color:blue;
+		padding-right: 5px;
+	}
+	.moneyTxt{
+		border:none;
+		border:1px;
+		text-align:right;
+		border-bottom-style:solid;
+		font-weight: bold;
+		font-size: 16px;
+		color:red;
+		padding-right: 5px;
+	}
+	.total{
+		text-align:right;
+		font-size: 14px;
+	}
+	</style>
+</head>
+<body>
+    <form id="form1">
+<div style="margin-left: 10px; margin-right: 10px;">
+    <div class="tab-content" style="padding-top: 10px;">
+   <table class="form">
+               <input id="xh" name="xh" type="hidden" value=""/>
+        <tr height="5px">
+                    <td class="formTitle">所属站点<font face="宋体">*</font></td>
+                    <td class="formValue">
+                    	<span style="font-weight: bold;font-size: 14px;color: green;">${user.deptName} </span>
+                        <input id="sszd" type="hidden" value="${user.deptId}"/>
+                        <input id="zdmc" type="hidden" value="${user.deptName}"/>
+                        <input id="lryxh" type="hidden" value="${user.uid}"/>
+                        <input id="lrymc" type="hidden" value="${user.realName}"/>
+                    </td>
+                    <td class="formTitle">上报日期<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <input id="sfrq" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({maxDate:'%y-%M-%d'})" value="${.now?string('yyyy-MM-dd')}"/>
+                    </td>
+                
+                 <td class="formTitle">录入人员<font face="宋体">*</font></td>
+                 <td class="formValue">
+                	<span style="font-weight: bold;font-size: 14px;color: green;">${user.realName} </span>
+                	</td>
+                	</tr>
+                <tr>
+                    <th class="formTitle" valign="top" style="padding-top: 4px;">备注信息</th>
+                    <td class="formValue" colspan="5">
+                        <textarea id="bz" class="form-control" style="height: 50px;"></textarea>
+                    </td>
+                </tr>
+                 </table>
+        <table class="form"> 
+        <tr>
+            <th class="formTitle">绿通出口合计:</th>
+            <td class="formValue">
+                <input id="ltchj" type="text" class="form-control total" readonly="readonly"/>
+            </td>
+            <th class="formTitle">绿通免费金额合计:</th>
+            <td class="formValue">
+                 <input id="ltcjehj" type="text" class="form-control total" readonly="readonly"/>
+            </td>
+        </tr>
+        <tr class="keyRow">
+         
+            <th class="formTitle">绿通A型(出):</th>
+            <td class="formValue">
+                <input id="ltc1" type="text" class="form-control numberTxt" />
+            </td>
+            <th class="formTitle">绿通A型免费金额:</th>
+            <td class="formValue">
+                 <input id="ltcje1" type="text" class="form-control moneyTxt"/>
+            </td>
+        </tr>
+        <tr class="keyRow">
+         
+            <th class="formTitle">绿通B型(出):</th>
+            <td class="formValue">
+                <input id="ltc2" type="text" class="form-control numberTxt" />
+            </td>
+            <th class="formTitle">绿通B型免费金额:</th>
+            <td class="formValue">
+                 <input id="ltcje2" type="text" class="form-control moneyTxt"/>
+            </td>
+        </tr><tr class="keyRow">
+        
+            <th class="formTitle">绿通C型(出):</th>
+            <td class="formValue">
+                <input id="ltc3" type="text" class="form-control numberTxt" />
+            </td>
+            <th class="formTitle">绿通C型免费金额:</th>
+            <td class="formValue">
+                 <input id="ltcje3" type="text" class="form-control moneyTxt"/>
+            </td>
+        </tr><tr class="keyRow">
+         
+            <th class="formTitle">绿通D型(出):</th>
+            <td class="formValue">
+                <input id="ltc4" type="text" class="form-control numberTxt" />
+            </td>
+            <th class="formTitle">绿通D型免费金额:</th>
+            <td class="formValue">
+                 <input id="ltcje4" type="text" class="form-control moneyTxt"/>
+            </td>
+        </tr><tr class="keyRow">
+         
+            <th class="formTitle">绿通E型(出):</th>
+            <td class="formValue">
+                <input id="ltc5" type="text" class="form-control numberTxt" />
+            </td>
+            <th class="formTitle">绿通E型免费金额:</th>
+            <td class="formValue">
+                 <input id="ltcje5" type="text" class="form-control moneyTxt"/>
+            </td>
+        </tr><tr class="keyRow">
+         
+            <th class="formTitle">绿通F型(出):</th>
+            <td class="formValue">
+                <input id="ltc6" type="text" class="form-control numberTxt" />
+            </td>
+            <th class="formTitle">绿通F型免费金额:</th>
+            <td class="formValue">
+                 <input id="ltcje6" type="text" class="form-control moneyTxt"/>
+            </td>
+        </tr>
+    </table>
+      <header>绿通货物种类数据录入</header>
+    <table class="form">
+    <tr class="keyRow">
+         
+            <th class="formTitle">货物种类数据录入合计:</th>
+            <td class="formValue">
+                <input id="zlhj" type="text" class="form-control  total" />
+            </td>
+            <th class="formTitle"></th>
+            <td class="formValue">
+                
+            </td>
+             </tr>
+    	<tr class="keyRow">
+         
+            <th class="formTitle">新鲜蔬菜:</th>
+            <td class="formValue">
+                <input id="xxsc" type="text" class="form-control ncpTxt" />
+            </td>
+            <th class="formTitle">新鲜水果:</th>
+            <td class="formValue">
+                 <input id="xxsg" type="text" class="form-control ncpTxt"/>
+            </td>
+             </tr>
+             <tr class="keyRow">
+         
+            <th class="formTitle">鲜活水产品:</th>
+            <td class="formValue">
+                <input id="xhscp" type="text" class="form-control ncpTxt" />
+            </td>
+            <th class="formTitle">活的畜禽:</th>
+            <td class="formValue">
+                 <input id="hdxq" type="text" class="form-control ncpTxt"/>
+            </td>
+             </tr>
+             <tr class="keyRow">
+         
+            <th class="formTitle">新鲜的肉、蛋、奶:</th>
+            <td class="formValue">
+                <input id="xxdrdn" type="text" class="form-control ncpTxt" />
+            </td>
+            <th class="formTitle">薯芋和粮食类:</th>
+            <td class="formValue">
+                 <input id="syhls" type="text" class="form-control ncpTxt"/>
+            </td>
+             </tr>
+    </table>
+    </div>
+</div>
+    </form>
+<script>
+var keyValue = request('keyValue');
+$(function () {
+    initControl();
+})
+//初始化控件
+function initControl() {
+    //获取表单
+    if (!!keyValue) {
+    	$.SetForm({
+            url: "${ctx.contextPath}/charge/getLtsjFormJson",
+            param: { keyValue: keyValue },
+            success: function (data) {
+                $("#form1").SetWebControls(data);
+                //$("#zdzz").ComboBoxSetValue(data.zdzz);
+                $("#zdmc").text(data.zdmc);
+                $("#lrymc").text(data.lrymc);
+                var zdzz = top.clientuserData[data.zdzz] == null ? "" : top.clientuserData[data.zdzz].realname;//站点站长
+                $("#zdzz").text(zdzz);
+                $("#sfrq").val(formatDate(new Date(data.sfrq), "yyyy-MM-dd"));
+                $("#form1").find('.form-control,.ui-select,input').attr('disabled', 'disabled');
+            }
+        });
+    }
+}
+</script>
+</body>
+</html>

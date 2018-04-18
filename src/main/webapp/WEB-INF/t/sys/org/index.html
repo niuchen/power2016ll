@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html><head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>组织机构</title>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+    <link href="${ctx.contextPath}/res/jqgrid/jqgrid.css" rel="stylesheet">
+	<link href="${ctx.contextPath}/res/zTree3.5/css/zTreeStyle/zTreeStyle.css" rel="stylesheet">
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet">
+	<script src="${ctx.contextPath}/res/jqgrid/jqgrid.min.js"></script>
+	<script src="${ctx.contextPath}/res/zTree3.5/js/jquery.ztree.all.min.js"></script>
+	<script src="${ctx.contextPath}/res/ui/validator.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+	
+    <style>
+        body {
+            margin: 10px;
+            margin-bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+    
+<script>
+    $(document).ready(function () {
+        initialPage();
+        GetGrid();
+    });
+    //重设(表格)宽高
+    function initialPage() {
+        //resize重设(表格、树形)宽高
+        $(window).resize(function (e) {
+            window.setTimeout(function () {
+                $('#gridTable').setGridWidth(($('.gridPanel').width()));
+                $("#gridTable").setGridHeight($(window).height() - 108.5);
+            }, 200);
+            e.stopPropagation();
+        });
+    }
+    //加载表格
+    function GetGrid() {
+        var selectedRowIndex = 0;
+        var $gridTable = $('#gridTable');
+        $gridTable.jqGrid({
+            url: "${ctx.contextPath}/sys/org/showCompany",
+            datatype: "json",
+            mtype:"POST",
+            height: $(window).height() - 108.5,
+            autowidth: true,
+            colModel: [
+                { label: '主键', name: 'organizeid', hidden: true,key:true},
+                { label: "机构名称",name: "fullname", width: 300, align: "left", sortable: false },
+                { label: "外文名称", name: "shortname", width: 150, align: "left", sortable: false },
+                //{ label: "公司分类", name: "category", width: 150, align: "left", sortable: false },
+                { label: "机构性质", name: "nature", width: 100, align: "left", sortable: false,
+                	formatter: function (cellvalue, options, rowObject) {
+                        return top.clientdataItem[102] == null ? "" : top.clientdataItem[102][cellvalue];
+                    }
+                
+                },
+                {
+                    label: "成立时间", name: "foundedtime", width: 100, align: "left", sortable: false,
+                    formatter: function (cellvalue, options, rowObject) {
+                    	if(!cellvalue) return "";
+                        return formatDate(new Date(cellvalue), 'yyyy-MM-dd');
+                    }
+                },
+                { label: "负责人", name: "manager", width: 100, align: "left", sortable: false,
+                	formatter: function (cellvalue, options, rowObject) {
+                        return top.clientuserData[cellvalue]== null ? "" : top.clientuserData[cellvalue].realname;
+                    }
+                },
+                { label: "邮箱", name: "email", width: 200, align: "left", sortable: false },
+                { label: "备注", name: "description", width: 200, align: "left", sortable: false }
+            ],
+            treeGrid: true,
+            treeGridModel: "adjacency",//adjacency  nested
+            treeReader:{
+            	parent_id_field: "parentid"
+       		},
+            ExpandColumn: "shortname",
+            rowNum: "all",
+            rownumbers:true,
+            onSelectRow: function () {
+                selectedRowIndex = $("#" + this.id).getGridParam('selrow');
+            },
+            gridComplete: function () {
+                $("#" + this.id).setSelection(selectedRowIndex, false);
+            }
+        });
+        //查询条件设置
+        $("#queryCondition .dropdown-menu li").click(function () {
+            var text = $(this).find('a').html();
+            var value = $(this).find('a').attr('data-value');
+            $("#queryCondition .dropdown-text").html(text).attr('data-value', value)
+        });
+        //查询事件
+        $("#btn_Search").click(function () {
+            $gridTable.jqGrid('setGridParam', {
+                postData: {
+                    condition: $("#queryCondition").find('.dropdown-text').attr('data-value'),
+                    keyword: $("#txt_Keyword").val()
+                }
+            }).trigger('reloadGrid');
+        });
+        //查询回车事件
+        $('#txt_Keyword').bind('keypress', function (event) {
+            if (event.keyCode == "13") {
+                $('#btn_Search').trigger("click");
+            }
+        });
+    }
+    //新增
+    function btn_add() {
+        var parentId = $("#gridTable").jqGridRowValue("organizeid");
+        dialogOpen({
+            id: "Form",
+            title: '添加机构',
+            url: "${ctx.contextPath}/sys/org/form?parentId="+parentId,
+            width: "750px",
+            height: "500px",
+            callBack: function (iframeId) {
+                top.frames[iframeId].AcceptClick();
+            }
+        });
+    };
+    //编辑
+    function btn_edit() {
+        var keyValue = $("#gridTable").jqGridRowValue("organizeid");
+        if (checkedRow(keyValue)) {
+            dialogOpen({
+                id: "Form",
+                title: '修改机构',
+                url: "${ctx.contextPath}/sys/org/form?keyValue="+keyValue,
+                width: "750px",
+                height: "500px",
+                callBack: function (iframeId) {
+                    top.frames[iframeId].AcceptClick();
+                }
+            });
+        }
+    }
+    //删除
+    function btn_delete() {
+        var keyValue = $("#gridTable").jqGridRowValue("organizeid");
+        if (keyValue) {
+            $.RemoveForm({
+                url: "${ctx.contextPath}/sys/org/delOrg",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#gridTable").resetSelection();
+                    $("#gridTable").trigger("reloadGrid");
+                }
+            })
+        } else {
+            dialogMsg('请选择需要删除的数据项！', 0);
+        }
+    }
+</script>
+
+<div class="titlePanel">
+    <div class="title-search">
+        <table>
+            <tr>
+                <td>
+                    <div id="queryCondition" class="btn-group">
+                        <a class="btn btn-default dropdown-text" data-toggle="dropdown">选择条件</a>
+                        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a data-value="fullname">机构名称</a></li>
+                            <li><a data-value="shortname">外文名称</a></li>
+                            <!--  <li><a data-value="category">公司分类</a></li>-->
+                            <li><a data-value="manager">负责人</a></li>
+                        </ul>
+                    </div>
+                </td>
+                <td style="padding-left: 2px;">
+                    <input id="txt_Keyword" type="text" class="form-control" placeholder="请输入要查询关键字" style="width: 200px;" />
+                </td>
+                <td style="padding-left: 5px;">
+                    <a id="btn_Search" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp;查询</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="toolbar">
+        <div class="btn-group">
+            <a id="b_ref" class="btn btn-default" onclick="reload();"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
+            <a id="b_add" class="btn btn-default" onclick="btn_add()"><i class="fa fa-plus"></i>&nbsp;新增</a>
+            <a id="b_edit" class="btn btn-default" onclick="btn_edit()"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑</a>
+            <a id="b_delete" class="btn btn-default" onclick="btn_delete()"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+        </div>
+        <script>$('.toolbar').authorizeButton()</script>
+    </div>
+</div>
+<div class="gridPanel">
+    <table id="gridTable"></table>
+</div>
+</body></html>

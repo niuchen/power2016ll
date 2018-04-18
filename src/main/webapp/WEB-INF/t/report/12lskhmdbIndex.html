@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="content-type" content="text/html; charset=UTF-8">
+<title>流失卡、灰名单表</title>
+<link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+ <link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet" />
+<link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet">
+<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet">
+<link href="${ctx.contextPath}/res/wdTree/tree.css" rel="stylesheet"/>
+<script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+<script src="${ctx.contextPath}/res/datepicker/WdatePicker.js"></script>
+<script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+<script src="${ctx.contextPath}/res/wdTree/tree.js"></script>
+<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+<script src="${ctx.contextPath}/res/wizard/wizard.js"></script>
+<script src="${ctx.contextPath}/res/ui/validator.js"></script>
+<#include "/WEB-INF/t/report/reportJS.html"/>
+</head>
+<body style="margin: 10px;margin-bottom: 0px;">
+
+
+<div id="ajaxLoader" style="cursor: progress; position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: #f1f1f1; z-index: 10000; overflow: hidden;"></div>
+<script type="text/javascript">
+var Installed = Install_Detect();
+</script>
+
+      
+<div class="ui-report" style="margin-top:-20px;height:570px;" >
+    <ul class="nav nav-tabs">
+        <li class="active" ><a href="#dskInfo" data-toggle="tab" >正常丢失卡已缴纳通行费的车辆统计表</a></li>
+        <li><a href="#hmdInfo" data-toggle="tab">拟列入“灰名单”车辆申请表</a></li>
+        <li><a href="#cgInfo" data-toggle="tab">闯关、事故车辆调查表</a></li>
+        <li><a href="#zhInfo" data-toggle="tab">通行卡强制组合情况统计表</a></li>
+    </ul>
+    
+    
+  <page class="tab-content" style="padding-top: 15px;">
+  <page id="dskInfo" class="tab-pane active" style="height:700px;">
+    <div class="titlePanel">
+        <div class="title-search">
+         <table>
+            <tr>
+                <td> 统计月份：</td>
+                <td><input id="StartTime" readonly type="text" value="${st}" class="form-control input-wdatepicker" style="width:100px;"></td>
+                <td style="padding-left: 5px;">
+                	<input id="orgId" type="hidden" value=""/>
+                	<a id="btn_Reset" class="btn btn-default">&nbsp;重&nbsp;&nbsp;置</a>
+                    <a id="btn_Search" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp;查询</a>
+                </td>
+            </tr>
+        </table>
+        </div>
+        <div class="toolbar">
+            <div class="btn-group">
+                <a id="b-replace" class="btn btn-default" onclick="reload();"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
+            </div>
+        </div>
+    </div>
+  <page class="gridPanel" id="gridPanel" style="border:1px solid #ccc;">
+	<script language="javascript">
+	CreateDisplayViewer("${ctx.contextPath}/res/grf/1201zclskyjntxftjb.grf?t=${.now?string('yyyyMMddhhmmss')}",""); 
+	</script>
+</page> 
+</page>
+
+ <page id="hmdInfo" class="tab-pane"  style="height:700px;">
+  <div class="titlePanel">
+        <div class="title-search">
+         <table>
+            <tr>
+                <td> 统计月份：</td>
+                <td><input id="StartTime1" readonly type="text" value="${st}" class="form-control input-wdatepicker" style="width:100px;"></td>
+                <td style="padding-left: 5px;">
+                	<input id="orgId" type="hidden" value=""/>
+                	<a id="btn_Reset" class="btn btn-default">&nbsp;重&nbsp;&nbsp;置</a>
+                    <a id="btn_Search1" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp;查询</a>
+                </td>
+            </tr>
+        </table>
+        </div>
+        <div class="toolbar">
+            <div class="btn-group">
+                <a id="b-replace" class="btn btn-default" onclick="reload();"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
+            </div>
+        </div>
+    </div>
+<page class="gridPanel" id="gridPanel" style="border:1px solid #ccc;">
+	<script language="javascript">
+	 CreateDisplayViewerEx2("ReportViewer1", "100%", "100%", "${ctx.contextPath}/res/grf/1202hmdclsqb.grf?t=${.now?string('yyyyMMddhhmmss')}","" , true, "")
+	</script>
+</page>
+</page>
+
+ <page id="cgInfo" class="tab-pane"  style="height:700px;">
+  <div class="titlePanel">
+        <div class="title-search">
+         <table>
+            <tr>
+                <td> 统计月份：</td>
+                <td><input id="StartTime2" readonly type="text" value="${st}" class="form-control input-wdatepicker" style="width:100px;"></td>
+                <td style="padding-left: 5px;">
+                	<input id="orgId" type="hidden" value=""/>
+                	<a id="btn_Reset" class="btn btn-default">&nbsp;重&nbsp;&nbsp;置</a>
+                    <a id="btn_Search2" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp;查询</a>
+                </td>
+            </tr>
+        </table>
+        </div>
+        <div class="toolbar">
+            <div class="btn-group">
+                <a id="b-replace" class="btn btn-default" onclick="reload();"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
+            </div>
+        </div>
+    </div>
+<page class="gridPanel" id="gridPanel" style="border:1px solid #ccc;">
+	<script language="javascript">
+	 CreateDisplayViewerEx2("ReportViewer2", "100%", "100%", "${ctx.contextPath}/res/grf/1203cgsgclb.grf?t=${.now?string('yyyyMMddhhmmss')}","" , true, "")
+	</script>
+</page>
+</page>
+
+<page id="zhInfo" class="tab-pane"  style="height:700px;">
+  <div class="titlePanel">
+        <div class="title-search">
+         <table>
+            <tr>
+                <td> 统计月份：</td>
+                <td><input id="StartTime3" readonly type="text" value="${st}" class="form-control input-wdatepicker" style="width:100px;"></td>
+                <td style="padding-left: 5px;">
+                	<input id="orgId" type="hidden" value=""/>
+                	<a id="btn_Reset" class="btn btn-default">&nbsp;重&nbsp;&nbsp;置</a>
+                    <a id="btn_Search3" class="btn btn-primary"><i class="fa fa-search"></i>&nbsp;查询</a>
+                </td>
+            </tr>
+        </table>
+        </div>
+        <div class="toolbar">
+            <div class="btn-group">
+                <a id="b-replace" class="btn btn-default" onclick="reload();"><i class="fa fa-refresh"></i>&nbsp;刷新</a>
+            </div>
+        </div>
+    </div>
+<page class="gridPanel" id="gridPanel" style="border:1px solid #ccc;">
+	<script language="javascript">
+	 CreateDisplayViewerEx2("ReportViewer3", "100%", "100%", "${ctx.contextPath}/res/grf/1204qzzhqkb.grf?t=${.now?string('yyyyMMddhhmmss')}","" , true, "")
+	</script>
+</page>
+</page>
+</page>
+</div>
+<script type="text/javascript">
+var reportViewer;
+__reportInit=function(){//报表初始化隐藏
+	reportViewer=document.getElementById("ReportViewer");
+	if(reportViewer && reportViewer.UpdateToolbar){
+		reportViewer.RemoveToolbarControl(6);
+		reportViewer.RemoveToolbarControl(8);
+		reportViewer.RemoveToolbarControl(9);
+		reportViewer.RemoveToolbarControl(10);
+		reportViewer.UpdateToolbar();
+	}
+}
+var reportViewer1;
+__reportInit1=function(){//报表初始化隐藏
+	reportViewer1=document.getElementById("ReportViewer1");
+	if(reportViewer1 && reportViewer1.UpdateToolbar){
+		reportViewer1.RemoveToolbarControl(6);
+		reportViewer1.RemoveToolbarControl(8);
+		reportViewer1.RemoveToolbarControl(9);
+		reportViewer1.RemoveToolbarControl(10);
+		reportViewer1.UpdateToolbar();
+	}
+}
+var reportViewer2;
+__reportInit2=function(){//报表初始化隐藏
+	reportViewer2=document.getElementById("ReportViewer2");
+	if(reportViewer2 && reportViewer2.UpdateToolbar){
+		reportViewer2.RemoveToolbarControl(6);
+		reportViewer2.RemoveToolbarControl(8);
+		reportViewer2.RemoveToolbarControl(9);
+		reportViewer2.RemoveToolbarControl(10);
+		reportViewer2.UpdateToolbar();
+	}
+}
+var reportViewer3;
+__reportInit3=function(){//报表初始化隐藏
+	reportViewer3=document.getElementById("ReportViewer3");
+	if(reportViewer3 && reportViewer3.UpdateToolbar){
+		reportViewer3.RemoveToolbarControl(6);
+		reportViewer3.RemoveToolbarControl(8);
+		reportViewer3.RemoveToolbarControl(9);
+		reportViewer3.RemoveToolbarControl(10);
+		reportViewer3.UpdateToolbar();
+	}
+}
+
+$(function () {
+	__reportInit();
+	__reportInit1();
+	__reportInit2();
+	__reportInit3();
+	//
+    $("#StartTime").bind("click",function(){WdatePicker({isShowClear:false,dateFmt:'yyyy年MM月'});});
+    $("#StartTime1").bind("click",function(){WdatePicker({isShowClear:false,dateFmt:'yyyy年MM月'});});
+    $("#StartTime2").bind("click",function(){WdatePicker({isShowClear:false,dateFmt:'yyyy年MM月'});});
+    $("#StartTime3").bind("click",function(){WdatePicker({isShowClear:false,dateFmt:'yyyy年MM月'});});
+	 $("#ajaxLoader").fadeOut()
+    InitialPage();
+	//中心/站点
+   	$("#deptId").ComboBoxTree({
+   		url: "${ctx.contextPath}/sys/dept/deptTree",
+         description: "==请选择==",
+         height: "180px",
+         click: function (item) {
+             if (item.sort == 'org') {
+                $("#orgId").val(item.id);
+             }else{
+             	$("#orgId").val("");
+             }
+         }
+     });
+});
+
+//初始化
+function InitialPage() {
+	$('#gridPanel').height($(window).height() - 80);
+    $(window).resize(function (e) {
+        window.setTimeout(function () {
+            $('#gridPanel').height($(window).height() - 80);
+        }, 200);
+        e.stopPropagation();
+    });
+}
+$("#btn_Reset").click(function () {
+	 $("#deptId").ComboBoxTreeSetValue("");
+	 $("#orgId").val("");
+});
+$("#btn_Search").click(function Search(){
+var queryJson = $("#filter-form").GetWebControls();
+$.ajax({url:"${ctx.contextPath}/report/1201zclskyjntxftjbData",
+	data:{
+		st:$("#StartTime").val(),
+		deptId:$("#deptId").attr('data-value'),orgId:$("#orgId").val()
+	},dataType:"text",
+	success:function(datax) {
+		reportViewer.Stop();
+		var report = reportViewer.Report;
+		report.LoadDataFromXML(datax);		
+		reportViewer.Start();
+	},error:function(data){}
+});
+});
+$("#btn_Search1").click(function Search(){
+	var queryJson = $("#filter-form").GetWebControls();
+	$.ajax({url:"${ctx.contextPath}/report/1202hmdclsqbData",
+		data:{
+			st:$("#StartTime1").val(),
+			deptId:$("#deptId").attr('data-value'),orgId:$("#orgId").val()
+		},dataType:"text",
+		success:function(datax) {
+			reportViewer1.Stop();
+			var report = reportViewer1.Report;
+			report.LoadDataFromXML(datax);		
+			reportViewer1.Start();
+		},error:function(data){}
+	});
+	});
+$("#btn_Search2").click(function Search(){
+	var queryJson = $("#filter-form").GetWebControls();
+	$.ajax({url:"${ctx.contextPath}/report/1203cgsgclbData",
+		data:{
+			st:$("#StartTime2").val(),
+			deptId:$("#deptId").attr('data-value'),orgId:$("#orgId").val()
+		},dataType:"text",
+		success:function(datax) {
+			reportViewer2.Stop();
+			var report = reportViewer2.Report;
+			report.LoadDataFromXML(datax);		
+			reportViewer2.Start();
+		},error:function(data){}
+	});
+	});
+$("#btn_Search3").click(function Search(){
+	var queryJson = $("#filter-form").GetWebControls();
+	$.ajax({url:"${ctx.contextPath}/report/1204qzzhqkbData",
+		data:{
+			st:$("#StartTime3").val(),
+			deptId:$("#deptId").attr('data-value'),orgId:$("#orgId").val()
+		},dataType:"text",
+		success:function(datax) {
+			reportViewer3.Stop();
+			var report = reportViewer3.Report;
+			report.LoadDataFromXML(datax);		
+			reportViewer3.Start();
+		},error:function(data){}
+	});
+	});
+</script>
+</body></html>

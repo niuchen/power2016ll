@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>站点管理-新增</title>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.extension.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+    <link href="${ctx.contextPath}/res/wdTree/tree.css" rel="stylesheet"/>
+	<script src="${ctx.contextPath}/res/wdTree/tree.js"></script>
+	<link href="${ctx.contextPath}/res/wizard/wizard.css" rel="stylesheet"/>
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet"/>
+	<script src="${ctx.contextPath}/res/ui/validator.js"></script>
+	<script src="${ctx.contextPath}/res/wizard/wizard.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+	
+</head>
+<body>
+    <form id="form1">
+<script>
+    var keyValue = request('keyValue');
+    var companyId = request('companyId');
+    var departmentId = request('departmentId');
+    var parentId = request('parentId');
+    $(function () {
+        initControl();
+    })
+    //初始化控件
+    function initControl() {
+        //上级部门
+        $("#parentid").ComboBoxTree({
+        	url: "${ctx.contextPath}/sys/dept/deptTree",
+            description: "==请选择==",
+            height: "250px",
+            click: function (item) {
+                if (item.sort == 'org') {
+                    companyId = item.id;
+                    parentId = 0;
+                } else {
+                    parentId = item.id;
+                }
+            }
+        });
+        //负责人
+        $("#manager").ComboBoxTree({
+        	url: "${ctx.contextPath}/sys/org/zrrTree",
+            description: "==请选择==",
+            height: "220px",
+            allowSearch: true
+        });
+        //部门性质
+        $("#nature").ComboBox({
+            url: "${ctx.contextPath}/sys/dict/getDictItem",
+            param: {classId: "103" },
+            id: "id",
+            text: "name",
+            description: "==请选择==",
+            height: "200px"
+        });
+        //获取表单
+        if (!!keyValue) {
+            $.SetForm({
+                url: "${ctx.contextPath}/sys/dept/getFormJson",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#form1").SetWebControls(data);
+                    if (data.parentid == "0") {
+                        $("#parentid").ComboBoxTreeSetValue(data.organizeid);
+                    } else {
+                        $("#parentid").ComboBoxTreeSetValue(data.parentid);
+                    }
+                    parentId = data.parentid;
+                    companyId = data.organizeid;
+                }
+            });
+        } else {
+            $("#parentid").ComboBoxTreeSetValue(departmentId);
+        }
+    }
+    //保存表单
+    function AcceptClick() {
+        if (!$('#form1').Validform()) {
+            return false;
+        }
+        var postData = $("#form1").GetWebControls(keyValue);
+        postData["organizeid"] = companyId;
+        postData["parentid"] = parentId;
+        //postData["manager"] = $("#manager").attr('data-text');
+        //console.log(postData); return;
+        $.SaveForm({
+            url: "${ctx.contextPath}/sys/dept/deptSub",
+            param: postData,
+            loading: "正在保存数据...",
+            success: function () {
+                $.currentIframe().$("#gridTable").resetSelection();
+                $.currentIframe().$("#gridTable").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+<div style="margin-left: 10px; margin-top: 20px; margin-right: 30px;">
+    <table class="form">
+    <input id="departmentid" type="hidden" />
+        <tr>
+            <th class="formTitle">上级机构<font face="宋体">*</font></th>
+            <td class="formValue">
+          	    <div id="parentid" type="selectTree" class="ui-select">
+                </div>
+            </td>
+            <th class="formTitle">负责人</th>
+            <td class="formValue">
+                <div id="manager" type="selectTree" class="ui-select"></div>
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">站点名称<font face="宋体">*</font></th>
+            <td class="formValue">
+                <input id="fullname" type="text" onblur="" class="form-control" placeholder="请输入名称" isvalid="yes" checkexpession="NotNull" />
+                <!-- onblur内参数 -->
+                <!--  $.ExistField(this.id,'../../BaseManage/Department/ExistEnCode')"--> 
+            </td>
+            <th class="formTitle">站点编号<font face="宋体">*</font></th>
+            <td class="formValue">
+                <input id="code" type="text" onblur="" class="form-control" placeholder="请输入编号" isvalid="yes" checkexpession="NotNull" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">站点简称</th>
+            <td class="formValue">
+                <input id="shortname" type="text" class="form-control" />
+            </td>
+            <th class="formTitle">站点性质</th>
+            <td class="formValue">
+                 <div id="nature" type="select" class="ui-select"></div>
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">电话号</th>
+            <td class="formValue">
+                <input id="outerphone" type="text" class="form-control" />
+            </td>
+            <th class="formTitle">排序<font face="宋体">*</font></th>
+            <td class="formValue">
+                <input id="sortcode" type="text" onblur="" class="form-control" placeholder="请输入排序" isvalid="yes" checkexpession="NotNull" />
+            </td>
+            <!--  <th class="formTitle">分机号</th>
+            <td class="formValue">
+                <input id="F_InnerPhone" type="text" class="form-control" />
+            </td>-->
+        </tr>
+        <tr>
+            <th class="formTitle">邮箱</th>
+            <td class="formValue">
+                <input id="email" type="text" class="form-control" />
+            </td>
+            <th class="formTitle">传真</th>
+            <td class="formValue">
+                <input id="fax" type="text" class="form-control" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle" valign="top" style="padding-top: 4px;">备注
+            </th>
+            <td class="formValue" colspan="3">
+                <textarea id="description" class="form-control" style="height: 70px;"></textarea>
+            </td>
+        </tr>
+    </table>
+</div>
+  </form>
+</body>
+</html>

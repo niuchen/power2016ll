@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.FxCzfcMapper" >
+  <resultMap id="BaseResultMap" type="com.power.common.entity.FxCzfc" >
+    <id column="xh" property="xh" jdbcType="BIGINT" />
+    <result column="sszd" property="sszd" jdbcType="VARCHAR" />
+    <result column="zdmc" property="zdmc" jdbcType="VARCHAR" />
+    <result column="zdzz" property="zdzz" jdbcType="VARCHAR" />
+    <result column="zt" property="zt" jdbcType="INTEGER" />
+    <result column="bz" property="bz" jdbcType="VARCHAR" />
+    <result column="sfrq" property="sfrq" jdbcType="TIMESTAMP" />
+    <result column="lryxh" property="lryxh" jdbcType="VARCHAR" />
+    <result column="lrymc" property="lrymc" jdbcType="VARCHAR" />
+    <result column="lrsj" property="lrsj" jdbcType="TIMESTAMP" />
+    <result column="ldbh" jdbcType="VARCHAR" property="ldbh" />
+    <result column="ldmc" jdbcType="VARCHAR" property="ldmc" />
+    <result column="kcll1" property="kcll1" jdbcType="INTEGER" />
+    <result column="kcje1" property="kcje1" jdbcType="DECIMAL" />
+    <result column="kcll2" property="kcll2" jdbcType="INTEGER" />
+    <result column="kcje2" property="kcje2" jdbcType="DECIMAL" />
+    <result column="kcll3" property="kcll3" jdbcType="INTEGER" />
+    <result column="kcje3" property="kcje3" jdbcType="DECIMAL" />
+    <result column="kcll4" property="kcll4" jdbcType="INTEGER" />
+    <result column="kcje4" property="kcje4" jdbcType="DECIMAL" />
+    <result column="hcll1" property="hcll1" jdbcType="INTEGER" />
+    <result column="hcje1" property="hcje1" jdbcType="DECIMAL" />
+    <result column="hcll2" property="hcll2" jdbcType="INTEGER" />
+    <result column="hcje2" property="hcje2" jdbcType="DECIMAL" />
+    <result column="hcll3" property="hcll3" jdbcType="INTEGER" />
+    <result column="hcje3" property="hcje3" jdbcType="DECIMAL" />
+    <result column="hcll4" property="hcll4" jdbcType="INTEGER" />
+    <result column="hcje4" property="hcje4" jdbcType="DECIMAL" />
+    <result column="hcll5" property="hcll5" jdbcType="INTEGER" />
+    <result column="hcje5" property="hcje5" jdbcType="DECIMAL" />
+    <result column="hcll6" property="hcll6" jdbcType="INTEGER" />
+    <result column="hcje6" property="hcje6" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    xh, sszd, zdmc, zdzz, zt, bz, sfrq, lryxh, lrymc, lrsj, ldbh, 
+    ldmc, kcll1, kcje1, kcll2, kcje2, 
+    kcll3, kcje3, kcll4, kcje4, hcll1, hcje1, hcll2, hcje2, hcll3, hcje3, hcll4, hcje4, 
+    hcll5, hcje5, hcll6, hcje6
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from fx_czfc
+    where xh = #{xh,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from fx_czfc
+    where xh = #{xh,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.FxCzfc" >
+   <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_czfc ( sszd, zdmc, 
+      zdzz, zt, bz, sfrq, 
+      lryxh, lrymc, lrsj,  ldbh, ldmc, 
+      kcll1, kcje1, kcll2, 
+      kcje2, kcll3, kcje3, 
+      kcll4, kcje4, hcll1, 
+      hcje1, hcll2, hcje2, 
+      hcll3, hcje3, hcll4, 
+      hcje4, hcll5, hcje5, 
+      hcll6, hcje6)
+    values (#{sszd,jdbcType=VARCHAR}, #{zdmc,jdbcType=VARCHAR}, 
+      #{zdzz,jdbcType=VARCHAR}, #{zt,jdbcType=INTEGER}, #{bz,jdbcType=VARCHAR}, #{sfrq,jdbcType=TIMESTAMP}, 
+      #{lryxh,jdbcType=VARCHAR}, #{lrymc,jdbcType=VARCHAR}, #{lrsj,jdbcType=TIMESTAMP}, 
+      #{ldbh,jdbcType=VARCHAR}, #{ldmc,jdbcType=VARCHAR},
+      #{kcll1,jdbcType=INTEGER}, #{kcje1,jdbcType=DECIMAL}, #{kcll2,jdbcType=INTEGER}, 
+      #{kcje2,jdbcType=DECIMAL}, #{kcll3,jdbcType=INTEGER}, #{kcje3,jdbcType=DECIMAL}, 
+      #{kcll4,jdbcType=INTEGER}, #{kcje4,jdbcType=DECIMAL}, #{hcll1,jdbcType=INTEGER}, 
+      #{hcje1,jdbcType=DECIMAL}, #{hcll2,jdbcType=INTEGER}, #{hcje2,jdbcType=DECIMAL}, 
+      #{hcll3,jdbcType=INTEGER}, #{hcje3,jdbcType=DECIMAL}, #{hcll4,jdbcType=INTEGER}, 
+      #{hcje4,jdbcType=DECIMAL}, #{hcll5,jdbcType=INTEGER}, #{hcje5,jdbcType=DECIMAL}, 
+      #{hcll6,jdbcType=INTEGER}, #{hcje6,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.FxCzfc" >
+   <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_czfc
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sszd != null" >
+        sszd,
+      </if>
+      <if test="zdmc != null" >
+        zdmc,
+      </if>
+      <if test="zdzz != null" >
+        zdzz,
+      </if>
+      <if test="zt != null" >
+        zt,
+      </if>
+      <if test="bz != null" >
+        bz,
+      </if>
+      <if test="sfrq != null" >
+        sfrq,
+      </if>
+      <if test="lryxh != null" >
+        lryxh,
+      </if>
+      <if test="lrymc != null" >
+        lrymc,
+      </if>
+      <if test="lrsj != null" >
+        lrsj,
+      </if>
+       <if test="ldbh != null">
+        ldbh,
+      </if>
+      <if test="ldmc != null">
+        ldmc,
+      </if>
+      <if test="kcll1 != null" >
+        kcll1,
+      </if>
+      <if test="kcje1 != null" >
+        kcje1,
+      </if>
+      <if test="kcll2 != null" >
+        kcll2,
+      </if>
+      <if test="kcje2 != null" >
+        kcje2,
+      </if>
+      <if test="kcll3 != null" >
+        kcll3,
+      </if>
+      <if test="kcje3 != null" >
+        kcje3,
+      </if>
+      <if test="kcll4 != null" >
+        kcll4,
+      </if>
+      <if test="kcje4 != null" >
+        kcje4,
+      </if>
+      <if test="hcll1 != null" >
+        hcll1,
+      </if>
+      <if test="hcje1 != null" >
+        hcje1,
+      </if>
+      <if test="hcll2 != null" >
+        hcll2,
+      </if>
+      <if test="hcje2 != null" >
+        hcje2,
+      </if>
+      <if test="hcll3 != null" >
+        hcll3,
+      </if>
+      <if test="hcje3 != null" >
+        hcje3,
+      </if>
+      <if test="hcll4 != null" >
+        hcll4,
+      </if>
+      <if test="hcje4 != null" >
+        hcje4,
+      </if>
+      <if test="hcll5 != null" >
+        hcll5,
+      </if>
+      <if test="hcje5 != null" >
+        hcje5,
+      </if>
+      <if test="hcll6 != null" >
+        hcll6,
+      </if>
+      <if test="hcje6 != null" >
+        hcje6,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sszd != null" >
+        #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null" >
+        #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null" >
+        #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null" >
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null" >
+        #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null" >
+        #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null" >
+        #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null" >
+        #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+       <if test="ldbh != null">
+        #{ldbh,jdbcType=VARCHAR},
+      </if>
+      <if test="ldmc != null">
+        #{ldmc,jdbcType=VARCHAR},
+      </if>
+      <if test="kcll1 != null" >
+        #{kcll1,jdbcType=INTEGER},
+      </if>
+      <if test="kcje1 != null" >
+        #{kcje1,jdbcType=DECIMAL},
+      </if>
+      <if test="kcll2 != null" >
+        #{kcll2,jdbcType=INTEGER},
+      </if>
+      <if test="kcje2 != null" >
+        #{kcje2,jdbcType=DECIMAL},
+      </if>
+      <if test="kcll3 != null" >
+        #{kcll3,jdbcType=INTEGER},
+      </if>
+      <if test="kcje3 != null" >
+        #{kcje3,jdbcType=DECIMAL},
+      </if>
+      <if test="kcll4 != null" >
+        #{kcll4,jdbcType=INTEGER},
+      </if>
+      <if test="kcje4 != null" >
+        #{kcje4,jdbcType=DECIMAL},
+      </if>
+      <if test="hcll1 != null" >
+        #{hcll1,jdbcType=INTEGER},
+      </if>
+      <if test="hcje1 != null" >
+        #{hcje1,jdbcType=DECIMAL},
+      </if>
+      <if test="hcll2 != null" >
+        #{hcll2,jdbcType=INTEGER},
+      </if>
+      <if test="hcje2 != null" >
+        #{hcje2,jdbcType=DECIMAL},
+      </if>
+      <if test="hcll3 != null" >
+        #{hcll3,jdbcType=INTEGER},
+      </if>
+      <if test="hcje3 != null" >
+        #{hcje3,jdbcType=DECIMAL},
+      </if>
+      <if test="hcll4 != null" >
+        #{hcll4,jdbcType=INTEGER},
+      </if>
+      <if test="hcje4 != null" >
+        #{hcje4,jdbcType=DECIMAL},
+      </if>
+      <if test="hcll5 != null" >
+        #{hcll5,jdbcType=INTEGER},
+      </if>
+      <if test="hcje5 != null" >
+        #{hcje5,jdbcType=DECIMAL},
+      </if>
+      <if test="hcll6 != null" >
+        #{hcll6,jdbcType=INTEGER},
+      </if>
+      <if test="hcje6 != null" >
+        #{hcje6,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.FxCzfc" >
+    update fx_czfc
+    <set >
+      <if test="sszd != null" >
+        sszd = #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null" >
+        zdmc = #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null" >
+        zdzz = #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        zt = #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null" >
+        bz = #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null" >
+        sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null" >
+        lryxh = #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null" >
+        lrymc = #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null" >
+        lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ldbh != null">
+        ldbh = #{ldbh,jdbcType=VARCHAR},
+      </if>
+      <if test="ldmc != null">
+        ldmc = #{ldmc,jdbcType=VARCHAR},
+      </if>
+      <if test="kcll1 != null" >
+        kcll1 = #{kcll1,jdbcType=INTEGER},
+      </if>
+      <if test="kcje1 != null" >
+        kcje1 = #{kcje1,jdbcType=DECIMAL},
+      </if>
+      <if test="kcll2 != null" >
+        kcll2 = #{kcll2,jdbcType=INTEGER},
+      </if>
+      <if test="kcje2 != null" >
+        kcje2 = #{kcje2,jdbcType=DECIMAL},
+      </if>
+      <if test="kcll3 != null" >
+        kcll3 = #{kcll3,jdbcType=INTEGER},
+      </if>
+      <if test="kcje3 != null" >
+        kcje3 = #{kcje3,jdbcType=DECIMAL},
+      </if>
+      <if test="kcll4 != null" >
+        kcll4 = #{kcll4,jdbcType=INTEGER},
+      </if>
+      <if test="kcje4 != null" >
+        kcje4 = #{kcje4,jdbcType=DECIMAL},
+      </if>
+      <if test="hcll1 != null" >
+        hcll1 = #{hcll1,jdbcType=INTEGER},
+      </if>
+      <if test="hcje1 != null" >
+        hcje1 = #{hcje1,jdbcType=DECIMAL},
+      </if>
+      <if test="hcll2 != null" >
+        hcll2 = #{hcll2,jdbcType=INTEGER},
+      </if>
+      <if test="hcje2 != null" >
+        hcje2 = #{hcje2,jdbcType=DECIMAL},
+      </if>
+      <if test="hcll3 != null" >
+        hcll3 = #{hcll3,jdbcType=INTEGER},
+      </if>
+      <if test="hcje3 != null" >
+        hcje3 = #{hcje3,jdbcType=DECIMAL},
+      </if>
+      <if test="hcll4 != null" >
+        hcll4 = #{hcll4,jdbcType=INTEGER},
+      </if>
+      <if test="hcje4 != null" >
+        hcje4 = #{hcje4,jdbcType=DECIMAL},
+      </if>
+      <if test="hcll5 != null" >
+        hcll5 = #{hcll5,jdbcType=INTEGER},
+      </if>
+      <if test="hcje5 != null" >
+        hcje5 = #{hcje5,jdbcType=DECIMAL},
+      </if>
+      <if test="hcll6 != null" >
+        hcll6 = #{hcll6,jdbcType=INTEGER},
+      </if>
+      <if test="hcje6 != null" >
+        hcje6 = #{hcje6,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.FxCzfc" >
+    update fx_czfc
+    set sszd = #{sszd,jdbcType=VARCHAR},
+      zdmc = #{zdmc,jdbcType=VARCHAR},
+      zdzz = #{zdzz,jdbcType=VARCHAR},
+      zt = #{zt,jdbcType=INTEGER},
+      bz = #{bz,jdbcType=VARCHAR},
+      sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      lryxh = #{lryxh,jdbcType=VARCHAR},
+      lrymc = #{lrymc,jdbcType=VARCHAR},
+      lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      ldbh = #{ldbh,jdbcType=VARCHAR},
+      ldmc = #{ldmc,jdbcType=VARCHAR},
+      kcll1 = #{kcll1,jdbcType=INTEGER},
+      kcje1 = #{kcje1,jdbcType=DECIMAL},
+      kcll2 = #{kcll2,jdbcType=INTEGER},
+      kcje2 = #{kcje2,jdbcType=DECIMAL},
+      kcll3 = #{kcll3,jdbcType=INTEGER},
+      kcje3 = #{kcje3,jdbcType=DECIMAL},
+      kcll4 = #{kcll4,jdbcType=INTEGER},
+      kcje4 = #{kcje4,jdbcType=DECIMAL},
+      hcll1 = #{hcll1,jdbcType=INTEGER},
+      hcje1 = #{hcje1,jdbcType=DECIMAL},
+      hcll2 = #{hcll2,jdbcType=INTEGER},
+      hcje2 = #{hcje2,jdbcType=DECIMAL},
+      hcll3 = #{hcll3,jdbcType=INTEGER},
+      hcje3 = #{hcje3,jdbcType=DECIMAL},
+      hcll4 = #{hcll4,jdbcType=INTEGER},
+      hcje4 = #{hcje4,jdbcType=DECIMAL},
+      hcll5 = #{hcll5,jdbcType=INTEGER},
+      hcje5 = #{hcje5,jdbcType=DECIMAL},
+      hcll6 = #{hcll6,jdbcType=INTEGER},
+      hcje6 = #{hcje6,jdbcType=DECIMAL}
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  
+   <!-- getCzfcData -->
+  <select id="getCzfcData" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fx_czfc
+    <where>
+	   	<if test="lock !=null">and zt = #{lock} </if>
+	   	<if test="st!=null and et==null">and substring(sfrq,1,length(#{st}))&gt;=#{st}</if>
+	   	<if test="et!=null and st==null">and substring(sfrq,1,length(#{et}))&lt;=#{et}</if>
+	   	<if test="st!=null and et!=null">and substring(sfrq,1,length(#{st})) between #{st} and #{et}</if>
+	   	<if test="lrymc!=null">and lrymc like concat('%',#{lrymc},'%')</if>
+	  <!-- 	<if test="zdzz!=null">and zdzz like concat('%',#{zdzz},'%')</if> --> 
+	   	<if test="orgs != null">and sszd in (${orgs})</if>
+   	</where>
+   	<if test="order != null">order by ${order}</if>
+   	<if test="order == null">order by sfrq desc </if>
+  </select>
+  <!-- getCanDel -->
+  <select id="getCanDel" parameterType="map" resultType="int">
+  	SELECT count(*) FROM fx_czfc where zt = 1
+  	<if test="sfrq!=null">and substring(sfrq,1,length(#{sfrq}))=#{sfrq}</if>
+  	<if test="xh!=null">and xh!=#{xh}</if>
+  	<if test="sszd!=null">and sszd = #{sszd}</if>
+  	<if test="ldbh!=null">and ldbh = #{ldbh}</if>
+  </select>
+  
+  
+</mapper>

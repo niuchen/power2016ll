@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.BaseFileFolderMapper">
+  <resultMap id="BaseResultMap" type="com.power.common.entity.BaseFileFolder">
+    <id column="folderid" jdbcType="VARCHAR" property="folderid" />
+    <result column="parentid" jdbcType="VARCHAR" property="parentid" />
+    <result column="foldertype" jdbcType="VARCHAR" property="foldertype" />
+    <result column="foldername" jdbcType="VARCHAR" property="foldername" />
+    <result column="isshare" jdbcType="INTEGER" property="isshare" />
+    <result column="sharelink" jdbcType="VARCHAR" property="sharelink" />
+    <result column="sharecode" jdbcType="INTEGER" property="sharecode" />
+    <result column="sharetime" jdbcType="TIMESTAMP" property="sharetime" />
+    <result column="sortcode" jdbcType="INTEGER" property="sortcode" />
+    <result column="deletemark" jdbcType="INTEGER" property="deletemark" />
+    <result column="enabledmark" jdbcType="INTEGER" property="enabledmark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="createdate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="createuserid" jdbcType="VARCHAR" property="createuserid" />
+    <result column="createusername" jdbcType="VARCHAR" property="createusername" />
+    <result column="modifydate" jdbcType="TIMESTAMP" property="modifydate" />
+    <result column="modifyuserid" jdbcType="VARCHAR" property="modifyuserid" />
+    <result column="modifyusername" jdbcType="VARCHAR" property="modifyusername" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    folderid, parentid, foldertype, foldername, isshare, sharelink, sharecode, sharetime, 
+    sortcode, deletemark, enabledmark, description, createdate, createuserid, createusername, 
+    modifydate, modifyuserid, modifyusername
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from base_filefolder
+    where folderid = #{folderid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from base_filefolder
+    where folderid = #{folderid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.BaseFileFolder">
+    insert into base_filefolder (folderid, parentid, foldertype, 
+      foldername, isshare, sharelink, 
+      sharecode, sharetime, sortcode, 
+      deletemark, enabledmark, description, 
+      createdate, createuserid, createusername, 
+      modifydate, modifyuserid, modifyusername
+      )
+    values (#{folderid,jdbcType=VARCHAR}, #{parentid,jdbcType=VARCHAR}, #{foldertype,jdbcType=VARCHAR}, 
+      #{foldername,jdbcType=VARCHAR}, #{isshare,jdbcType=INTEGER}, #{sharelink,jdbcType=VARCHAR}, 
+      #{sharecode,jdbcType=INTEGER}, #{sharetime,jdbcType=TIMESTAMP}, #{sortcode,jdbcType=INTEGER}, 
+      #{deletemark,jdbcType=INTEGER}, #{enabledmark,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
+      #{createdate,jdbcType=TIMESTAMP}, #{createuserid,jdbcType=VARCHAR}, #{createusername,jdbcType=VARCHAR}, 
+      #{modifydate,jdbcType=TIMESTAMP}, #{modifyuserid,jdbcType=VARCHAR}, #{modifyusername,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.BaseFileFolder">
+    insert into base_filefolder
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="folderid != null">
+        folderid,
+      </if>
+      <if test="parentid != null">
+        parentid,
+      </if>
+      <if test="foldertype != null">
+        foldertype,
+      </if>
+      <if test="foldername != null">
+        foldername,
+      </if>
+      <if test="isshare != null">
+        isshare,
+      </if>
+      <if test="sharelink != null">
+        sharelink,
+      </if>
+      <if test="sharecode != null">
+        sharecode,
+      </if>
+      <if test="sharetime != null">
+        sharetime,
+      </if>
+      <if test="sortcode != null">
+        sortcode,
+      </if>
+      <if test="deletemark != null">
+        deletemark,
+      </if>
+      <if test="enabledmark != null">
+        enabledmark,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="createdate != null">
+        createdate,
+      </if>
+      <if test="createuserid != null">
+        createuserid,
+      </if>
+      <if test="createusername != null">
+        createusername,
+      </if>
+      <if test="modifydate != null">
+        modifydate,
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null">
+        modifyusername,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="folderid != null">
+        #{folderid,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="foldertype != null">
+        #{foldertype,jdbcType=VARCHAR},
+      </if>
+      <if test="foldername != null">
+        #{foldername,jdbcType=VARCHAR},
+      </if>
+      <if test="isshare != null">
+        #{isshare,jdbcType=INTEGER},
+      </if>
+      <if test="sharelink != null">
+        #{sharelink,jdbcType=VARCHAR},
+      </if>
+      <if test="sharecode != null">
+        #{sharecode,jdbcType=INTEGER},
+      </if>
+      <if test="sharetime != null">
+        #{sharetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sortcode != null">
+        #{sortcode,jdbcType=INTEGER},
+      </if>
+      <if test="deletemark != null">
+        #{deletemark,jdbcType=INTEGER},
+      </if>
+      <if test="enabledmark != null">
+        #{enabledmark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuserid != null">
+        #{createuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="createusername != null">
+        #{createusername,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuserid != null">
+        #{modifyuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyusername != null">
+        #{modifyusername,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.BaseFileFolder">
+    update base_filefolder
+    <set>
+      <if test="parentid != null">
+        parentid = #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="foldertype != null">
+        foldertype = #{foldertype,jdbcType=VARCHAR},
+      </if>
+      <if test="foldername != null">
+        foldername = #{foldername,jdbcType=VARCHAR},
+      </if>
+      <if test="isshare != null">
+        isshare = #{isshare,jdbcType=INTEGER},
+      </if>
+      <if test="sharelink != null">
+        sharelink = #{sharelink,jdbcType=VARCHAR},
+      </if>
+      <if test="sharecode != null">
+        sharecode = #{sharecode,jdbcType=INTEGER},
+      </if>
+      <if test="sharetime != null">
+        sharetime = #{sharetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sortcode != null">
+        sortcode = #{sortcode,jdbcType=INTEGER},
+      </if>
+      <if test="deletemark != null">
+        deletemark = #{deletemark,jdbcType=INTEGER},
+      </if>
+      <if test="enabledmark != null">
+        enabledmark = #{enabledmark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        createdate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuserid != null">
+        createuserid = #{createuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="createusername != null">
+        createusername = #{createusername,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        modifydate = #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid = #{modifyuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyusername != null">
+        modifyusername = #{modifyusername,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where folderid = #{folderid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.BaseFileFolder">
+    update base_filefolder
+    set parentid = #{parentid,jdbcType=VARCHAR},
+      foldertype = #{foldertype,jdbcType=VARCHAR},
+      foldername = #{foldername,jdbcType=VARCHAR},
+      isshare = #{isshare,jdbcType=INTEGER},
+      sharelink = #{sharelink,jdbcType=VARCHAR},
+      sharecode = #{sharecode,jdbcType=INTEGER},
+      sharetime = #{sharetime,jdbcType=TIMESTAMP},
+      sortcode = #{sortcode,jdbcType=INTEGER},
+      deletemark = #{deletemark,jdbcType=INTEGER},
+      enabledmark = #{enabledmark,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      createdate = #{createdate,jdbcType=TIMESTAMP},
+      createuserid = #{createuserid,jdbcType=VARCHAR},
+      createusername = #{createusername,jdbcType=VARCHAR},
+      modifydate = #{modifydate,jdbcType=TIMESTAMP},
+      modifyuserid = #{modifyuserid,jdbcType=VARCHAR},
+      modifyusername = #{modifyusername,jdbcType=VARCHAR}
+    where folderid = #{folderid,jdbcType=VARCHAR}
+  </update>
+</mapper>

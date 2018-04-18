@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html><head>
+<meta name="viewport" content="width=device-width">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>高速智能分析系统</title>
+<link href="${ctx.contextPath}/res/app/css.css" rel="stylesheet" type="text/css" />
+<link href="${ctx.contextPath}/res/swiper/css/swiper.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${ctx.contextPath}/res/app/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/echarts/echarts.min.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/swiper/js/swiper.min.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/fastclick/fastclick.js"></script>
+</head>
+<body style="background-color:#426586;width:auto;">
+<div class="htmleaf-container">
+	<div class="htmleaf-content bgcolor-3">
+		<div id="Main-Content">
+			<div class="Container">
+				<!-- Flipster List -->
+				<div class="flipster swiper-container">
+					  <ul class="swiper-wrapper">
+					  <li class="swiper-slide">
+						  <div class="mainqp">
+						    <div class="bt">${title}费用分布</div> 
+							<div id="zsfbDiv" style="width:310px;height:360px;"></div>
+						  </div>
+					</li>
+					<li class="swiper-slide">
+						  <div class="mainqp">
+						    <div class="bt">${title}收费站流量</div> 
+							<div id="sfllDiv" style="width:310px;height:360px;"></div>
+						  </div>
+					</li>
+						<li class="swiper-slide">
+						  <div class="mainqp">
+						    <div class="bt">${title}任务完成度预测</div> 
+							<div id="wcdDiv" style="width:310px;height:360px;"></div>
+						   </div>
+					    </li>
+					<li class="swiper-slide">
+					  <div class="mainqp">
+					    <div class="bt">${title}节假日车流量预测</div> 
+						<div id="_jjrDiv" style="width:310px;height:360px;"></div>
+					  </div>
+					</li>
+					  </ul>
+					  <div class="swiper-button-next swiper-button-white"></div>
+                      <div class="swiper-button-prev swiper-button-white"></div>
+					</div>
+				<!-- End Flipster List -->
+			</div>
+		</div>
+	</div>
+</div>
+    <!-- end #mainContent -->
+<!-- begin #footer -->
+<input type="hidden" id="token"/>
+<#include "/WEB-INF/t/app/footer.html"/>
+<!-- end #footer -->
+<script type="text/javascript">
+window.addEventListener('load', function() {FastClick.attach(document.body);}, false);
+var interval;
+$(document).ready(function(){//init
+	var swiper = new Swiper('#Main-Content .swiper-container',{loop : true,nextButton: '.swiper-button-next',prevButton: '.swiper-button-prev',onTransitionEnd: function(swiper){}});
+	//
+	interval = setInterval("loadData()",100);
+});
+function loadData() {
+	clearInterval(interval);
+	var data={token:$("#token").val()};
+	$.post("${ctx.contextPath}/app/fyfb.json",data,function(re){if(re.success){_initP1(re.msg.llfy);}});
+	$.post("${ctx.contextPath}/app/jjrTj.json",data,function(re){if(re.success){_initP2(re.msg);}});
+}
+_initP1=function(data){
+	var zdmcje =[];
+	var zdmcll =[];
+	var zsje = [];
+	var zsll = [];
+	var maxll = 0
+	var maxje=0;
+	for(var i=0;i<data.length;i++) {
+		zdmcje.push({text:data[i].zdmc});
+		zdmcll.push({text:data[i].zdmc});
+		zsje.push(data[i].sfhj);
+		zsll.push(data[i].crkllhj);
+		if(data[i].sfhj>maxje){maxje = data[i].sfhj;}
+		if(data[i].crkllhj>maxll){maxll = data[i].crkllhj;}
+	}
+	for(var j=0;j<zdmcje.length;j++){
+		zdmcje[j].max=maxje;
+		zdmcll[j].max=maxll;
+	}
+	// 征收分布
+    var zsfb = {title : {subtext: '单位:元'},polar: [{indicator: zdmcje,radius: 120}],
+    tooltip : {},
+    series: [{type: 'radar',
+            data: [{value: zsje}]
+        }
+    ]};
+ 	var zsfbChart = echarts.init(document.getElementById('zsfbDiv'));
+ 	zsfbChart.setOption(zsfb, true);
+	
+	// 流量分布
+    var llfb = {title : {subtext: '单位:辆'},polar: [{indicator: zdmcll,radius: 120}],
+    tooltip : {},
+    series: [{type: 'radar',
+            itemStyle: {emphasis: {lineStyle: {width: 4}}},
+            data: [{
+                    value: zsll,
+                    symbol: 'rect',
+                    symbolSize: 5,
+                    lineStyle: {normal: {type: 'dashed'}}
+                }
+            ]
+        }
+    ]};
+ 	var llfbChart = echarts.init(document.getElementById('sfllDiv'));
+	llfbChart.setOption(llfb, true);
+}
+_initP2=function(data){
+	// 节假日预测
+	var jjr = {tooltip: {trigger: 'axis'},
+  		    legend: {data:[''+data.y2,''+data.y1,''+data.y],textStyle:{color:'#fff'}},
+  		    xAxis: [{type: 'category',
+  		          	data: ['春节','清明','五一','国庆'],
+      		        axisLabel:{textStyle:{color:'#fff'}},
+      	          	axisTick:{lineStyle:{color:'#fff'}},
+      	      		axisLine:{lineStyle:{color:'#fff'}},
+  		        }
+  		    ],
+  		    yAxis: [{
+  		        	type: 'value',
+      		        axisLabel:{textStyle:{color:'#fff'}},
+      	          	axisTick:{lineStyle:{color:'#fff'}},
+      	      		axisLine:{lineStyle:{color:'#fff'}},
+  		        }
+  		    ],
+  		    series: [{name:''+data.y2,type:'bar',data:data[data.y2]},
+  		        	{name:''+data.y1,type:'bar',data:[2314242,1127270,1430671,3111200]},
+  		        	{name:''+data.y,type:'line',data:data[data.y]}
+  		    ]
+  		};
+   var jjrChart = echarts.init(document.getElementById('_jjrDiv'));
+   jjrChart.setOption(jjr, true);
+// 征收完成情况预测
+   	var wcd  = {
+ 	    tooltip : {formatter: "{a} <br/>{b} : {c}%"},
+ 	    series: [
+ 	        {
+ 	        	backgroundColor:'#fff',
+ 	            name: '完成率',
+ 	            type: 'gauge',
+ 	            radius:'100%',
+ 	            title:{
+ 	            	textStyle:{color:'#fff'}
+ 	            },
+ 	            axisLine: {
+ 	                lineStyle: {
+ 	                    color: [[0.2, '#ff6374'],[0.8, '#00FFFF'],[1, '#00ff00']],
+ 	                    width: 10
+ 	                }
+ 	            },
+ 	            axisTick: {            // 坐标轴小标记
+ 	                length: 15,        // 属性length控制线长
+ 	                lineStyle: {       // 属性lineStyle控制线条样式
+ 	                    color: 'auto'
+ 	                }
+ 	            },
+ 	            splitLine: {           // 分隔线
+ 	                length: 20,         // 属性length控制线长
+ 	                lineStyle: {       // 属性lineStyle（详见lineStyle）控制线条样式
+ 	                    color: 'auto'
+ 	                }
+ 	            },
+ 	            data: [{value: 0, name: '完成率'}]
+ 	        }
+ 	    ]
+ 	};
+   var myChart = echarts.init(document.getElementById('wcdDiv'));
+   myChart.setOption(wcd, true);
+}
+</script>
+</body>
+</html>

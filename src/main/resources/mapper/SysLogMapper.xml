@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.SysLogMapper" >
+  <resultMap id="BaseResultMap" type="com.power.common.entity.SysLog" >
+    <id column="xh" property="xh" jdbcType="BIGINT" />
+    <result column="uname" property="uname" jdbcType="VARCHAR" />
+    <result column="uid" property="uid" jdbcType="INTEGER" />
+    <result column="oprType" property="oprType" jdbcType="VARCHAR" />
+    <result column="module" property="module" jdbcType="VARCHAR" />
+    <result column="method" property="method" jdbcType="VARCHAR" />
+    <result column="ex" property="ex" jdbcType="VARCHAR" />
+    <result column="flag" property="flag" jdbcType="CHAR" />
+    <result column="params" property="params" jdbcType="VARCHAR" />
+    <result column="oprTime" property="oprTime" jdbcType="TIMESTAMP" />
+    <result column="oprDesc" property="oprDesc" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="browser" property="browser" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    xh, uname, uid, oprType, module, method, ex, flag, params, oprTime, oprDesc, ip, 
+    browser
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_log
+    where xh = #{xh,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from sys_log
+    where xh = #{xh,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.SysLog" >
+     <selectKey resultType="java.lang.Long" keyProperty="xh" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_log (uname, uid, oprType, 
+      module, method, ex, 
+      flag, params, oprTime, 
+      oprDesc, ip, browser
+      )
+    values (#{uname,jdbcType=VARCHAR}, #{uid,jdbcType=INTEGER}, #{oprType,jdbcType=VARCHAR}, 
+      #{module,jdbcType=VARCHAR}, #{method,jdbcType=VARCHAR}, #{ex,jdbcType=VARCHAR}, 
+      #{flag,jdbcType=CHAR}, #{params,jdbcType=VARCHAR}, #{oprTime,jdbcType=TIMESTAMP}, 
+      #{oprDesc,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{browser,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.SysLog" >
+    <selectKey resultType="java.lang.Long" keyProperty="xh" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_log
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uname != null" >
+        uname,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+      <if test="oprType != null" >
+        oprType,
+      </if>
+      <if test="module != null" >
+        module,
+      </if>
+      <if test="method != null" >
+        method,
+      </if>
+      <if test="ex != null" >
+        ex,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="params != null" >
+        params,
+      </if>
+      <if test="oprTime != null" >
+        oprTime,
+      </if>
+      <if test="oprDesc != null" >
+        oprDesc,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="browser != null" >
+        browser,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uname != null" >
+        #{uname,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="oprType != null" >
+        #{oprType,jdbcType=VARCHAR},
+      </if>
+      <if test="module != null" >
+        #{module,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null" >
+        #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="ex != null" >
+        #{ex,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=CHAR},
+      </if>
+      <if test="params != null" >
+        #{params,jdbcType=VARCHAR},
+      </if>
+      <if test="oprTime != null" >
+        #{oprTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oprDesc != null" >
+        #{oprDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="browser != null" >
+        #{browser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.SysLog" >
+    update sys_log
+    <set >
+      <if test="uname != null" >
+        uname = #{uname,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="oprType != null" >
+        oprType = #{oprType,jdbcType=VARCHAR},
+      </if>
+      <if test="module != null" >
+        module = #{module,jdbcType=VARCHAR},
+      </if>
+      <if test="method != null" >
+        method = #{method,jdbcType=VARCHAR},
+      </if>
+      <if test="ex != null" >
+        ex = #{ex,jdbcType=VARCHAR},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=CHAR},
+      </if>
+      <if test="params != null" >
+        params = #{params,jdbcType=VARCHAR},
+      </if>
+      <if test="oprTime != null" >
+        oprTime = #{oprTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="oprDesc != null" >
+        oprDesc = #{oprDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="browser != null" >
+        browser = #{browser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.SysLog" >
+    update sys_log
+    set uname = #{uname,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=INTEGER},
+      oprType = #{oprType,jdbcType=VARCHAR},
+      module = #{module,jdbcType=VARCHAR},
+      method = #{method,jdbcType=VARCHAR},
+      ex = #{ex,jdbcType=VARCHAR},
+      flag = #{flag,jdbcType=CHAR},
+      params = #{params,jdbcType=VARCHAR},
+      oprTime = #{oprTime,jdbcType=TIMESTAMP},
+      oprDesc = #{oprDesc,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR},
+      browser = #{browser,jdbcType=VARCHAR}
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  
+  <select id="getSysLogs" parameterType="map" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from sys_log
+    <where>
+    	<if test="kssj!=null">oprTime&gt;#{kssj}</if>
+    	<if test="jssj!=null">and oprTime&lt;#{jssj}</if>
+    </where>
+  </select>
+</mapper>

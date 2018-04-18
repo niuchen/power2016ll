@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="false"/>
+    </settings>
+    <plugins>
+		<plugin interceptor="com.power.common.mybatis.PaginationInterceptor" />
+	</plugins>
+    <mappers>
+    	<mapper resource="mapper/SysLogMapper.xml"/>
+    	<mapper resource="mapper/SysDictMapper.xml"/>
+    	<!-- 权限 -->
+    	<mapper resource="mapper/SysModuleMapper.xml"/>
+    	<mapper resource="mapper/SysModuleButtonMapper.xml"/>
+    	<mapper resource="mapper/SysUserRelationMapper.xml"/>
+    	<mapper resource="mapper/SysAuthorizeMapper.xml"/>
+    	<mapper resource="mapper/SysOrganizeMapper.xml"/>
+    	<mapper resource="mapper/SysDepartmentMapper.xml"/>
+    	<mapper resource="mapper/SysUserMapper.xml"/>
+    	<mapper resource="mapper/SysRoleMapper.xml"/>
+    	<!-- base -->
+    	<mapper resource="mapper/BaseFileInfoMapper.xml"/>
+    	<mapper resource="mapper/BaseFileFolderMapper.xml"/>
+    	<mapper resource="mapper/BaseNewsMapper.xml"/>
+    	<!-- 数据分析 -->
+    	<mapper resource="mapper/FxRcsjMapper.xml"/>
+    	<mapper resource="mapper/FxRcetcmxMapper.xml"/>
+    	<mapper resource="mapper/FxRcmtcmxMapper.xml"/>
+    	<mapper resource="mapper/FxRcclhzMapper.xml"/>
+    	<mapper resource="mapper/FxYhsjMapper.xml"/>
+    	<mapper resource="mapper/FxEtcsjMapper.xml"/>
+    	<mapper resource="mapper/FxYdsjMapper.xml"/>
+    	<mapper resource="mapper/FxLtsjMapper.xml"/>
+    	<mapper resource="mapper/FxLtclMapper.xml"/>
+    	<mapper resource="mapper/FxJzclYbMapper.xml"/>
+    	<mapper resource="mapper/FxMfclYbMapper.xml"/>
+    	<mapper resource="mapper/FxChsjYbMapper.xml"/>
+    	<mapper resource="mapper/FxPjglMapper.xml"/>
+    	<mapper resource="mapper/FxLskMapper.xml"/>
+    	<mapper resource="mapper/FxCgclMapper.xml"/>
+    	<mapper resource="mapper/FxQzzhMapper.xml"/>
+    	<mapper resource="mapper/FxHmdMapper.xml"/>
+    	<mapper resource="mapper/FxIckMapper.xml"/>
+    	<mapper resource="mapper/FxCzfcMapper.xml"/>
+    	<mapper resource="mapper/FxPjybMapper.xml"/>
+    	<!-- app/report -->
+    	<mapper resource="mapper/AppMapper.xml"/>
+    	<mapper resource="mapper/LyReportMapper.xml"/>
+    	<mapper resource="mapper/YhReportMapper.xml"/>
+    	<mapper resource="mapper/ReportMapper.xml"/>
+    	<!-- 指标管理  -->
+    	<mapper resource="mapper/FxRwglMapper.xml"/>
+    	<mapper resource="mapper/FxZsglMapper.xml"/>
+    	<mapper resource="mapper/FxJdxmzMapper.xml"/>
+    	<mapper resource="mapper/SzJdxmzMapper.xml"/>
+    	<mapper resource="mapper/SztqsjMapper.xml"/>
+    	<mapper resource="mapper/SzJjrMapper.xml"/>
+    </mappers>
+</configuration>

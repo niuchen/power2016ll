@@ -1,0 +1,85 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>党建内容信息发布</title>
+<link rel="stylesheet" type="text/css" href="${ctx.contextPath}/res/theme/style.css"/>
+<script type="text/javascript" src="${ctx.contextPath}/res/jquery/jquery-1.6.2.min.js"></script>
+<script charset="utf-8" src="${ctx.contextPath}/res/editor/kindeditor-min.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/jquery/jquery.blockUI.js" charset="utf-8"></script>
+<script type="text/javascript">
+
+var editor;
+KindEditor.ready(function(K) {
+	 editor = K.create('#nr', {
+		cssPath : '${ctx.contextPath}/res/editor/plugins/code/prettify.css',
+		items:['source', '|', 'undo', 'redo', '|', 'preview','cut', 'copy', 'paste',
+        'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent','clearhtml',
+        'quickformat', 'selectall', '|','table', 'hr','pagebreak','link', 'unlink', 
+        '|', 'fullscreen', '/', 'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+        'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat','image'],
+        uploadJson: "${ctx.contextPath}/kingeditor/upload"
+	});
+});
+sub=function(){
+	//额外校验
+	if($("#bt").val().length<1){alert("党建内容标题不能为空！");return false;}
+	
+	//客户端验证
+   editor.sync();
+   $.blockUI({message:'<h4>发布中请稍候...</h4>'});
+	// 服务端保存
+	$.ajax({
+		url : $("#userForm").attr("action"),
+		data : $("#userForm").serialize(),
+		type : "POST",
+		dataType : "json",
+		success : function(data) {$.unblockUI();
+			if (data.success) {parent.ref();} else {alert('操作失败==>'+data.msg);}				
+		},
+		error:function(data){alert("操作失败");$.unblockUI();}
+	});
+}
+$(document).ready(function(){
+$("#bt").focus();
+});
+</script>
+</head><body>
+<div id="iframeMainContent">
+    <div class="iframeContent" id="listDiv">
+    	<div class="btnbartitle"><div>党建内容信息发布</div></div>
+    	<div class="tools_bar">
+			<a class="tools_btn" onclick="sub()" title="保存"><span class=""><b class="tools_btn_add">保存</b></span></a>
+			<div class="tools_separator"></div>
+			<a class="tools_btn" onclick="javascript:document.getElementById('userForm').reset();location.reload();" title=""><span class=""><b class="tools_btn_ref">重置</b></span></a>
+			<div class="tools_separator"></div>
+			<a class="tools_btn" onclick="javascript:parent.ref();" title="返回"><span class=""><b class="tools_btn_close">返回</b></span></a>
+		</div>
+<form method="post" id="userForm" method="post" action="${ctx.contextPath}/cms/newCmsSubmit">
+	<table border="0" cellpadding="0" cellspacing="0" class="frm">
+           <tr>
+               <th><span class="red">*</span>信息模块：</th>
+               <td>
+               	<select name="flmk">
+					<option value="1">党建动态</option>
+					<option value="2">党建知识</option>
+				</select>
+               </td>
+            </tr>
+           <tr>
+               <th><span class="red">*</span>标题：</th>
+               <td>
+               	<input name="bt" type="text" id="bt" style="width:360px;" maxlength="50" />
+               </td>
+            </tr>
+            <tr>
+               <th>内容：</th>
+               <td>
+                   <textarea id="nr" name="nr" style="width: 80.5%" rows="16"></textarea>
+                </td>
+            </tr>
+     </table>
+</form>
+	</div>	
+	</div><!-- home end -->
+</div>
+</body></html>

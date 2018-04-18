@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>新建文件夹</title>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.extension.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+	<link href="${ctx.contextPath}/res/wizard/wizard.css" rel="stylesheet"/>
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet"/>
+	<script src="${ctx.contextPath}/res/ui/validator.js"></script>
+	<script src="${ctx.contextPath}/res/wizard/wizard.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+	
+
+</head>
+<body>
+    <form id="form1">
+
+
+<script>
+    var keyValue = request('keyValue');
+    var parentId = request('parentId');
+    $(function () {
+        initControl();
+    })
+    //初始化控件
+    function initControl() {
+        //获取表单
+        if (!!keyValue) {
+            $.SetForm({
+                url: "../../PublicInfoManage/ResourceFile/GetFolderFormJson",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#form1").SetWebControls(data);
+                }
+            });
+        } else {
+            $("#parentid").val(parentId);
+        }
+    }
+    //保存表单
+    function AcceptClick() {
+        if (!$('#form1').Validform()) {
+            return false;
+        }
+        var postData = $("#form1").GetWebControls(keyValue);
+        if (postData["parentid"] == "") {
+            postData["parentid"] = "0";
+        }
+        $.SaveForm({
+            url: "${ctx.contextPath}/base/file/newFolder?keyValue=" + keyValue,
+            param: postData,
+            loading: "正在保存数据...",
+            success: function () {
+                $.currentIframe().$("#gridTable").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+<div style="margin-left: 30px; margin-top: 20px; margin-right: 30px;">
+    <div style="padding-bottom: 5px;">请您输入文件夹名称</div>
+    <input id="folderid" type="hidden" />
+    <input id="parentid" type="hidden" />
+    <input id="foldertype" value="folder" type="hidden" />
+    <div>
+        <input id="foldername" type="text" class="form-control" placeholder="请输入名称" isvalid="yes" checkexpession="NotNull" />
+    </div>
+</div>
+    </form>
+</body>
+</html>

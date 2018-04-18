@@ -1,0 +1,1034 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.FxRcetcmxMapper" >
+  <resultMap id="BaseResultMap" type="com.power.common.entity.FxRcetcmx" >
+    <id column="xh" property="xh" jdbcType="BIGINT" />
+    <result column="sszd" property="sszd" jdbcType="VARCHAR" />
+    <result column="zdmc" property="zdmc" jdbcType="VARCHAR" />
+    <result column="zdzz" property="zdzz" jdbcType="VARCHAR" />
+    <result column="zt" property="zt" jdbcType="INTEGER" />
+    <result column="bz" property="bz" jdbcType="VARCHAR" />
+    <result column="sfrq" property="sfrq" jdbcType="TIMESTAMP" />
+    <result column="lryxh" property="lryxh" jdbcType="VARCHAR" />
+    <result column="lrymc" property="lrymc" jdbcType="VARCHAR" />
+    <result column="lrsj" property="lrsj" jdbcType="TIMESTAMP" />
+    <result column="kccrkhj" property="kccrkhj" jdbcType="INTEGER" />
+    <result column="kcrkzj" property="kcrkzj" jdbcType="INTEGER" />
+    <result column="kcckzj" property="kcckzj" jdbcType="INTEGER" />
+    <result column="hccrkhj" property="hccrkhj" jdbcType="INTEGER" />
+    <result column="hcrkzj" property="hcrkzj" jdbcType="INTEGER" />
+    <result column="hcckzj" property="hcckzj" jdbcType="INTEGER" />
+    <result column="mzcrkhj" property="mzcrkhj" jdbcType="INTEGER" />
+    <result column="mzrkzj" property="mzrkzj" jdbcType="INTEGER" />
+    <result column="mzckzj" property="mzckzj" jdbcType="INTEGER" />
+    <result column="crkllhj" property="crkllhj" jdbcType="INTEGER" />
+    <result column="rkllzj" property="rkllzj" jdbcType="INTEGER" />
+    <result column="ckllzj" property="ckllzj" jdbcType="INTEGER" />
+    <result column="kcr1" property="kcr1" jdbcType="INTEGER" />
+    <result column="kcc1" property="kcc1" jdbcType="INTEGER" />
+    <result column="kccrhj1" property="kccrhj1" jdbcType="INTEGER" />
+    <result column="kcr2" property="kcr2" jdbcType="INTEGER" />
+    <result column="kcc2" property="kcc2" jdbcType="INTEGER" />
+    <result column="kccrhj2" property="kccrhj2" jdbcType="INTEGER" />
+    <result column="kcr3" property="kcr3" jdbcType="INTEGER" />
+    <result column="kcc3" property="kcc3" jdbcType="INTEGER" />
+    <result column="kccrhj3" property="kccrhj3" jdbcType="INTEGER" />
+    <result column="kcr4" property="kcr4" jdbcType="INTEGER" />
+    <result column="kcc4" property="kcc4" jdbcType="INTEGER" />
+    <result column="kccrhj4" property="kccrhj4" jdbcType="INTEGER" />
+    <result column="hcr1" property="hcr1" jdbcType="INTEGER" />
+    <result column="hcc1" property="hcc1" jdbcType="INTEGER" />
+    <result column="hccrhj1" property="hccrhj1" jdbcType="INTEGER" />
+    <result column="hcr2" property="hcr2" jdbcType="INTEGER" />
+    <result column="hcc2" property="hcc2" jdbcType="INTEGER" />
+    <result column="hccrhj2" property="hccrhj2" jdbcType="INTEGER" />
+    <result column="hcr3" property="hcr3" jdbcType="INTEGER" />
+    <result column="hcc3" property="hcc3" jdbcType="INTEGER" />
+    <result column="hccrhj3" property="hccrhj3" jdbcType="INTEGER" />
+    <result column="hcr4" property="hcr4" jdbcType="INTEGER" />
+    <result column="hcc4" property="hcc4" jdbcType="INTEGER" />
+    <result column="hccrhj4" property="hccrhj4" jdbcType="INTEGER" />
+    <result column="hcr5" property="hcr5" jdbcType="INTEGER" />
+    <result column="hcc5" property="hcc5" jdbcType="INTEGER" />
+    <result column="hccrhj5" property="hccrhj5" jdbcType="INTEGER" />
+    <result column="hcr6" property="hcr6" jdbcType="INTEGER" />
+    <result column="hcc6" property="hcc6" jdbcType="INTEGER" />
+    <result column="hccrhj6" property="hccrhj6" jdbcType="INTEGER" />
+    <result column="kcsr1" property="kcsr1" jdbcType="DECIMAL" />
+    <result column="kcsr2" property="kcsr2" jdbcType="DECIMAL" />
+    <result column="kcsr3" property="kcsr3" jdbcType="DECIMAL" />
+    <result column="kcsr4" property="kcsr4" jdbcType="DECIMAL" />
+    <result column="hcsr1" property="hcsr1" jdbcType="DECIMAL" />
+    <result column="hcsr2" property="hcsr2" jdbcType="DECIMAL" />
+    <result column="hcsr3" property="hcsr3" jdbcType="DECIMAL" />
+    <result column="hcsr4" property="hcsr4" jdbcType="DECIMAL" />
+    <result column="hcsr5" property="hcsr5" jdbcType="DECIMAL" />
+    <result column="hcsr6" property="hcsr6" jdbcType="DECIMAL" />
+    <result column="kcsrzj" property="kcsrzj" jdbcType="DECIMAL" />
+    <result column="hcsrzj" property="hcsrzj" jdbcType="DECIMAL" />
+    <result column="khcsrzj" property="khcsrzj" jdbcType="DECIMAL" />
+    <result column="gwr" property="gwr" jdbcType="INTEGER" />
+    <result column="gwc" property="gwc" jdbcType="INTEGER" />
+    <result column="gwcrhj" property="gwcrhj" jdbcType="INTEGER" />
+    <result column="jcr" property="jcr" jdbcType="INTEGER" />
+    <result column="jcc" property="jcc" jdbcType="INTEGER" />
+    <result column="jccrhj" property="jccrhj" jdbcType="INTEGER" />
+    <result column="jcher" property="jcher" jdbcType="INTEGER" />
+    <result column="jchec" property="jchec" jdbcType="INTEGER" />
+    <result column="jchecrhj" property="jchecrhj" jdbcType="INTEGER" />
+    <result column="mfr" property="mfr" jdbcType="INTEGER" />
+    <result column="mfc" property="mfc" jdbcType="INTEGER" />
+    <result column="mfcrhj" property="mfcrhj" jdbcType="INTEGER" />
+    <result column="cdr" property="cdr" jdbcType="INTEGER" />
+    <result column="cdc" property="cdc" jdbcType="INTEGER" />
+    <result column="cdhj" property="cdhj" jdbcType="INTEGER" />
+    <result column="cgr" property="cgr" jdbcType="INTEGER" />
+    <result column="cgc" property="cgc" jdbcType="INTEGER" />
+    <result column="cghj" property="cghj" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    xh, sszd, zdmc, zdzz, zt, bz, sfrq, lryxh, lrymc, lrsj, kccrkhj, kcrkzj, kcckzj, 
+    hccrkhj, hcrkzj, hcckzj, mzcrkhj, mzrkzj, mzckzj, crkllhj, rkllzj, ckllzj, kcr1, 
+    kcc1, kccrhj1, kcr2, kcc2, kccrhj2, kcr3, kcc3, kccrhj3, kcr4, kcc4, kccrhj4, hcr1, 
+    hcc1, hccrhj1, hcr2, hcc2, hccrhj2, hcr3, hcc3, hccrhj3, hcr4, hcc4, hccrhj4, hcr5, 
+    hcc5, hccrhj5, hcr6, hcc6, hccrhj6, kcsr1, kcsr2, kcsr3, kcsr4, hcsr1, hcsr2, hcsr3, 
+    hcsr4, hcsr5, hcsr6, kcsrzj, hcsrzj, khcsrzj, gwr, gwc, gwcrhj, jcr, jcc, jccrhj, jcher, jchec, 
+    jchecrhj, mfr, mfc, mfcrhj, cdr, cdc, cdhj, cgr, cgc, cghj
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from fx_rcetcmx
+    where xh = #{xh,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from fx_rcetcmx
+    where xh = #{xh,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.FxRcetcmx" >
+  <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_rcetcmx (sszd, zdmc, 
+      zdzz, zt, bz, sfrq, 
+      lryxh, lrymc, lrsj, 
+      kccrkhj, kcrkzj, kcckzj, 
+      hccrkhj, hcrkzj, hcckzj, 
+      mzcrkhj, mzrkzj, mzckzj, 
+      crkllhj, rkllzj, ckllzj, 
+      kcr1, kcc1, kccrhj1, 
+      kcr2, kcc2, kccrhj2, 
+      kcr3, kcc3, kccrhj3, 
+      kcr4, kcc4, kccrhj4, 
+      hcr1, hcc1, hccrhj1, 
+      hcr2, hcc2, hccrhj2, 
+      hcr3, hcc3, hccrhj3, 
+      hcr4, hcc4, hccrhj4, 
+      hcr5, hcc5, hccrhj5, 
+      hcr6, hcc6, hccrhj6, 
+      kcsr1, kcsr2, kcsr3, 
+      kcsr4, hcsr1, hcsr2, 
+      hcsr3, hcsr4, hcsr5, 
+      hcsr6, kcsrzj, hcsrzj, khcsrzj, 
+      gwr, gwc, gwcrhj, jcr, 
+      jcc, jccrhj, jcher, 
+      jchec, jchecrhj, mfr, 
+      mfc, mfcrhj, cdr, cdc, 
+      cdhj, cgr, cgc, cghj
+      )
+    values (#{sszd,jdbcType=VARCHAR}, #{zdmc,jdbcType=VARCHAR}, 
+      #{zdzz,jdbcType=VARCHAR}, #{zt,jdbcType=INTEGER}, #{bz,jdbcType=VARCHAR}, #{sfrq,jdbcType=TIMESTAMP}, 
+      #{lryxh,jdbcType=VARCHAR}, #{lrymc,jdbcType=VARCHAR}, #{lrsj,jdbcType=TIMESTAMP}, 
+      #{kccrkhj,jdbcType=INTEGER}, #{kcrkzj,jdbcType=INTEGER}, #{kcckzj,jdbcType=INTEGER}, 
+      #{hccrkhj,jdbcType=INTEGER}, #{hcrkzj,jdbcType=INTEGER}, #{hcckzj,jdbcType=INTEGER}, 
+      #{mzcrkhj,jdbcType=INTEGER}, #{mzrkzj,jdbcType=INTEGER}, #{mzckzj,jdbcType=INTEGER}, 
+      #{crkllhj,jdbcType=INTEGER}, #{rkllzj,jdbcType=INTEGER}, #{ckllzj,jdbcType=INTEGER}, 
+      #{kcr1,jdbcType=INTEGER}, #{kcc1,jdbcType=INTEGER}, #{kccrhj1,jdbcType=INTEGER}, 
+      #{kcr2,jdbcType=INTEGER}, #{kcc2,jdbcType=INTEGER}, #{kccrhj2,jdbcType=INTEGER}, 
+      #{kcr3,jdbcType=INTEGER}, #{kcc3,jdbcType=INTEGER}, #{kccrhj3,jdbcType=INTEGER}, 
+      #{kcr4,jdbcType=INTEGER}, #{kcc4,jdbcType=INTEGER}, #{kccrhj4,jdbcType=INTEGER}, 
+      #{hcr1,jdbcType=INTEGER}, #{hcc1,jdbcType=INTEGER}, #{hccrhj1,jdbcType=INTEGER}, 
+      #{hcr2,jdbcType=INTEGER}, #{hcc2,jdbcType=INTEGER}, #{hccrhj2,jdbcType=INTEGER}, 
+      #{hcr3,jdbcType=INTEGER}, #{hcc3,jdbcType=INTEGER}, #{hccrhj3,jdbcType=INTEGER}, 
+      #{hcr4,jdbcType=INTEGER}, #{hcc4,jdbcType=INTEGER}, #{hccrhj4,jdbcType=INTEGER}, 
+      #{hcr5,jdbcType=INTEGER}, #{hcc5,jdbcType=INTEGER}, #{hccrhj5,jdbcType=INTEGER}, 
+      #{hcr6,jdbcType=INTEGER}, #{hcc6,jdbcType=INTEGER}, #{hccrhj6,jdbcType=INTEGER}, 
+      #{kcsr1,jdbcType=DECIMAL}, #{kcsr2,jdbcType=DECIMAL}, #{kcsr3,jdbcType=DECIMAL}, 
+      #{kcsr4,jdbcType=DECIMAL}, #{hcsr1,jdbcType=DECIMAL}, #{hcsr2,jdbcType=DECIMAL}, 
+      #{hcsr3,jdbcType=DECIMAL}, #{hcsr4,jdbcType=DECIMAL}, #{hcsr5,jdbcType=DECIMAL}, 
+      #{hcsr6,jdbcType=DECIMAL}, #{kcsrzj,jdbcType=DECIMAL}, #{hcsrzj,jdbcType=DECIMAL},  #{khcsrzj,jdbcType=DECIMAL}, 
+      #{gwr,jdbcType=INTEGER}, #{gwc,jdbcType=INTEGER}, #{gwcrhj,jdbcType=INTEGER}, #{jcr,jdbcType=INTEGER}, 
+      #{jcc,jdbcType=INTEGER}, #{jccrhj,jdbcType=INTEGER}, #{jcher,jdbcType=INTEGER}, 
+      #{jchec,jdbcType=INTEGER}, #{jchecrhj,jdbcType=INTEGER}, #{mfr,jdbcType=INTEGER}, 
+      #{mfc,jdbcType=INTEGER}, #{mfcrhj,jdbcType=INTEGER}, #{cdr,jdbcType=INTEGER}, #{cdc,jdbcType=INTEGER}, 
+      #{cdhj,jdbcType=INTEGER}, #{cgr,jdbcType=INTEGER}, #{cgc,jdbcType=INTEGER}, #{cghj,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.FxRcetcmx" >
+  <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_rcetcmx
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sszd != null" >
+        sszd,
+      </if>
+      <if test="zdmc != null" >
+        zdmc,
+      </if>
+      <if test="zdzz != null" >
+        zdzz,
+      </if>
+      <if test="zt != null" >
+        zt,
+      </if>
+      <if test="bz != null" >
+        bz,
+      </if>
+      <if test="sfrq != null" >
+        sfrq,
+      </if>
+      <if test="lryxh != null" >
+        lryxh,
+      </if>
+      <if test="lrymc != null" >
+        lrymc,
+      </if>
+      <if test="lrsj != null" >
+        lrsj,
+      </if>
+      <if test="kccrkhj != null" >
+        kccrkhj,
+      </if>
+      <if test="kcrkzj != null" >
+        kcrkzj,
+      </if>
+      <if test="kcckzj != null" >
+        kcckzj,
+      </if>
+      <if test="hccrkhj != null" >
+        hccrkhj,
+      </if>
+      <if test="hcrkzj != null" >
+        hcrkzj,
+      </if>
+      <if test="hcckzj != null" >
+        hcckzj,
+      </if>
+      <if test="mzcrkhj != null" >
+        mzcrkhj,
+      </if>
+      <if test="mzrkzj != null" >
+        mzrkzj,
+      </if>
+      <if test="mzckzj != null" >
+        mzckzj,
+      </if>
+      <if test="crkllhj != null" >
+        crkllhj,
+      </if>
+      <if test="rkllzj != null" >
+        rkllzj,
+      </if>
+      <if test="ckllzj != null" >
+        ckllzj,
+      </if>
+      <if test="kcr1 != null" >
+        kcr1,
+      </if>
+      <if test="kcc1 != null" >
+        kcc1,
+      </if>
+      <if test="kccrhj1 != null" >
+        kccrhj1,
+      </if>
+      <if test="kcr2 != null" >
+        kcr2,
+      </if>
+      <if test="kcc2 != null" >
+        kcc2,
+      </if>
+      <if test="kccrhj2 != null" >
+        kccrhj2,
+      </if>
+      <if test="kcr3 != null" >
+        kcr3,
+      </if>
+      <if test="kcc3 != null" >
+        kcc3,
+      </if>
+      <if test="kccrhj3 != null" >
+        kccrhj3,
+      </if>
+      <if test="kcr4 != null" >
+        kcr4,
+      </if>
+      <if test="kcc4 != null" >
+        kcc4,
+      </if>
+      <if test="kccrhj4 != null" >
+        kccrhj4,
+      </if>
+      <if test="hcr1 != null" >
+        hcr1,
+      </if>
+      <if test="hcc1 != null" >
+        hcc1,
+      </if>
+      <if test="hccrhj1 != null" >
+        hccrhj1,
+      </if>
+      <if test="hcr2 != null" >
+        hcr2,
+      </if>
+      <if test="hcc2 != null" >
+        hcc2,
+      </if>
+      <if test="hccrhj2 != null" >
+        hccrhj2,
+      </if>
+      <if test="hcr3 != null" >
+        hcr3,
+      </if>
+      <if test="hcc3 != null" >
+        hcc3,
+      </if>
+      <if test="hccrhj3 != null" >
+        hccrhj3,
+      </if>
+      <if test="hcr4 != null" >
+        hcr4,
+      </if>
+      <if test="hcc4 != null" >
+        hcc4,
+      </if>
+      <if test="hccrhj4 != null" >
+        hccrhj4,
+      </if>
+      <if test="hcr5 != null" >
+        hcr5,
+      </if>
+      <if test="hcc5 != null" >
+        hcc5,
+      </if>
+      <if test="hccrhj5 != null" >
+        hccrhj5,
+      </if>
+      <if test="hcr6 != null" >
+        hcr6,
+      </if>
+      <if test="hcc6 != null" >
+        hcc6,
+      </if>
+      <if test="hccrhj6 != null" >
+        hccrhj6,
+      </if>
+      <if test="kcsr1 != null" >
+        kcsr1,
+      </if>
+      <if test="kcsr2 != null" >
+        kcsr2,
+      </if>
+      <if test="kcsr3 != null" >
+        kcsr3,
+      </if>
+      <if test="kcsr4 != null" >
+        kcsr4,
+      </if>
+      <if test="hcsr1 != null" >
+        hcsr1,
+      </if>
+      <if test="hcsr2 != null" >
+        hcsr2,
+      </if>
+      <if test="hcsr3 != null" >
+        hcsr3,
+      </if>
+      <if test="hcsr4 != null" >
+        hcsr4,
+      </if>
+      <if test="hcsr5 != null" >
+        hcsr5,
+      </if>
+      <if test="hcsr6 != null" >
+        hcsr6,
+      </if>
+      <if test="kcsrzj != null" >
+        kcsrzj,
+      </if>
+      <if test="hcsrzj != null" >
+        hcsrzj,
+      </if>
+      <if test="khcsrzj != null" >
+        khcsrzj,
+      </if>
+      <if test="gwr != null" >
+        gwr,
+      </if>
+      <if test="gwc != null" >
+        gwc,
+      </if>
+      <if test="gwcrhj != null" >
+        gwcrhj,
+      </if>
+      <if test="jcr != null" >
+        jcr,
+      </if>
+      <if test="jcc != null" >
+        jcc,
+      </if>
+      <if test="jccrhj != null" >
+        jccrhj,
+      </if>
+      <if test="jcher != null" >
+        jcher,
+      </if>
+      <if test="jchec != null" >
+        jchec,
+      </if>
+      <if test="jchecrhj != null" >
+        jchecrhj,
+      </if>
+      <if test="mfr != null" >
+        mfr,
+      </if>
+      <if test="mfc != null" >
+        mfc,
+      </if>
+      <if test="mfcrhj != null" >
+        mfcrhj,
+      </if>
+      <if test="cdr != null" >
+        cdr,
+      </if>
+      <if test="cdc != null" >
+        cdc,
+      </if>
+      <if test="cdhj != null" >
+        cdhj,
+      </if>
+      <if test="cgr != null" >
+        cgr,
+      </if>
+      <if test="cgc != null" >
+        cgc,
+      </if>
+      <if test="cghj != null" >
+        cghj,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sszd != null" >
+        #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null" >
+        #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null" >
+        #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null" >
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null" >
+        #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null" >
+        #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null" >
+        #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null" >
+        #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="kccrkhj != null" >
+        #{kccrkhj,jdbcType=INTEGER},
+      </if>
+      <if test="kcrkzj != null" >
+        #{kcrkzj,jdbcType=INTEGER},
+      </if>
+      <if test="kcckzj != null" >
+        #{kcckzj,jdbcType=INTEGER},
+      </if>
+      <if test="hccrkhj != null" >
+        #{hccrkhj,jdbcType=INTEGER},
+      </if>
+      <if test="hcrkzj != null" >
+        #{hcrkzj,jdbcType=INTEGER},
+      </if>
+      <if test="hcckzj != null" >
+        #{hcckzj,jdbcType=INTEGER},
+      </if>
+      <if test="mzcrkhj != null" >
+        #{mzcrkhj,jdbcType=INTEGER},
+      </if>
+      <if test="mzrkzj != null" >
+        #{mzrkzj,jdbcType=INTEGER},
+      </if>
+      <if test="mzckzj != null" >
+        #{mzckzj,jdbcType=INTEGER},
+      </if>
+      <if test="crkllhj != null" >
+        #{crkllhj,jdbcType=INTEGER},
+      </if>
+      <if test="rkllzj != null" >
+        #{rkllzj,jdbcType=INTEGER},
+      </if>
+      <if test="ckllzj != null" >
+        #{ckllzj,jdbcType=INTEGER},
+      </if>
+      <if test="kcr1 != null" >
+        #{kcr1,jdbcType=INTEGER},
+      </if>
+      <if test="kcc1 != null" >
+        #{kcc1,jdbcType=INTEGER},
+      </if>
+      <if test="kccrhj1 != null" >
+        #{kccrhj1,jdbcType=INTEGER},
+      </if>
+      <if test="kcr2 != null" >
+        #{kcr2,jdbcType=INTEGER},
+      </if>
+      <if test="kcc2 != null" >
+        #{kcc2,jdbcType=INTEGER},
+      </if>
+      <if test="kccrhj2 != null" >
+        #{kccrhj2,jdbcType=INTEGER},
+      </if>
+      <if test="kcr3 != null" >
+        #{kcr3,jdbcType=INTEGER},
+      </if>
+      <if test="kcc3 != null" >
+        #{kcc3,jdbcType=INTEGER},
+      </if>
+      <if test="kccrhj3 != null" >
+        #{kccrhj3,jdbcType=INTEGER},
+      </if>
+      <if test="kcr4 != null" >
+        #{kcr4,jdbcType=INTEGER},
+      </if>
+      <if test="kcc4 != null" >
+        #{kcc4,jdbcType=INTEGER},
+      </if>
+      <if test="kccrhj4 != null" >
+        #{kccrhj4,jdbcType=INTEGER},
+      </if>
+      <if test="hcr1 != null" >
+        #{hcr1,jdbcType=INTEGER},
+      </if>
+      <if test="hcc1 != null" >
+        #{hcc1,jdbcType=INTEGER},
+      </if>
+      <if test="hccrhj1 != null" >
+        #{hccrhj1,jdbcType=INTEGER},
+      </if>
+      <if test="hcr2 != null" >
+        #{hcr2,jdbcType=INTEGER},
+      </if>
+      <if test="hcc2 != null" >
+        #{hcc2,jdbcType=INTEGER},
+      </if>
+      <if test="hccrhj2 != null" >
+        #{hccrhj2,jdbcType=INTEGER},
+      </if>
+      <if test="hcr3 != null" >
+        #{hcr3,jdbcType=INTEGER},
+      </if>
+      <if test="hcc3 != null" >
+        #{hcc3,jdbcType=INTEGER},
+      </if>
+      <if test="hccrhj3 != null" >
+        #{hccrhj3,jdbcType=INTEGER},
+      </if>
+      <if test="hcr4 != null" >
+        #{hcr4,jdbcType=INTEGER},
+      </if>
+      <if test="hcc4 != null" >
+        #{hcc4,jdbcType=INTEGER},
+      </if>
+      <if test="hccrhj4 != null" >
+        #{hccrhj4,jdbcType=INTEGER},
+      </if>
+      <if test="hcr5 != null" >
+        #{hcr5,jdbcType=INTEGER},
+      </if>
+      <if test="hcc5 != null" >
+        #{hcc5,jdbcType=INTEGER},
+      </if>
+      <if test="hccrhj5 != null" >
+        #{hccrhj5,jdbcType=INTEGER},
+      </if>
+      <if test="hcr6 != null" >
+        #{hcr6,jdbcType=INTEGER},
+      </if>
+      <if test="hcc6 != null" >
+        #{hcc6,jdbcType=INTEGER},
+      </if>
+      <if test="hccrhj6 != null" >
+        #{hccrhj6,jdbcType=INTEGER},
+      </if>
+      <if test="kcsr1 != null" >
+        #{kcsr1,jdbcType=DECIMAL},
+      </if>
+      <if test="kcsr2 != null" >
+        #{kcsr2,jdbcType=DECIMAL},
+      </if>
+      <if test="kcsr3 != null" >
+        #{kcsr3,jdbcType=DECIMAL},
+      </if>
+      <if test="kcsr4 != null" >
+        #{kcsr4,jdbcType=DECIMAL},
+      </if>
+      <if test="hcsr1 != null" >
+        #{hcsr1,jdbcType=DECIMAL},
+      </if>
+      <if test="hcsr2 != null" >
+        #{hcsr2,jdbcType=DECIMAL},
+      </if>
+      <if test="hcsr3 != null" >
+        #{hcsr3,jdbcType=DECIMAL},
+      </if>
+      <if test="hcsr4 != null" >
+        #{hcsr4,jdbcType=DECIMAL},
+      </if>
+      <if test="hcsr5 != null" >
+        #{hcsr5,jdbcType=DECIMAL},
+      </if>
+      <if test="hcsr6 != null" >
+        #{hcsr6,jdbcType=DECIMAL},
+      </if>
+      <if test="kcsrzj != null" >
+        #{kcsrzj,jdbcType=DECIMAL},
+      </if>
+      <if test="hcsrzj != null" >
+        #{hcsrzj,jdbcType=DECIMAL},
+      </if>
+      <if test="khcsrzj != null" >
+        #{khcsrzj,jdbcType=DECIMAL},
+      </if>
+      <if test="gwr != null" >
+        #{gwr,jdbcType=INTEGER},
+      </if>
+      <if test="gwc != null" >
+        #{gwc,jdbcType=INTEGER},
+      </if>
+      <if test="gwcrhj != null" >
+        #{gwcrhj,jdbcType=INTEGER},
+      </if>
+      <if test="jcr != null" >
+        #{jcr,jdbcType=INTEGER},
+      </if>
+      <if test="jcc != null" >
+        #{jcc,jdbcType=INTEGER},
+      </if>
+      <if test="jccrhj != null" >
+        #{jccrhj,jdbcType=INTEGER},
+      </if>
+      <if test="jcher != null" >
+        #{jcher,jdbcType=INTEGER},
+      </if>
+      <if test="jchec != null" >
+        #{jchec,jdbcType=INTEGER},
+      </if>
+      <if test="jchecrhj != null" >
+        #{jchecrhj,jdbcType=INTEGER},
+      </if>
+      <if test="mfr != null" >
+        #{mfr,jdbcType=INTEGER},
+      </if>
+      <if test="mfc != null" >
+        #{mfc,jdbcType=INTEGER},
+      </if>
+      <if test="mfcrhj != null" >
+        #{mfcrhj,jdbcType=INTEGER},
+      </if>
+      <if test="cdr != null" >
+        #{cdr,jdbcType=INTEGER},
+      </if>
+      <if test="cdc != null" >
+        #{cdc,jdbcType=INTEGER},
+      </if>
+      <if test="cdhj != null" >
+        #{cdhj,jdbcType=INTEGER},
+      </if>
+      <if test="cgr != null" >
+        #{cgr,jdbcType=INTEGER},
+      </if>
+      <if test="cgc != null" >
+        #{cgc,jdbcType=INTEGER},
+      </if>
+      <if test="cghj != null" >
+        #{cghj,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.FxRcetcmx" >
+    update fx_rcetcmx
+    <set >
+      <if test="sszd != null" >
+        sszd = #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null" >
+        zdmc = #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null" >
+        zdzz = #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        zt = #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null" >
+        bz = #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null" >
+        sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null" >
+        lryxh = #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null" >
+        lrymc = #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null" >
+        lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="kccrkhj != null" >
+        kccrkhj = #{kccrkhj,jdbcType=INTEGER},
+      </if>
+      <if test="kcrkzj != null" >
+        kcrkzj = #{kcrkzj,jdbcType=INTEGER},
+      </if>
+      <if test="kcckzj != null" >
+        kcckzj = #{kcckzj,jdbcType=INTEGER},
+      </if>
+      <if test="hccrkhj != null" >
+        hccrkhj = #{hccrkhj,jdbcType=INTEGER},
+      </if>
+      <if test="hcrkzj != null" >
+        hcrkzj = #{hcrkzj,jdbcType=INTEGER},
+      </if>
+      <if test="hcckzj != null" >
+        hcckzj = #{hcckzj,jdbcType=INTEGER},
+      </if>
+      <if test="mzcrkhj != null" >
+        mzcrkhj = #{mzcrkhj,jdbcType=INTEGER},
+      </if>
+      <if test="mzrkzj != null" >
+        mzrkzj = #{mzrkzj,jdbcType=INTEGER},
+      </if>
+      <if test="mzckzj != null" >
+        mzckzj = #{mzckzj,jdbcType=INTEGER},
+      </if>
+      <if test="crkllhj != null" >
+        crkllhj = #{crkllhj,jdbcType=INTEGER},
+      </if>
+      <if test="rkllzj != null" >
+        rkllzj = #{rkllzj,jdbcType=INTEGER},
+      </if>
+      <if test="ckllzj != null" >
+        ckllzj = #{ckllzj,jdbcType=INTEGER},
+      </if>
+      <if test="kcr1 != null" >
+        kcr1 = #{kcr1,jdbcType=INTEGER},
+      </if>
+      <if test="kcc1 != null" >
+        kcc1 = #{kcc1,jdbcType=INTEGER},
+      </if>
+      <if test="kccrhj1 != null" >
+        kccrhj1 = #{kccrhj1,jdbcType=INTEGER},
+      </if>
+      <if test="kcr2 != null" >
+        kcr2 = #{kcr2,jdbcType=INTEGER},
+      </if>
+      <if test="kcc2 != null" >
+        kcc2 = #{kcc2,jdbcType=INTEGER},
+      </if>
+      <if test="kccrhj2 != null" >
+        kccrhj2 = #{kccrhj2,jdbcType=INTEGER},
+      </if>
+      <if test="kcr3 != null" >
+        kcr3 = #{kcr3,jdbcType=INTEGER},
+      </if>
+      <if test="kcc3 != null" >
+        kcc3 = #{kcc3,jdbcType=INTEGER},
+      </if>
+      <if test="kccrhj3 != null" >
+        kccrhj3 = #{kccrhj3,jdbcType=INTEGER},
+      </if>
+      <if test="kcr4 != null" >
+        kcr4 = #{kcr4,jdbcType=INTEGER},
+      </if>
+      <if test="kcc4 != null" >
+        kcc4 = #{kcc4,jdbcType=INTEGER},
+      </if>
+      <if test="kccrhj4 != null" >
+        kccrhj4 = #{kccrhj4,jdbcType=INTEGER},
+      </if>
+      <if test="hcr1 != null" >
+        hcr1 = #{hcr1,jdbcType=INTEGER},
+      </if>
+      <if test="hcc1 != null" >
+        hcc1 = #{hcc1,jdbcType=INTEGER},
+      </if>
+      <if test="hccrhj1 != null" >
+        hccrhj1 = #{hccrhj1,jdbcType=INTEGER},
+      </if>
+      <if test="hcr2 != null" >
+        hcr2 = #{hcr2,jdbcType=INTEGER},
+      </if>
+      <if test="hcc2 != null" >
+        hcc2 = #{hcc2,jdbcType=INTEGER},
+      </if>
+      <if test="hccrhj2 != null" >
+        hccrhj2 = #{hccrhj2,jdbcType=INTEGER},
+      </if>
+      <if test="hcr3 != null" >
+        hcr3 = #{hcr3,jdbcType=INTEGER},
+      </if>
+      <if test="hcc3 != null" >
+        hcc3 = #{hcc3,jdbcType=INTEGER},
+      </if>
+      <if test="hccrhj3 != null" >
+        hccrhj3 = #{hccrhj3,jdbcType=INTEGER},
+      </if>
+      <if test="hcr4 != null" >
+        hcr4 = #{hcr4,jdbcType=INTEGER},
+      </if>
+      <if test="hcc4 != null" >
+        hcc4 = #{hcc4,jdbcType=INTEGER},
+      </if>
+      <if test="hccrhj4 != null" >
+        hccrhj4 = #{hccrhj4,jdbcType=INTEGER},
+      </if>
+      <if test="hcr5 != null" >
+        hcr5 = #{hcr5,jdbcType=INTEGER},
+      </if>
+      <if test="hcc5 != null" >
+        hcc5 = #{hcc5,jdbcType=INTEGER},
+      </if>
+      <if test="hccrhj5 != null" >
+        hccrhj5 = #{hccrhj5,jdbcType=INTEGER},
+      </if>
+      <if test="hcr6 != null" >
+        hcr6 = #{hcr6,jdbcType=INTEGER},
+      </if>
+      <if test="hcc6 != null" >
+        hcc6 = #{hcc6,jdbcType=INTEGER},
+      </if>
+      <if test="hccrhj6 != null" >
+        hccrhj6 = #{hccrhj6,jdbcType=INTEGER},
+      </if>
+      <if test="kcsr1 != null" >
+        kcsr1 = #{kcsr1,jdbcType=DECIMAL},
+      </if>
+      <if test="kcsr2 != null" >
+        kcsr2 = #{kcsr2,jdbcType=DECIMAL},
+      </if>
+      <if test="kcsr3 != null" >
+        kcsr3 = #{kcsr3,jdbcType=DECIMAL},
+      </if>
+      <if test="kcsr4 != null" >
+        kcsr4 = #{kcsr4,jdbcType=DECIMAL},
+      </if>
+      <if test="hcsr1 != null" >
+        hcsr1 = #{hcsr1,jdbcType=DECIMAL},
+      </if>
+      <if test="hcsr2 != null" >
+        hcsr2 = #{hcsr2,jdbcType=DECIMAL},
+      </if>
+      <if test="hcsr3 != null" >
+        hcsr3 = #{hcsr3,jdbcType=DECIMAL},
+      </if>
+      <if test="hcsr4 != null" >
+        hcsr4 = #{hcsr4,jdbcType=DECIMAL},
+      </if>
+      <if test="hcsr5 != null" >
+        hcsr5 = #{hcsr5,jdbcType=DECIMAL},
+      </if>
+      <if test="hcsr6 != null" >
+        hcsr6 = #{hcsr6,jdbcType=DECIMAL},
+      </if>
+      <if test="kcsrzj != null" >
+        kcsrzj = #{kcsrzj,jdbcType=DECIMAL},
+      </if>
+      <if test="hcsrzj != null" >
+        hcsrzj = #{hcsrzj,jdbcType=DECIMAL},
+      </if>
+      <if test="khcsrzj != null" >
+        khcsrzj = #{khcsrzj,jdbcType=DECIMAL},
+      </if>
+      <if test="gwr != null" >
+        gwr = #{gwr,jdbcType=INTEGER},
+      </if>
+      <if test="gwc != null" >
+        gwc = #{gwc,jdbcType=INTEGER},
+      </if>
+      <if test="gwcrhj != null" >
+        gwcrhj = #{gwcrhj,jdbcType=INTEGER},
+      </if>
+      <if test="jcr != null" >
+        jcr = #{jcr,jdbcType=INTEGER},
+      </if>
+      <if test="jcc != null" >
+        jcc = #{jcc,jdbcType=INTEGER},
+      </if>
+      <if test="jccrhj != null" >
+        jccrhj = #{jccrhj,jdbcType=INTEGER},
+      </if>
+      <if test="jcher != null" >
+        jcher = #{jcher,jdbcType=INTEGER},
+      </if>
+      <if test="jchec != null" >
+        jchec = #{jchec,jdbcType=INTEGER},
+      </if>
+      <if test="jchecrhj != null" >
+        jchecrhj = #{jchecrhj,jdbcType=INTEGER},
+      </if>
+      <if test="mfr != null" >
+        mfr = #{mfr,jdbcType=INTEGER},
+      </if>
+      <if test="mfc != null" >
+        mfc = #{mfc,jdbcType=INTEGER},
+      </if>
+      <if test="mfcrhj != null" >
+        mfcrhj = #{mfcrhj,jdbcType=INTEGER},
+      </if>
+      <if test="cdr != null" >
+        cdr = #{cdr,jdbcType=INTEGER},
+      </if>
+      <if test="cdc != null" >
+        cdc = #{cdc,jdbcType=INTEGER},
+      </if>
+      <if test="cdhj != null" >
+        cdhj = #{cdhj,jdbcType=INTEGER},
+      </if>
+      <if test="cgr != null" >
+        cgr = #{cgr,jdbcType=INTEGER},
+      </if>
+      <if test="cgc != null" >
+        cgc = #{cgc,jdbcType=INTEGER},
+      </if>
+      <if test="cghj != null" >
+        cghj = #{cghj,jdbcType=INTEGER},
+      </if>
+    </set>
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.FxRcetcmx" >
+    update fx_rcetcmx
+    set sszd = #{sszd,jdbcType=VARCHAR},
+      zdmc = #{zdmc,jdbcType=VARCHAR},
+      zdzz = #{zdzz,jdbcType=VARCHAR},
+      zt = #{zt,jdbcType=INTEGER},
+      bz = #{bz,jdbcType=VARCHAR},
+      sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      lryxh = #{lryxh,jdbcType=VARCHAR},
+      lrymc = #{lrymc,jdbcType=VARCHAR},
+      lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      kccrkhj = #{kccrkhj,jdbcType=INTEGER},
+      kcrkzj = #{kcrkzj,jdbcType=INTEGER},
+      kcckzj = #{kcckzj,jdbcType=INTEGER},
+      hccrkhj = #{hccrkhj,jdbcType=INTEGER},
+      hcrkzj = #{hcrkzj,jdbcType=INTEGER},
+      hcckzj = #{hcckzj,jdbcType=INTEGER},
+      mzcrkhj = #{mzcrkhj,jdbcType=INTEGER},
+      mzrkzj = #{mzrkzj,jdbcType=INTEGER},
+      mzckzj = #{mzckzj,jdbcType=INTEGER},
+      crkllhj = #{crkllhj,jdbcType=INTEGER},
+      rkllzj = #{rkllzj,jdbcType=INTEGER},
+      ckllzj = #{ckllzj,jdbcType=INTEGER},
+      kcr1 = #{kcr1,jdbcType=INTEGER},
+      kcc1 = #{kcc1,jdbcType=INTEGER},
+      kccrhj1 = #{kccrhj1,jdbcType=INTEGER},
+      kcr2 = #{kcr2,jdbcType=INTEGER},
+      kcc2 = #{kcc2,jdbcType=INTEGER},
+      kccrhj2 = #{kccrhj2,jdbcType=INTEGER},
+      kcr3 = #{kcr3,jdbcType=INTEGER},
+      kcc3 = #{kcc3,jdbcType=INTEGER},
+      kccrhj3 = #{kccrhj3,jdbcType=INTEGER},
+      kcr4 = #{kcr4,jdbcType=INTEGER},
+      kcc4 = #{kcc4,jdbcType=INTEGER},
+      kccrhj4 = #{kccrhj4,jdbcType=INTEGER},
+      hcr1 = #{hcr1,jdbcType=INTEGER},
+      hcc1 = #{hcc1,jdbcType=INTEGER},
+      hccrhj1 = #{hccrhj1,jdbcType=INTEGER},
+      hcr2 = #{hcr2,jdbcType=INTEGER},
+      hcc2 = #{hcc2,jdbcType=INTEGER},
+      hccrhj2 = #{hccrhj2,jdbcType=INTEGER},
+      hcr3 = #{hcr3,jdbcType=INTEGER},
+      hcc3 = #{hcc3,jdbcType=INTEGER},
+      hccrhj3 = #{hccrhj3,jdbcType=INTEGER},
+      hcr4 = #{hcr4,jdbcType=INTEGER},
+      hcc4 = #{hcc4,jdbcType=INTEGER},
+      hccrhj4 = #{hccrhj4,jdbcType=INTEGER},
+      hcr5 = #{hcr5,jdbcType=INTEGER},
+      hcc5 = #{hcc5,jdbcType=INTEGER},
+      hccrhj5 = #{hccrhj5,jdbcType=INTEGER},
+      hcr6 = #{hcr6,jdbcType=INTEGER},
+      hcc6 = #{hcc6,jdbcType=INTEGER},
+      hccrhj6 = #{hccrhj6,jdbcType=INTEGER},
+      kcsr1 = #{kcsr1,jdbcType=DECIMAL},
+      kcsr2 = #{kcsr2,jdbcType=DECIMAL},
+      kcsr3 = #{kcsr3,jdbcType=DECIMAL},
+      kcsr4 = #{kcsr4,jdbcType=DECIMAL},
+      hcsr1 = #{hcsr1,jdbcType=DECIMAL},
+      hcsr2 = #{hcsr2,jdbcType=DECIMAL},
+      hcsr3 = #{hcsr3,jdbcType=DECIMAL},
+      hcsr4 = #{hcsr4,jdbcType=DECIMAL},
+      hcsr5 = #{hcsr5,jdbcType=DECIMAL},
+      hcsr6 = #{hcsr6,jdbcType=DECIMAL},
+      kcsrzj = #{kcsrzj,jdbcType=DECIMAL},
+      hcsrzj = #{hcsrzj,jdbcType=DECIMAL},
+      khcsrzj = #{khcsrzj,jdbcType=DECIMAL},
+      gwr = #{gwr,jdbcType=INTEGER},
+      gwc = #{gwc,jdbcType=INTEGER},
+      gwcrhj = #{gwcrhj,jdbcType=INTEGER},
+      jcr = #{jcr,jdbcType=INTEGER},
+      jcc = #{jcc,jdbcType=INTEGER},
+      jccrhj = #{jccrhj,jdbcType=INTEGER},
+      jcher = #{jcher,jdbcType=INTEGER},
+      jchec = #{jchec,jdbcType=INTEGER},
+      jchecrhj = #{jchecrhj,jdbcType=INTEGER},
+      mfr = #{mfr,jdbcType=INTEGER},
+      mfc = #{mfc,jdbcType=INTEGER},
+      mfcrhj = #{mfcrhj,jdbcType=INTEGER},
+      cdr = #{cdr,jdbcType=INTEGER},
+      cdc = #{cdc,jdbcType=INTEGER},
+      cdhj = #{cdhj,jdbcType=INTEGER},
+      cgr = #{cgr,jdbcType=INTEGER},
+      cgc = #{cgc,jdbcType=INTEGER},
+      cghj = #{cghj,jdbcType=INTEGER}
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  
+   <!-- getEtcRcsjData -->
+  <select id="getEtcRcsjData" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fx_rcetcmx LEFT JOIN sys_department dept on sszd = dept.departmentid
+    <where>
+	    <if test="lock !=null">and zt = #{lock} </if>
+	   	<if test="st!=null and et==null">and substring(sfrq,1,length(#{st}))&gt;=#{st}</if>
+	   	<if test="et!=null and st==null">and substring(sfrq,1,length(#{st}))&lt;=#{et}</if>
+	   	<if test="st!=null and et!=null">and substring(sfrq,1,length(#{st})) between #{st} and #{et}</if>
+	   	<if test="lrymc!=null">and lrymc like concat('%',#{lrymc},'%')</if>
+	   	<if test="zdzz!=null">and zdzz like concat('%',#{zdzz},'%')</if>
+	   	<if test="depts != null">and sszd in (${depts})</if>
+   	</where>
+   	<if test="order != null">order by ${order}</if>
+   	<if test="order == null">order by sfrq desc </if>
+   	,dept.sortcode asc
+  </select>
+  
+  <!-- 日期不重复 -->
+  <select id="getCanDel" parameterType="map" resultType="int">
+  	SELECT count(*) FROM fx_rcetcmx where zt = 1
+  	<if test="sfrq!=null">and substring(sfrq,1,length(#{sfrq}))=#{sfrq}</if>
+  	<if test="xh!=null">and xh!=#{xh}</if>
+  	<if test="sszd!=null">and sszd = #{sszd}</if>
+  </select>
+</mapper>

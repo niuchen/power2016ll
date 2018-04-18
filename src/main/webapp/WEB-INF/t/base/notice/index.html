@@ -1,0 +1,122 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>公告通知管理</title>
+<link rel="stylesheet" type="text/css" href="${ctx.contextPath}/res/theme//style.css"/>
+<script type="text/javascript" src="${ctx.contextPath}/res/jquery/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/nflexigrid/jquery.flexigrid.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/js/commJS.js"></script>
+
+<script type="text/javascript">
+opr=function(f){
+	switch(f){
+		case 'add':
+			$("#listDiv").hide();
+			$("#oprDiv").show();
+			Loading(true);
+			$("#PageFrame").attr("src","new");
+		break;
+		case 'ref'://刷新 
+		    Loading(true);top.$('#' + Current_iframeID())[0].contentWindow.window.location.reload();return false;
+		    break;
+		case 'edit':
+			var tr=$(".trSelected",$("#userFlexList"));
+			if(!tr[0]){showTipsMsg("您当前未选中任何一行！", 4000, 3);return false;}
+			$("#listDiv").hide();
+			$("#oprDiv").show();
+			Loading(true);
+			$("#PageFrame").attr("src","editUser/"+tr.eq(0).attr("ch"));
+		break;
+		case 'del':
+			var tr=$(".trSelected",$("#userFlexList"));
+			if(!tr[0]){showTipsMsg("您当前未选中任何一行！", 4000, 3);return false;}						
+			var xh = tr.eq(0).attr("ch");
+			if(xh > 0 && confirm("确定要删除？删除后可能无法恢复！")){
+				$.blockUI({message:'<h4>处理中请稍候...</h4>'});
+				$.ajax({type: "POST",dataType:"json",url: "${ctx.contextPath}/notice/del",data:"xh="+xh,
+				   success: function(data){
+				   	showTipsMsg("已成功删除!", 4000, 4);
+		     		$("#userFlexList").deleteRow(tr);
+		     		$.unblockUI();
+				   },error:function(xhr){
+				   	 showTipsMsg("操作失败!", 4000, 5);
+				   	 $.unblockUI();	   	 
+				   }
+				});
+			}
+		break;
+		default:break;
+	}
+};
+_detail=function(cv,pid){
+return "<a href='javascript:void(0)' onclick='_notice("+cv+")' title='详细信息' style='color:blue;'>详细信息</a>";
+}
+_notice=function(xh){
+top.$.dialog({id : "_noticeDiv",title : "通知详细信息",
+		content:"url:${ctx.contextPath}/notice/read?xh="+xh,
+		height : 320,width : 600,
+		min:false,max:false,lock:true
+	});
+}
+$(document).ready(function(){
+	iframeresize();
+	//
+	$("#userFlexList").flexigrid({url:'${ctx.contextPath}/notice/search',
+        resizable:true,
+        showToggleBtn:false,
+        rowbinddata:"xh",
+        colModel : [
+            {display: '编号', name : 'xh', width:60,  align: 'center'},  
+            {display: '通知标题', name : 'tzzt', width:280, align: 'center'},
+            {display: '发布人', name : 'fsr', width :120, align: 'center'},
+            {display: '发布时间', name : 'fbsj', width :120, align: 'center',process:_datetime},
+            {display: '操作', name : 'xh', width :120, align: 'center',process:_detail}
+            ],
+        usepager: true,
+        pS:20,
+        width:$(".iframeContent").width(),
+        height:$(".iframeContent").height()-185
+        });
+});
+
+function def(){//刷新页面。
+	$("#listDiv").show();
+	$("#oprDiv").hide();
+	$("#userFlexList").flexReload({params:{"kssj":$("#kssj").val(),"jssj":$("#jssj").val()}});
+}
+</script>
+</head><body>
+<div id="iframeMainContent">
+    <div class="iframeContent" id="listDiv">
+    	<div class="btnbartitle"><div>公告通知管理</div></div>
+    	<div class="tools_bar">
+			<a id="b_ref" class="tools_btn" onclick="opr('ref');" title="刷新当前页面"><span class=""><b class="tools_btn_ref">刷新</b></span></a>
+			<div class="tools_separator"></div>
+			<a id="b_add" class="tools_btn" onclick="opr('add');" title=""><span class=""><b class="tools_btn_add">新增</b></span></a>
+			<a id="b_delete" class="tools_btn" onclick="opr('del');" title=""><span class=""><b class="tools_btn_del">删除</b></span></a>
+			<div class="tools_separator"></div>
+			<a class="tools_btn" onclick="ThisCloseTab();" title="关闭当前窗口"><span class=""><b class="tools_btn_close">离开</b></span></a>
+		</div>
+    	<div style="margin-top: 1px; background: #fff" class="btnbarcontetn">
+            <div>
+                <table border="0" style="height: 45px;" class="frm-find">
+                    <tbody><tr>
+                        <th>时间：</th>
+                        <td>
+                    <input name="kssj" type="text" id="kssj" style="width:135px;"  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true})" readonly="readonly" class="Wdate"/>至
+					<input name="jssj" type="text" id="jssj" style="width:135px;"  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',readOnly:true,minDate:'#F{$dp.$D(\'kssj\')}'})" readonly="readonly" class="Wdate"/>
+                        </td>
+                        <td>
+                            <input type="button" onclick="def();" value="搜 索" class="btnSearch" id="btnSearch">
+                        </td>
+                    </tr>
+                </tbody></table>
+            </div>
+        </div>
+        <table id="userFlexList"></table>
+    </div>
+    <div id="oprDiv" style="display: none;width:100%;height: 100%;">
+  		<iframe frameborder="0" width="100%" height="100%" id="PageFrame" onload="javascript:$('#Loading').hide();"></iframe>
+	</div>
+</div>
+</body></html>

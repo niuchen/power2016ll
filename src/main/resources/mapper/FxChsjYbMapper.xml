@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.FxChsjYbMapper">
+  <resultMap id="BaseResultMap" type="com.power.common.entity.FxChsjYb">
+    <id column="xh" jdbcType="BIGINT" property="xh" />
+    <result column="sszd" jdbcType="VARCHAR" property="sszd" />
+    <result column="zdmc" jdbcType="VARCHAR" property="zdmc" />
+    <result column="zdzz" jdbcType="VARCHAR" property="zdzz" />
+    <result column="zt" jdbcType="INTEGER" property="zt" />
+    <result column="bz" jdbcType="VARCHAR" property="bz" />
+    <result column="sfrq" jdbcType="TIMESTAMP" property="sfrq" />
+    <result column="lryxh" jdbcType="VARCHAR" property="lryxh" />
+    <result column="lrymc" jdbcType="VARCHAR" property="lrymc" />
+    <result column="lrsj" jdbcType="TIMESTAMP" property="lrsj" />
+    <result column="ldbh" jdbcType="VARCHAR" property="ldbh" />
+    <result column="ldmc" jdbcType="VARCHAR" property="ldmc" />
+    <result column="chzcsrje" jdbcType="DECIMAL" property="chzcsrje" />
+    <result column="chjzjsje" jdbcType="DECIMAL" property="chjzjsje" />
+    <result column="chckje" jdbcType="DECIMAL" property="chckje" />
+    <result column="chjskje" jdbcType="DECIMAL" property="chjskje" />
+    <result column="chetcje" jdbcType="DECIMAL" property="chetcje" />
+    <result column="chhj" jdbcType="DECIMAL" property="chhj" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    xh, sszd, zdmc, zdzz, zt, bz, sfrq, lryxh, lrymc, lrsj, ldbh, ldmc, chzcsrje, chjzjsje, 
+    chckje, chjskje, chetcje, chhj
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fx_chsjyb
+    where xh = #{xh,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from fx_chsjyb
+    where xh = #{xh,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.FxChsjYb">
+    <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_chsjyb (sszd, zdmc, zdzz, 
+      zt, bz, sfrq, lryxh, 
+      lrymc, lrsj, ldbh, 
+      ldmc, chzcsrje, chjzjsje, 
+      chckje, chjskje, chetcje, 
+      chhj)
+    values (#{sszd,jdbcType=VARCHAR}, #{zdmc,jdbcType=VARCHAR}, #{zdzz,jdbcType=VARCHAR}, 
+      #{zt,jdbcType=INTEGER}, #{bz,jdbcType=VARCHAR}, #{sfrq,jdbcType=TIMESTAMP}, #{lryxh,jdbcType=VARCHAR}, 
+      #{lrymc,jdbcType=VARCHAR}, #{lrsj,jdbcType=TIMESTAMP}, #{ldbh,jdbcType=VARCHAR}, 
+      #{ldmc,jdbcType=VARCHAR}, #{chzcsrje,jdbcType=DECIMAL}, #{chjzjsje,jdbcType=DECIMAL}, 
+      #{chckje,jdbcType=DECIMAL}, #{chjskje,jdbcType=DECIMAL}, #{chetcje,jdbcType=DECIMAL}, 
+      #{chhj,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.FxChsjYb">
+    <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_chsjyb
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sszd != null">
+        sszd,
+      </if>
+      <if test="zdmc != null">
+        zdmc,
+      </if>
+      <if test="zdzz != null">
+        zdzz,
+      </if>
+      <if test="zt != null">
+        zt,
+      </if>
+      <if test="bz != null">
+        bz,
+      </if>
+      <if test="sfrq != null">
+        sfrq,
+      </if>
+      <if test="lryxh != null">
+        lryxh,
+      </if>
+      <if test="lrymc != null">
+        lrymc,
+      </if>
+      <if test="lrsj != null">
+        lrsj,
+      </if>
+      <if test="ldbh != null">
+        ldbh,
+      </if>
+      <if test="ldmc != null">
+        ldmc,
+      </if>
+      <if test="chzcsrje != null">
+        chzcsrje,
+      </if>
+      <if test="chjzjsje != null">
+        chjzjsje,
+      </if>
+      <if test="chckje != null">
+        chckje,
+      </if>
+      <if test="chjskje != null">
+        chjskje,
+      </if>
+      <if test="chetcje != null">
+        chetcje,
+      </if>
+      <if test="chhj != null">
+        chhj,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sszd != null">
+        #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null">
+        #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null">
+        #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null">
+        #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null">
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null">
+        #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null">
+        #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null">
+        #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null">
+        #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ldbh != null">
+        #{ldbh,jdbcType=VARCHAR},
+      </if>
+      <if test="ldmc != null">
+        #{ldmc,jdbcType=VARCHAR},
+      </if>
+      <if test="chzcsrje != null">
+        #{chzcsrje,jdbcType=DECIMAL},
+      </if>
+      <if test="chjzjsje != null">
+        #{chjzjsje,jdbcType=DECIMAL},
+      </if>
+      <if test="chckje != null">
+        #{chckje,jdbcType=DECIMAL},
+      </if>
+      <if test="chjskje != null">
+        #{chjskje,jdbcType=DECIMAL},
+      </if>
+      <if test="chetcje != null">
+        #{chetcje,jdbcType=DECIMAL},
+      </if>
+      <if test="chhj != null">
+        #{chhj,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.FxChsjYb">
+    update fx_chsjyb
+    <set>
+      <if test="sszd != null">
+        sszd = #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null">
+        zdmc = #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null">
+        zdzz = #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null">
+        zt = #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null">
+        bz = #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null">
+        sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null">
+        lryxh = #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null">
+        lrymc = #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null">
+        lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ldbh != null">
+        ldbh = #{ldbh,jdbcType=VARCHAR},
+      </if>
+      <if test="ldmc != null">
+        ldmc = #{ldmc,jdbcType=VARCHAR},
+      </if>
+      <if test="chzcsrje != null">
+        chzcsrje = #{chzcsrje,jdbcType=DECIMAL},
+      </if>
+      <if test="chjzjsje != null">
+        chjzjsje = #{chjzjsje,jdbcType=DECIMAL},
+      </if>
+      <if test="chckje != null">
+        chckje = #{chckje,jdbcType=DECIMAL},
+      </if>
+      <if test="chjskje != null">
+        chjskje = #{chjskje,jdbcType=DECIMAL},
+      </if>
+      <if test="chetcje != null">
+        chetcje = #{chetcje,jdbcType=DECIMAL},
+      </if>
+      <if test="chhj != null">
+        chhj = #{chhj,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.FxChsjYb">
+    update fx_chsjyb
+    set sszd = #{sszd,jdbcType=VARCHAR},
+      zdmc = #{zdmc,jdbcType=VARCHAR},
+      zdzz = #{zdzz,jdbcType=VARCHAR},
+      zt = #{zt,jdbcType=INTEGER},
+      bz = #{bz,jdbcType=VARCHAR},
+      sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      lryxh = #{lryxh,jdbcType=VARCHAR},
+      lrymc = #{lrymc,jdbcType=VARCHAR},
+      lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      ldbh = #{ldbh,jdbcType=VARCHAR},
+      ldmc = #{ldmc,jdbcType=VARCHAR},
+      chzcsrje = #{chzcsrje,jdbcType=DECIMAL},
+      chjzjsje = #{chjzjsje,jdbcType=DECIMAL},
+      chckje = #{chckje,jdbcType=DECIMAL},
+      chjskje = #{chjskje,jdbcType=DECIMAL},
+      chetcje = #{chetcje,jdbcType=DECIMAL},
+      chhj = #{chhj,jdbcType=DECIMAL}
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+
+   <!-- getChsjData -->
+  <select id="getChsjData" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fx_chsjyb
+    <where>
+	   	<if test="lock !=null">and zt = #{lock} </if>
+	   	<if test="st!=null and et==null">and substring(sfrq,1,length(#{st}))&gt;=#{st}</if>
+	   	<if test="et!=null and st==null">and substring(sfrq,1,length(#{et}))&lt;=#{et}</if>
+	   	<if test="st!=null and et!=null">and substring(sfrq,1,length(#{st})) between #{st} and #{et}</if>
+	   	<if test="lrymc!=null">and lrymc like concat('%',#{lrymc},'%')</if>
+	  <!-- 	<if test="zdzz!=null">and zdzz like concat('%',#{zdzz},'%')</if> --> 
+	   	<if test="orgs != null">and sszd in (${orgs})</if>
+   	</where>
+   	<if test="order != null">order by ${order}</if>
+   	<if test="order == null">order by sfrq desc </if>
+  </select>
+  <!-- getCanDel -->
+  <select id="getCanDel" parameterType="map" resultType="int">
+  	SELECT count(*) FROM fx_chsjyb where zt = 1
+  	<if test="sfrq!=null">and substring(sfrq,1,length(#{sfrq}))=#{sfrq}</if>
+  	<if test="xh!=null">and xh!=#{xh}</if>
+  	<if test="sszd!=null">and sszd = #{sszd}</if>
+  	<if test="ldbh!=null">and ldbh = #{ldbh}</if>
+  </select>
+  
+  
+  
+</mapper>

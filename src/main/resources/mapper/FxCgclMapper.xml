@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.FxCgclMapper" >
+  <resultMap id="BaseResultMap" type="com.power.common.entity.FxCgcl" >
+    <id column="xh" property="xh" jdbcType="BIGINT" />
+    <result column="sszd" property="sszd" jdbcType="VARCHAR" />
+    <result column="zdmc" property="zdmc" jdbcType="VARCHAR" />
+    <result column="zdzz" property="zdzz" jdbcType="VARCHAR" />
+    <result column="zt" property="zt" jdbcType="INTEGER" />
+    <result column="bz" property="bz" jdbcType="VARCHAR" />
+    <result column="sfrq" property="sfrq" jdbcType="TIMESTAMP" />
+    <result column="lryxh" property="lryxh" jdbcType="VARCHAR" />
+    <result column="lrymc" property="lrymc" jdbcType="VARCHAR" />
+    <result column="lrsj" property="lrsj" jdbcType="TIMESTAMP" />
+    <result column="ldbh" property="ldbh" jdbcType="VARCHAR" />
+    <result column="ldmc" property="ldmc" jdbcType="VARCHAR" />
+    <result column="cgld" property="cgld" jdbcType="VARCHAR" />
+    <result column="cgsfzmc" property="cgsfzmc" jdbcType="VARCHAR" />
+    <result column="cgcksjcl" property="cgcksjcl" jdbcType="VARCHAR" />
+    <result column="cgcksj" property="cgcksj" jdbcType="TIMESTAMP" />
+    <result column="cgckqksm" property="cgckqksm" jdbcType="VARCHAR" />
+    <result column="cgcljg" property="cgcljg" jdbcType="VARCHAR" />
+    <result column="cgsgcp" property="cgsgcp" jdbcType="VARCHAR" />
+    <result column="cgtgsj" property="cgtgsj" jdbcType="TIMESTAMP" />
+    <result column="cgwhsk" property="cgwhsk" jdbcType="VARCHAR" />
+    <result column="cgsgcljg" property="cgsgcljg" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    xh, sszd, zdmc, zdzz, zt, bz, sfrq, lryxh, lrymc, lrsj, ldbh, ldmc, cgld, cgsfzmc, 
+    cgcksjcl, cgcksj, cgckqksm, cgcljg, cgsgcp, cgtgsj, cgwhsk, cgsgcljg
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from fx_cgcl
+    where xh = #{xh,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from fx_cgcl
+    where xh = #{xh,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.FxCgcl" >
+  <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_cgcl (sszd, zdmc, 
+      zdzz, zt, bz, sfrq, 
+      lryxh, lrymc, lrsj, 
+      ldbh, ldmc, cgld, cgsfzmc, 
+      cgcksjcl, cgcksj, cgckqksm, 
+      cgcljg, cgsgcp, cgtgsj, 
+      cgwhsk, cgsgcljg)
+    values (#{sszd,jdbcType=VARCHAR}, #{zdmc,jdbcType=VARCHAR}, 
+      #{zdzz,jdbcType=VARCHAR}, #{zt,jdbcType=INTEGER}, #{bz,jdbcType=VARCHAR}, #{sfrq,jdbcType=TIMESTAMP}, 
+      #{lryxh,jdbcType=VARCHAR}, #{lrymc,jdbcType=VARCHAR}, #{lrsj,jdbcType=TIMESTAMP}, 
+      #{ldbh,jdbcType=VARCHAR}, #{ldmc,jdbcType=VARCHAR}, #{cgld,jdbcType=VARCHAR}, #{cgsfzmc,jdbcType=VARCHAR}, 
+      #{cgcksjcl,jdbcType=VARCHAR}, #{cgcksj,jdbcType=TIMESTAMP}, #{cgckqksm,jdbcType=VARCHAR}, 
+      #{cgcljg,jdbcType=VARCHAR}, #{cgsgcp,jdbcType=VARCHAR}, #{cgtgsj,jdbcType=TIMESTAMP}, 
+      #{cgwhsk,jdbcType=VARCHAR}, #{cgsgcljg,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.FxCgcl" >
+  <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_cgcl
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sszd != null" >
+        sszd,
+      </if>
+      <if test="zdmc != null" >
+        zdmc,
+      </if>
+      <if test="zdzz != null" >
+        zdzz,
+      </if>
+      <if test="zt != null" >
+        zt,
+      </if>
+      <if test="bz != null" >
+        bz,
+      </if>
+      <if test="sfrq != null" >
+        sfrq,
+      </if>
+      <if test="lryxh != null" >
+        lryxh,
+      </if>
+      <if test="lrymc != null" >
+        lrymc,
+      </if>
+      <if test="lrsj != null" >
+        lrsj,
+      </if>
+      <if test="ldbh != null" >
+        ldbh,
+      </if>
+      <if test="ldmc != null" >
+        ldmc,
+      </if>
+      <if test="cgld != null" >
+        cgld,
+      </if>
+      <if test="cgsfzmc != null" >
+        cgsfzmc,
+      </if>
+      <if test="cgcksjcl != null" >
+        cgcksjcl,
+      </if>
+      <if test="cgcksj != null" >
+        cgcksj,
+      </if>
+      <if test="cgckqksm != null" >
+        cgckqksm,
+      </if>
+      <if test="cgcljg != null" >
+        cgcljg,
+      </if>
+      <if test="cgsgcp != null" >
+        cgsgcp,
+      </if>
+      <if test="cgtgsj != null" >
+        cgtgsj,
+      </if>
+      <if test="cgwhsk != null" >
+        cgwhsk,
+      </if>
+      <if test="cgsgcljg != null" >
+        cgsgcljg,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sszd != null" >
+        #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null" >
+        #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null" >
+        #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null" >
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null" >
+        #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null" >
+        #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null" >
+        #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null" >
+        #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ldbh != null" >
+        #{ldbh,jdbcType=VARCHAR},
+      </if>
+      <if test="ldmc != null" >
+        #{ldmc,jdbcType=VARCHAR},
+      </if>
+      <if test="cgld != null" >
+        #{cgld,jdbcType=VARCHAR},
+      </if>
+      <if test="cgsfzmc != null" >
+        #{cgsfzmc,jdbcType=VARCHAR},
+      </if>
+      <if test="cgcksjcl != null" >
+        #{cgcksjcl,jdbcType=VARCHAR},
+      </if>
+      <if test="cgcksj != null" >
+        #{cgcksj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cgckqksm != null" >
+        #{cgckqksm,jdbcType=VARCHAR},
+      </if>
+      <if test="cgcljg != null" >
+        #{cgcljg,jdbcType=VARCHAR},
+      </if>
+      <if test="cgsgcp != null" >
+        #{cgsgcp,jdbcType=VARCHAR},
+      </if>
+      <if test="cgtgsj != null" >
+        #{cgtgsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cgwhsk != null" >
+        #{cgwhsk,jdbcType=VARCHAR},
+      </if>
+      <if test="cgsgcljg != null" >
+        #{cgsgcljg,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.FxCgcl" >
+    update fx_cgcl
+    <set >
+      <if test="sszd != null" >
+        sszd = #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null" >
+        zdmc = #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null" >
+        zdzz = #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        zt = #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null" >
+        bz = #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null" >
+        sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null" >
+        lryxh = #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null" >
+        lrymc = #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null" >
+        lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ldbh != null" >
+        ldbh = #{ldbh,jdbcType=VARCHAR},
+      </if>
+      <if test="ldmc != null" >
+        ldmc = #{ldmc,jdbcType=VARCHAR},
+      </if>
+      <if test="cgld != null" >
+        cgld = #{cgld,jdbcType=VARCHAR},
+      </if>
+      <if test="cgsfzmc != null" >
+        cgsfzmc = #{cgsfzmc,jdbcType=VARCHAR},
+      </if>
+      <if test="cgcksjcl != null" >
+        cgcksjcl = #{cgcksjcl,jdbcType=VARCHAR},
+      </if>
+      <if test="cgcksj != null" >
+        cgcksj = #{cgcksj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cgckqksm != null" >
+        cgckqksm = #{cgckqksm,jdbcType=VARCHAR},
+      </if>
+      <if test="cgcljg != null" >
+        cgcljg = #{cgcljg,jdbcType=VARCHAR},
+      </if>
+      <if test="cgsgcp != null" >
+        cgsgcp = #{cgsgcp,jdbcType=VARCHAR},
+      </if>
+      <if test="cgtgsj != null" >
+        cgtgsj = #{cgtgsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cgwhsk != null" >
+        cgwhsk = #{cgwhsk,jdbcType=VARCHAR},
+      </if>
+      <if test="cgsgcljg != null" >
+        cgsgcljg = #{cgsgcljg,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.FxCgcl" >
+    update fx_cgcl
+    set sszd = #{sszd,jdbcType=VARCHAR},
+      zdmc = #{zdmc,jdbcType=VARCHAR},
+      zdzz = #{zdzz,jdbcType=VARCHAR},
+      zt = #{zt,jdbcType=INTEGER},
+      bz = #{bz,jdbcType=VARCHAR},
+      sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      lryxh = #{lryxh,jdbcType=VARCHAR},
+      lrymc = #{lrymc,jdbcType=VARCHAR},
+      lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      ldbh = #{ldbh,jdbcType=VARCHAR},
+      ldmc = #{ldmc,jdbcType=VARCHAR},
+      cgld = #{cgld,jdbcType=VARCHAR},
+      cgsfzmc = #{cgsfzmc,jdbcType=VARCHAR},
+      cgcksjcl = #{cgcksjcl,jdbcType=VARCHAR},
+      cgcksj = #{cgcksj,jdbcType=TIMESTAMP},
+      cgckqksm = #{cgckqksm,jdbcType=VARCHAR},
+      cgcljg = #{cgcljg,jdbcType=VARCHAR},
+      cgsgcp = #{cgsgcp,jdbcType=VARCHAR},
+      cgtgsj = #{cgtgsj,jdbcType=TIMESTAMP},
+      cgwhsk = #{cgwhsk,jdbcType=VARCHAR},
+      cgsgcljg = #{cgsgcljg,jdbcType=VARCHAR}
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  
+  
+   <!-- getCgclData -->
+  <select id="getCgclData" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fx_cgcl LEFT JOIN sys_department dept on sszd = dept.departmentid
+    <where>
+	   	<if test="lock !=null">and zt = #{lock} </if>
+	   	<if test="st!=null and et==null">and substring(sfrq,1,length(#{st}))&gt;=#{st}</if>
+	   	<if test="et!=null and st==null">and substring(sfrq,1,length(#{et}))&lt;=#{et}</if>
+	   	<if test="st!=null and et!=null">and substring(sfrq,1,length(#{st})) between #{st} and #{et}</if>
+	   	<if test="lrymc!=null">and lrymc like concat('%',#{lrymc},'%')</if>
+	   	<if test="zdzz!=null">and zdzz like concat('%',#{zdzz},'%')</if>
+	   	<if test="depts != null">and sszd in (${depts})</if>
+   	</where>
+   	<if test="order != null">order by ${order}</if>
+   	<if test="order == null">order by sfrq desc </if> 
+   		,dept.sortcode asc
+  </select>
+  <!-- getCanDel -->
+  <select id="getCanDel" parameterType="map" resultType="int">
+  	SELECT count(*) FROM fx_cgcl where zt = 1
+  	<if test="xh!=null">and xh!=#{xh}</if>
+ 
+  </select>
+</mapper>

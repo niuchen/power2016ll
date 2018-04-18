@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mapper.FxLskMapper" >
+  <resultMap id="BaseResultMap" type="com.power.common.entity.FxLsk" >
+    <id column="xh" property="xh" jdbcType="BIGINT" />
+    <result column="sszd" property="sszd" jdbcType="VARCHAR" />
+    <result column="zdmc" property="zdmc" jdbcType="VARCHAR" />
+    <result column="zdzz" property="zdzz" jdbcType="VARCHAR" />
+    <result column="zt" property="zt" jdbcType="INTEGER" />
+    <result column="bz" property="bz" jdbcType="VARCHAR" />
+    <result column="sfrq" property="sfrq" jdbcType="TIMESTAMP" />
+    <result column="lryxh" property="lryxh" jdbcType="VARCHAR" />
+    <result column="lrymc" property="lrymc" jdbcType="VARCHAR" />
+    <result column="lrsj" property="lrsj" jdbcType="TIMESTAMP" />
+    <result column="ldbh" property="ldbh" jdbcType="VARCHAR" />
+    <result column="ldmc" property="ldmc" jdbcType="VARCHAR" />
+     <result column="lskrq" property="lskrq" jdbcType="TIMESTAMP" />
+    <result column="lskszzdmc" property="lskszzdmc" jdbcType="VARCHAR" />
+    <result column="lskszsj" property="lskszsj" jdbcType="TIMESTAMP" />
+    <result column="lskthkh" property="lskthkh" jdbcType="VARCHAR" />
+    <result column="lskcx" property="lskcx" jdbcType="VARCHAR" />
+    <result column="lskcph" property="lskcph" jdbcType="VARCHAR" />
+    <result column="lskclzdmc" property="lskclzdmc" jdbcType="VARCHAR" />
+    <result column="lskclqksm" property="lskclqksm" jdbcType="VARCHAR" />
+    <result column="hmdthkh" property="hmdthkh" jdbcType="VARCHAR" />
+    <result column="hmdfksj" property="hmdfksj" jdbcType="TIMESTAMP" />
+    <result column="hmdkhh" property="hmdkhh" jdbcType="VARCHAR" />
+    <result column="hmdfkzm" property="hmdfkzm" jdbcType="VARCHAR" />
+    <result column="hmdfkygh" property="hmdfkygh" jdbcType="VARCHAR" />
+    <result column="hmdcx" property="hmdcx" jdbcType="VARCHAR" />
+    <result column="hmdffcx" property="hmdffcx" jdbcType="VARCHAR" />
+    <result column="hmdcp" property="hmdcp" jdbcType="VARCHAR" />
+    <result column="hmdsflr" property="hmdsflr" jdbcType="VARCHAR" />
+    <result column="cgld" property="cgld" jdbcType="VARCHAR" />
+    <result column="cgsfzmc" property="cgsfzmc" jdbcType="VARCHAR" />
+    <result column="cgcksjcl" property="cgcksjcl" jdbcType="VARCHAR" />
+    <result column="cgcksj" property="cgcksj" jdbcType="TIMESTAMP" />
+    <result column="cgckqksm" property="cgckqksm" jdbcType="VARCHAR" />
+    <result column="cgcljg" property="cgcljg" jdbcType="VARCHAR" />
+    <result column="cgsgcp" property="cgsgcp" jdbcType="VARCHAR" />
+    <result column="cgtgsj" property="cgtgsj" jdbcType="TIMESTAMP" />
+    <result column="cgwhsk" property="cgwhsk" jdbcType="VARCHAR" />
+    <result column="cgsgcljg" property="cgsgcljg" jdbcType="VARCHAR" />
+    <result column="zhrq" property="zhrq" jdbcType="TIMESTAMP" />
+    <result column="zhzdmc" property="zhzdmc" jdbcType="VARCHAR" />
+    <result column="zhthkh" property="zhthkh" jdbcType="VARCHAR" />
+    <result column="zhtxkzs" property="zhtxkzs" jdbcType="VARCHAR" />
+    <result column="zhcx" property="zhcx" jdbcType="VARCHAR" />
+    <result column="zhcph" property="zhcph" jdbcType="VARCHAR" />
+    <result column="zhbz" property="zhbz" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    xh, sszd, zdmc, zdzz, zt, bz, sfrq, lryxh, lrymc, lrsj, ldbh, ldmc,lskrq, lskszzdmc, lskszsj, 
+    lskthkh, lskcx, lskcph, lskclzdmc, lskclqksm, hmdthkh, hmdfksj, hmdkhh, hmdfkzm, 
+    hmdfkygh, hmdcx, hmdffcx, hmdcp, hmdsflr, cgld, cgsfzmc, cgcksjcl, cgcksj, cgckqksm, 
+    cgcljg, cgsgcp, cgtgsj, cgwhsk, cgsgcljg, zhrq, zhzdmc, zhthkh, zhtxkzs, zhcx, zhcph, 
+    zhbz
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from fx_lsk
+    where xh = #{xh,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from fx_lsk
+    where xh = #{xh,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.FxLsk" >
+   <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_lsk (sszd, zdmc, 
+      zdzz, zt, bz, sfrq, 
+      lryxh, lrymc, lrsj, 
+      ldbh, ldmc,lskrq, lskszzdmc, 
+      lskszsj, lskthkh, lskcx, 
+      lskcph, lskclzdmc, lskclqksm, 
+      hmdthkh, hmdfksj, hmdkhh, 
+      hmdfkzm, hmdfkygh, hmdcx, 
+      hmdffcx, hmdcp, hmdsflr, 
+      cgld, cgsfzmc, cgcksjcl, 
+      cgcksj, cgckqksm, cgcljg, 
+      cgsgcp, cgtgsj, cgwhsk, 
+      cgsgcljg, zhrq, zhzdmc, 
+      zhthkh, zhtxkzs, zhcx, 
+      zhcph, zhbz)
+    values (#{sszd,jdbcType=VARCHAR}, #{zdmc,jdbcType=VARCHAR}, 
+      #{zdzz,jdbcType=VARCHAR}, #{zt,jdbcType=INTEGER}, #{bz,jdbcType=VARCHAR}, #{sfrq,jdbcType=TIMESTAMP}, 
+      #{lryxh,jdbcType=VARCHAR}, #{lrymc,jdbcType=VARCHAR}, #{lrsj,jdbcType=TIMESTAMP}, 
+      #{ldbh,jdbcType=VARCHAR}, #{ldmc,jdbcType=VARCHAR}, #{lskrq,jdbcType=TIMESTAMP}, #{lskszzdmc,jdbcType=VARCHAR}, 
+      #{lskszsj,jdbcType=TIMESTAMP}, #{lskthkh,jdbcType=VARCHAR}, #{lskcx,jdbcType=VARCHAR}, 
+      #{lskcph,jdbcType=VARCHAR}, #{lskclzdmc,jdbcType=VARCHAR}, #{lskclqksm,jdbcType=VARCHAR}, 
+      #{hmdthkh,jdbcType=VARCHAR}, #{hmdfksj,jdbcType=TIMESTAMP}, #{hmdkhh,jdbcType=VARCHAR}, 
+      #{hmdfkzm,jdbcType=VARCHAR}, #{hmdfkygh,jdbcType=VARCHAR}, #{hmdcx,jdbcType=VARCHAR}, 
+      #{hmdffcx,jdbcType=VARCHAR}, #{hmdcp,jdbcType=VARCHAR}, #{hmdsflr,jdbcType=VARCHAR}, 
+      #{cgld,jdbcType=VARCHAR}, #{cgsfzmc,jdbcType=VARCHAR}, #{cgcksjcl,jdbcType=VARCHAR}, 
+      #{cgcksj,jdbcType=TIMESTAMP}, #{cgckqksm,jdbcType=VARCHAR}, #{cgcljg,jdbcType=VARCHAR}, 
+      #{cgsgcp,jdbcType=VARCHAR}, #{cgtgsj,jdbcType=TIMESTAMP}, #{cgwhsk,jdbcType=VARCHAR}, 
+      #{cgsgcljg,jdbcType=VARCHAR}, #{zhrq,jdbcType=TIMESTAMP}, #{zhzdmc,jdbcType=VARCHAR}, 
+      #{zhthkh,jdbcType=VARCHAR}, #{zhtxkzs,jdbcType=VARCHAR}, #{zhcx,jdbcType=VARCHAR}, 
+      #{zhcph,jdbcType=VARCHAR}, #{zhbz,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.FxLsk" >
+   <selectKey keyProperty="xh" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into fx_lsk
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="sszd != null" >
+        sszd,
+      </if>
+      <if test="zdmc != null" >
+        zdmc,
+      </if>
+      <if test="zdzz != null" >
+        zdzz,
+      </if>
+      <if test="zt != null" >
+        zt,
+      </if>
+      <if test="bz != null" >
+        bz,
+      </if>
+      <if test="sfrq != null" >
+        sfrq,
+      </if>
+      <if test="lryxh != null" >
+        lryxh,
+      </if>
+      <if test="lrymc != null" >
+        lrymc,
+      </if>
+      <if test="lrsj != null" >
+        lrsj,
+      </if>
+      <if test="ldbh != null" >
+        ldbh,
+      </if>
+      <if test="ldmc != null" >
+        ldmc,
+      </if>
+       <if test="lskrq != null" >
+        lskrq,
+      </if>
+      <if test="lskszzdmc != null" >
+        lskszzdmc,
+      </if>
+      <if test="lskszsj != null" >
+        lskszsj,
+      </if>
+      <if test="lskthkh != null" >
+        lskthkh,
+      </if>
+      <if test="lskcx != null" >
+        lskcx,
+      </if>
+      <if test="lskcph != null" >
+        lskcph,
+      </if>
+      <if test="lskclzdmc != null" >
+        lskclzdmc,
+      </if>
+      <if test="lskclqksm != null" >
+        lskclqksm,
+      </if>
+      <if test="hmdthkh != null" >
+        hmdthkh,
+      </if>
+      <if test="hmdfksj != null" >
+        hmdfksj,
+      </if>
+      <if test="hmdkhh != null" >
+        hmdkhh,
+      </if>
+      <if test="hmdfkzm != null" >
+        hmdfkzm,
+      </if>
+      <if test="hmdfkygh != null" >
+        hmdfkygh,
+      </if>
+      <if test="hmdcx != null" >
+        hmdcx,
+      </if>
+      <if test="hmdffcx != null" >
+        hmdffcx,
+      </if>
+      <if test="hmdcp != null" >
+        hmdcp,
+      </if>
+      <if test="hmdsflr != null" >
+        hmdsflr,
+      </if>
+      <if test="cgld != null" >
+        cgld,
+      </if>
+      <if test="cgsfzmc != null" >
+        cgsfzmc,
+      </if>
+      <if test="cgcksjcl != null" >
+        cgcksjcl,
+      </if>
+      <if test="cgcksj != null" >
+        cgcksj,
+      </if>
+      <if test="cgckqksm != null" >
+        cgckqksm,
+      </if>
+      <if test="cgcljg != null" >
+        cgcljg,
+      </if>
+      <if test="cgsgcp != null" >
+        cgsgcp,
+      </if>
+      <if test="cgtgsj != null" >
+        cgtgsj,
+      </if>
+      <if test="cgwhsk != null" >
+        cgwhsk,
+      </if>
+      <if test="cgsgcljg != null" >
+        cgsgcljg,
+      </if>
+      <if test="zhrq != null" >
+        zhrq,
+      </if>
+      <if test="zhzdmc != null" >
+        zhzdmc,
+      </if>
+      <if test="zhthkh != null" >
+        zhthkh,
+      </if>
+      <if test="zhtxkzs != null" >
+        zhtxkzs,
+      </if>
+      <if test="zhcx != null" >
+        zhcx,
+      </if>
+      <if test="zhcph != null" >
+        zhcph,
+      </if>
+      <if test="zhbz != null" >
+        zhbz,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="sszd != null" >
+        #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null" >
+        #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null" >
+        #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null" >
+        #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null" >
+        #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null" >
+        #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null" >
+        #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null" >
+        #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ldbh != null" >
+        #{ldbh,jdbcType=VARCHAR},
+      </if>
+      <if test="ldmc != null" >
+        #{ldmc,jdbcType=VARCHAR},
+      </if>
+       <if test="lskrq != null" >
+        #{lskrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lskszzdmc != null" >
+        #{lskszzdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="lskszsj != null" >
+        #{lskszsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lskthkh != null" >
+        #{lskthkh,jdbcType=VARCHAR},
+      </if>
+      <if test="lskcx != null" >
+        #{lskcx,jdbcType=VARCHAR},
+      </if>
+      <if test="lskcph != null" >
+        #{lskcph,jdbcType=VARCHAR},
+      </if>
+      <if test="lskclzdmc != null" >
+        #{lskclzdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="lskclqksm != null" >
+        #{lskclqksm,jdbcType=VARCHAR},
+      </if>
+      <if test="hmdthkh != null" >
+        #{hmdthkh,jdbcType=VARCHAR},
+      </if>
+      <if test="hmdfksj != null" >
+        #{hmdfksj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hmdkhh != null" >
+        #{hmdkhh,jdbcType=VARCHAR},
+      </if>
+      <if test="hmdfkzm != null" >
+        #{hmdfkzm,jdbcType=VARCHAR},
+      </if>
+      <if test="hmdfkygh != null" >
+        #{hmdfkygh,jdbcType=VARCHAR},
+      </if>
+      <if test="hmdcx != null" >
+        #{hmdcx,jdbcType=VARCHAR},
+      </if>
+      <if test="hmdffcx != null" >
+        #{hmdffcx,jdbcType=VARCHAR},
+      </if>
+      <if test="hmdcp != null" >
+        #{hmdcp,jdbcType=VARCHAR},
+      </if>
+      <if test="hmdsflr != null" >
+        #{hmdsflr,jdbcType=VARCHAR},
+      </if>
+      <if test="cgld != null" >
+        #{cgld,jdbcType=VARCHAR},
+      </if>
+      <if test="cgsfzmc != null" >
+        #{cgsfzmc,jdbcType=VARCHAR},
+      </if>
+      <if test="cgcksjcl != null" >
+        #{cgcksjcl,jdbcType=VARCHAR},
+      </if>
+      <if test="cgcksj != null" >
+        #{cgcksj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cgckqksm != null" >
+        #{cgckqksm,jdbcType=VARCHAR},
+      </if>
+      <if test="cgcljg != null" >
+        #{cgcljg,jdbcType=VARCHAR},
+      </if>
+      <if test="cgsgcp != null" >
+        #{cgsgcp,jdbcType=VARCHAR},
+      </if>
+      <if test="cgtgsj != null" >
+        #{cgtgsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cgwhsk != null" >
+        #{cgwhsk,jdbcType=VARCHAR},
+      </if>
+      <if test="cgsgcljg != null" >
+        #{cgsgcljg,jdbcType=VARCHAR},
+      </if>
+      <if test="zhrq != null" >
+        #{zhrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zhzdmc != null" >
+        #{zhzdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zhthkh != null" >
+        #{zhthkh,jdbcType=VARCHAR},
+      </if>
+      <if test="zhtxkzs != null" >
+        #{zhtxkzs,jdbcType=VARCHAR},
+      </if>
+      <if test="zhcx != null" >
+        #{zhcx,jdbcType=VARCHAR},
+      </if>
+      <if test="zhcph != null" >
+        #{zhcph,jdbcType=VARCHAR},
+      </if>
+      <if test="zhbz != null" >
+        #{zhbz,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.FxLsk" >
+    update fx_lsk
+    <set >
+      <if test="sszd != null" >
+        sszd = #{sszd,jdbcType=VARCHAR},
+      </if>
+      <if test="zdmc != null" >
+        zdmc = #{zdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zdzz != null" >
+        zdzz = #{zdzz,jdbcType=VARCHAR},
+      </if>
+      <if test="zt != null" >
+        zt = #{zt,jdbcType=INTEGER},
+      </if>
+      <if test="bz != null" >
+        bz = #{bz,jdbcType=VARCHAR},
+      </if>
+      <if test="sfrq != null" >
+        sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lryxh != null" >
+        lryxh = #{lryxh,jdbcType=VARCHAR},
+      </if>
+      <if test="lrymc != null" >
+        lrymc = #{lrymc,jdbcType=VARCHAR},
+      </if>
+      <if test="lrsj != null" >
+        lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ldbh != null" >
+        ldbh = #{ldbh,jdbcType=VARCHAR},
+      </if>
+      <if test="ldmc != null" >
+        ldmc = #{ldmc,jdbcType=VARCHAR},
+      </if>
+      <if test="lskrq != null" >
+        lskrq = #{lskrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lskszzdmc != null" >
+        lskszzdmc = #{lskszzdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="lskszsj != null" >
+        lskszsj = #{lskszsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lskthkh != null" >
+        lskthkh = #{lskthkh,jdbcType=VARCHAR},
+      </if>
+      <if test="lskcx != null" >
+        lskcx = #{lskcx,jdbcType=VARCHAR},
+      </if>
+      <if test="lskcph != null" >
+        lskcph = #{lskcph,jdbcType=VARCHAR},
+      </if>
+      <if test="lskclzdmc != null" >
+        lskclzdmc = #{lskclzdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="lskclqksm != null" >
+        lskclqksm = #{lskclqksm,jdbcType=VARCHAR},
+      </if>
+      <if test="hmdthkh != null" >
+        hmdthkh = #{hmdthkh,jdbcType=VARCHAR},
+      </if>
+      <if test="hmdfksj != null" >
+        hmdfksj = #{hmdfksj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="hmdkhh != null" >
+        hmdkhh = #{hmdkhh,jdbcType=VARCHAR},
+      </if>
+      <if test="hmdfkzm != null" >
+        hmdfkzm = #{hmdfkzm,jdbcType=VARCHAR},
+      </if>
+      <if test="hmdfkygh != null" >
+        hmdfkygh = #{hmdfkygh,jdbcType=VARCHAR},
+      </if>
+      <if test="hmdcx != null" >
+        hmdcx = #{hmdcx,jdbcType=VARCHAR},
+      </if>
+      <if test="hmdffcx != null" >
+        hmdffcx = #{hmdffcx,jdbcType=VARCHAR},
+      </if>
+      <if test="hmdcp != null" >
+        hmdcp = #{hmdcp,jdbcType=VARCHAR},
+      </if>
+      <if test="hmdsflr != null" >
+        hmdsflr = #{hmdsflr,jdbcType=VARCHAR},
+      </if>
+      <if test="cgld != null" >
+        cgld = #{cgld,jdbcType=VARCHAR},
+      </if>
+      <if test="cgsfzmc != null" >
+        cgsfzmc = #{cgsfzmc,jdbcType=VARCHAR},
+      </if>
+      <if test="cgcksjcl != null" >
+        cgcksjcl = #{cgcksjcl,jdbcType=VARCHAR},
+      </if>
+      <if test="cgcksj != null" >
+        cgcksj = #{cgcksj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cgckqksm != null" >
+        cgckqksm = #{cgckqksm,jdbcType=VARCHAR},
+      </if>
+      <if test="cgcljg != null" >
+        cgcljg = #{cgcljg,jdbcType=VARCHAR},
+      </if>
+      <if test="cgsgcp != null" >
+        cgsgcp = #{cgsgcp,jdbcType=VARCHAR},
+      </if>
+      <if test="cgtgsj != null" >
+        cgtgsj = #{cgtgsj,jdbcType=TIMESTAMP},
+      </if>
+      <if test="cgwhsk != null" >
+        cgwhsk = #{cgwhsk,jdbcType=VARCHAR},
+      </if>
+      <if test="cgsgcljg != null" >
+        cgsgcljg = #{cgsgcljg,jdbcType=VARCHAR},
+      </if>
+      <if test="zhrq != null" >
+        zhrq = #{zhrq,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zhzdmc != null" >
+        zhzdmc = #{zhzdmc,jdbcType=VARCHAR},
+      </if>
+      <if test="zhthkh != null" >
+        zhthkh = #{zhthkh,jdbcType=VARCHAR},
+      </if>
+      <if test="zhtxkzs != null" >
+        zhtxkzs = #{zhtxkzs,jdbcType=VARCHAR},
+      </if>
+      <if test="zhcx != null" >
+        zhcx = #{zhcx,jdbcType=VARCHAR},
+      </if>
+      <if test="zhcph != null" >
+        zhcph = #{zhcph,jdbcType=VARCHAR},
+      </if>
+      <if test="zhbz != null" >
+        zhbz = #{zhbz,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.FxLsk" >
+    update fx_lsk
+    set sszd = #{sszd,jdbcType=VARCHAR},
+      zdmc = #{zdmc,jdbcType=VARCHAR},
+      zdzz = #{zdzz,jdbcType=VARCHAR},
+      zt = #{zt,jdbcType=INTEGER},
+      bz = #{bz,jdbcType=VARCHAR},
+      sfrq = #{sfrq,jdbcType=TIMESTAMP},
+      lryxh = #{lryxh,jdbcType=VARCHAR},
+      lrymc = #{lrymc,jdbcType=VARCHAR},
+      lrsj = #{lrsj,jdbcType=TIMESTAMP},
+      ldbh = #{ldbh,jdbcType=VARCHAR},
+      ldmc = #{ldmc,jdbcType=VARCHAR},
+      lskrq = #{lskrq,jdbcType=TIMESTAMP},
+      lskszzdmc = #{lskszzdmc,jdbcType=VARCHAR},
+      lskszsj = #{lskszsj,jdbcType=TIMESTAMP},
+      lskthkh = #{lskthkh,jdbcType=VARCHAR},
+      lskcx = #{lskcx,jdbcType=VARCHAR},
+      lskcph = #{lskcph,jdbcType=VARCHAR},
+      lskclzdmc = #{lskclzdmc,jdbcType=VARCHAR},
+      lskclqksm = #{lskclqksm,jdbcType=VARCHAR},
+      hmdthkh = #{hmdthkh,jdbcType=VARCHAR},
+      hmdfksj = #{hmdfksj,jdbcType=TIMESTAMP},
+      hmdkhh = #{hmdkhh,jdbcType=VARCHAR},
+      hmdfkzm = #{hmdfkzm,jdbcType=VARCHAR},
+      hmdfkygh = #{hmdfkygh,jdbcType=VARCHAR},
+      hmdcx = #{hmdcx,jdbcType=VARCHAR},
+      hmdffcx = #{hmdffcx,jdbcType=VARCHAR},
+      hmdcp = #{hmdcp,jdbcType=VARCHAR},
+      hmdsflr = #{hmdsflr,jdbcType=VARCHAR},
+      cgld = #{cgld,jdbcType=VARCHAR},
+      cgsfzmc = #{cgsfzmc,jdbcType=VARCHAR},
+      cgcksjcl = #{cgcksjcl,jdbcType=VARCHAR},
+      cgcksj = #{cgcksj,jdbcType=TIMESTAMP},
+      cgckqksm = #{cgckqksm,jdbcType=VARCHAR},
+      cgcljg = #{cgcljg,jdbcType=VARCHAR},
+      cgsgcp = #{cgsgcp,jdbcType=VARCHAR},
+      cgtgsj = #{cgtgsj,jdbcType=TIMESTAMP},
+      cgwhsk = #{cgwhsk,jdbcType=VARCHAR},
+      cgsgcljg = #{cgsgcljg,jdbcType=VARCHAR},
+      zhrq = #{zhrq,jdbcType=TIMESTAMP},
+      zhzdmc = #{zhzdmc,jdbcType=VARCHAR},
+      zhthkh = #{zhthkh,jdbcType=VARCHAR},
+      zhtxkzs = #{zhtxkzs,jdbcType=VARCHAR},
+      zhcx = #{zhcx,jdbcType=VARCHAR},
+      zhcph = #{zhcph,jdbcType=VARCHAR},
+      zhbz = #{zhbz,jdbcType=VARCHAR}
+    where xh = #{xh,jdbcType=BIGINT}
+  </update>
+  
+  <!-- getLskData -->
+  <select id="getLskData" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fx_lsk LEFT JOIN sys_department dept on sszd = dept.departmentid
+    <where>
+	   	<if test="lock !=null">and zt = #{lock} </if>
+	   	<if test="st!=null and et==null">and substring(sfrq,1,length(#{st}))&gt;=#{st}</if>
+	   	<if test="et!=null and st==null">and substring(sfrq,1,length(#{et}))&lt;=#{et}</if>
+	   	<if test="st!=null and et!=null">and substring(sfrq,1,length(#{st})) between #{st} and #{et}</if>
+	   	<if test="lrymc!=null">and lrymc like concat('%',#{lrymc},'%')</if>
+	   	<if test="zdzz!=null">and zdzz like concat('%',#{zdzz},'%')</if>
+	   	<if test="depts != null">and sszd in (${depts})</if>
+   	</where>
+   	<if test="order != null">order by ${order}</if>
+   	<if test="order == null">order by sfrq desc </if> 
+   		,dept.sortcode asc
+  </select>
+  <!-- getCanDel -->
+  <select id="getCanDel" parameterType="map" resultType="int">
+  	SELECT count(*) FROM fx_lsk where zt = 1
+  	<if test="sfrq!=null">and substring(sfrq,1,length(#{sfrq}))=#{sfrq}</if>
+  	<if test="xh!=null">and xh!=#{xh}</if>
+  	<if test="sszd!=null">and sszd = #{sszd}</if>
+  </select>
+</mapper>

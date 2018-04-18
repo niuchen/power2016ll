@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.SysAuthorizeMapper">
+  <resultMap id="BaseResultMap" type="com.power.common.entity.SysAuthorize">
+    <id column="category" jdbcType="INTEGER" property="category" />
+    <id column="objectid" jdbcType="VARCHAR" property="objectid" />
+    <id column="itemtype" jdbcType="INTEGER" property="itemtype" />
+    <id column="itemid" jdbcType="VARCHAR" property="itemid" />
+    <result column="createdate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="createuserid" jdbcType="VARCHAR" property="createuserid" />
+    <result column="createusername" jdbcType="VARCHAR" property="createusername" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    category, objectid, itemtype, itemid, createdate, createuserid, createusername
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="com.power.common.entity.SysAuthorizeKey" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_authorize
+    where category = #{category,jdbcType=INTEGER}
+      and objectid = #{objectid,jdbcType=VARCHAR}
+      and itemtype = #{itemtype,jdbcType=INTEGER}
+      and itemid = #{itemid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.power.common.entity.SysAuthorizeKey">
+    delete from sys_authorize
+    where category = #{category,jdbcType=INTEGER}
+      and objectid = #{objectid,jdbcType=VARCHAR}
+      and itemtype = #{itemtype,jdbcType=INTEGER}
+      and itemid = #{itemid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.SysAuthorize">
+    insert into sys_authorize (category, objectid, itemtype, 
+      itemid, createdate, createuserid, 
+      createusername)
+    values (#{category,jdbcType=INTEGER}, #{objectid,jdbcType=VARCHAR}, #{itemtype,jdbcType=INTEGER}, 
+      #{itemid,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, #{createuserid,jdbcType=VARCHAR}, 
+      #{createusername,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.SysAuthorize">
+    insert into sys_authorize
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="category != null">
+        category,
+      </if>
+      <if test="objectid != null">
+        objectid,
+      </if>
+      <if test="itemtype != null">
+        itemtype,
+      </if>
+      <if test="itemid != null">
+        itemid,
+      </if>
+      <if test="createdate != null">
+        createdate,
+      </if>
+      <if test="createuserid != null">
+        createuserid,
+      </if>
+      <if test="createusername != null">
+        createusername,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="category != null">
+        #{category,jdbcType=INTEGER},
+      </if>
+      <if test="objectid != null">
+        #{objectid,jdbcType=VARCHAR},
+      </if>
+      <if test="itemtype != null">
+        #{itemtype,jdbcType=INTEGER},
+      </if>
+      <if test="itemid != null">
+        #{itemid,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuserid != null">
+        #{createuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="createusername != null">
+        #{createusername,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.SysAuthorize">
+    update sys_authorize
+    <set>
+      <if test="createdate != null">
+        createdate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuserid != null">
+        createuserid = #{createuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="createusername != null">
+        createusername = #{createusername,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where category = #{category,jdbcType=INTEGER}
+      and objectid = #{objectid,jdbcType=VARCHAR}
+      and itemtype = #{itemtype,jdbcType=INTEGER}
+      and itemid = #{itemid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.SysAuthorize">
+    update sys_authorize
+    set createdate = #{createdate,jdbcType=TIMESTAMP},
+      createuserid = #{createuserid,jdbcType=VARCHAR},
+      createusername = #{createusername,jdbcType=VARCHAR}
+    where category = #{category,jdbcType=INTEGER}
+      and objectid = #{objectid,jdbcType=VARCHAR}
+      and itemtype = #{itemtype,jdbcType=INTEGER}
+      and itemid = #{itemid,jdbcType=VARCHAR}
+  </update>
+  
+  
+  <!-- 删除权限关系 -->
+  <delete id="delAuthorizeByObjId" parameterType="map">
+    delete from sys_authorize
+    where category = #{category,jdbcType=INTEGER}
+      and objectid = #{objectid,jdbcType=VARCHAR}
+  </delete>
+  <!-- getModuleBtnAuth 模块与权限关联 -->
+    <select id="getModuleBtnAuth" parameterType="map" resultType="com.power.common.entity.SysModuleButton">
+    select IFNULL(t2.category,0) as checked,t1.buttonid,t1.moduleid,parentid,fullname,icon from sys_modulebutton t1 
+    LEFT JOIN sys_authorize t2 on (t1.buttonid=t2.itemid and t2.category=#{category} and t2.itemtype=#{itemtypeBtn} and t2.objectid=#{objectid})
+	ORDER BY t1.sortcode
+  </select>
+  <!-- getModuleAuth 模块与权限关联 -->
+    <select id="getModuleAuth" parameterType="map" resultType="com.power.common.entity.SysModule">
+    select IFNULL(t2.category,0) as ispublic,t1.moduleid,parentid,fullname,icon from sys_module t1 
+    LEFT JOIN sys_authorize t2 on (t1.moduleid=t2.itemid and t2.category=#{category} and t2.itemtype=#{itemtypeModule} and t2.objectid=#{objectid})
+	ORDER BY t1.sortcode
+  </select>
+  
+  
+   <!-- login  -->
+  <select id="getAuthUserByLoginName" parameterType="string" resultType="com.power.base.sys.entity.AuthUserVO">
+	SELECT t3.organizeid as orgId,t3.fullname as orgName,t2.departmentid as deptId,t2.fullname as deptName,t1.userid as uid,t3.nature as enabledmark,
+	t1.account as loginName,t1.realName,password as pwd
+	,t1.headicon as icon, t1.quickquery as sign
+	FROM sys_user t1 LEFT JOIN sys_department t2 ON t1.departmentid = t2.departmentid 
+	LEFT JOIN sys_organize t3 ON t1.organizeid = t3.organizeid 
+	WHERE t1.deletemark=0 and t1.account =#{value}
+  </select>
+  
+   <!--查询资源-角色和权限 -->
+  <resultMap id="PrivilegeResultMap" type="com.power.base.sys.entity.PrivilegeVO">
+    <result column="url" property="url" jdbcType="VARCHAR"/>
+    <collection property="roles" javaType="java.util.ArrayList" ofType="java.lang.String">
+      <result column="roles"/>
+    </collection>
+    <collection property="perms" javaType="java.util.ArrayList" ofType="java.lang.String">
+      <result column="perms"/>
+    </collection>
+  </resultMap>
+  <!-- 获取所有权限信息 -->
+  <select id="getAllRoleAndPerms" resultMap="PrivilegeResultMap">
+  	SELECT t1.urladdress as url,t3.`code` as roles,t1.`code` as perms from sys_module t1 
+	LEFT JOIN sys_authorize t2 ON(t1.moduleid=t2.itemid and t2.itemtype=1)
+	LEFT JOIN sys_role t3 ON(t2.category!=6 and t2.objectid = t3.roleid)
+	where length(t1.urladdress)>0
+	UNION
+	SELECT t1.actionaddress as url,t4.`code` as roles,concat(t3.`code`,'_',t1.`code`) as perms  from sys_modulebutton t1 INNER JOIN sys_module t3 
+	LEFT JOIN sys_authorize t2 ON(t1.moduleid=t2.itemid and t2.itemtype=2)
+	LEFT JOIN sys_role t4 ON(t2.category!=6 and t2.objectid = t4.roleid)
+	where length(t1.actionaddress)>0
+	and t1.moduleid = t3.moduleid
+  </select>
+  <!--  -->
+	<select id="getRolesAndPerms" parameterType="map" resultMap="PrivilegeResultMap">
+	SELECT t2.urladdress as url,NULL as roles,t2.`code` as perms  from sys_authorize t1,sys_module t2
+	where t1.category=6
+	and length(t2.urladdress)>0
+	and t1.itemtype=1
+	and t1.itemid= t2.moduleid 
+	<if test="userid!=null">and t1.objectid=#{userid}</if>
+	UNION
+	SELECT t2.actionaddress as url,NULL as roles,concat(t3.`code`,'_',t2.`code`) as perms from sys_authorize t1,sys_modulebutton t2,sys_module t3
+	where t1.category=6
+	and length(t2.actionaddress)>0
+	and t1.itemtype=2
+	and t1.itemid = t2.buttonid
+	and t2.moduleid = t3.moduleid
+	<if test="userid!=null">and t1.objectid=#{userid}</if>
+	UNION
+	SELECT t2.urladdress as url,t3.`code` as roles,t2.`code` as perms  from sys_userrelation t0,sys_authorize t1,sys_module t2,sys_role t3
+	where t1.category=t0.category 
+	and t1.itemtype=1
+	and t1.itemid= t2.moduleid 
+	and length(t2.urladdress)>0
+	and t1.objectid = t3.roleid
+	<if test="userid!=null">and t0.userid=#{userid}</if>
+	UNION
+	SELECT t2.actionaddress as url,t3.`code` as roles,concat(t4.`code`,'_',t2.`code`) as perms  from sys_userrelation t0,sys_authorize t1,sys_modulebutton t2,sys_role t3,sys_module t4
+	where t1.category=t0.category  
+	and t1.itemtype=2
+	and t1.itemid = t2.buttonid
+	and length(t2.actionaddress)>0
+	and t1.objectid = t3.roleid
+	and t2.moduleid = t4.moduleid
+	<if test="userid!=null">and t0.userid=#{userid}</if>
+	</select>
+</mapper>

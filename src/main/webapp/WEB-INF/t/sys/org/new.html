@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>机构管理</title>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.extension.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+    <script src="${ctx.contextPath}/res/datepicker/WdatePicker.js"></script>
+    <link href="${ctx.contextPath}/res/wdTree/tree.css" rel="stylesheet"/>
+	<script src="${ctx.contextPath}/res/wdTree/tree.js"></script>
+	<link href="${ctx.contextPath}/res/wizard/wizard.css" rel="stylesheet"/>
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet"/>
+	<script src="${ctx.contextPath}/res/ui/validator.js"></script>
+	<script src="${ctx.contextPath}/res/wizard/wizard.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+
+	<script type="text/javascript" src="${ctx.contextPath}/res/ui/PCASClass.js"></script>
+
+</head>
+<body>
+    <form id="form1">
+<div style="margin-left: 10px; margin-top: 20px; margin-right: 30px;">
+    <table class="form">
+            <input id="organizeid" type="hidden" />
+        <tr>
+            <th class="formTitle">机构名称<font face="宋体">*</font></th>
+            <td class="formValue">
+                <input id="fullname" type="text" onblur="" class="form-control" isvalid="yes" checkexpession="NotNull" />
+            </td>
+            <th class="formTitle">机构性质<font face="宋体">*</font></th>
+            <td class="formValue">
+                <div id="nature" type="select" class="ui-select" isvalid="yes" checkexpession="NotNull"></div>
+            </td>
+        </tr>
+        <tr>
+            <!--  <th class="formTitle">公司分类<font face="宋体">*</font></th>
+            <td class="formValue">
+                <input id="category" type="text" onblur="" class="form-control" isvalid="yes" checkexpession="NotNull"/>
+            </td>-->
+            <th class="formTitle">外文名称<font face="宋体">*</font></th>
+            <td class="formValue">
+                <input id="shortname" type="text" onblur="" class="form-control" isvalid="yes" checkexpession="NotNull"/>
+            </td>
+            <th class="formTitle">机构官网</th>
+            <td class="formValue">
+                <input id="webaddress" type="text" class="form-control" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">上级机构</th>
+            <td class="formValue">
+               <div id="parentid" type="selectTree" class="ui-select">
+                </div>
+            </td>
+            <th class="formTitle">成立时间</th>
+            <td class="formValue">
+                <input id="foundedtime" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker()" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">负责人</th>
+            <td class="formValue">
+                <div id="manager" type="selectTree" class="ui-select"></div>
+                
+            </td>
+            <th class="formTitle">电话</th>
+            <td class="formValue">
+                <input id="outerphone" type="text" class="form-control" />
+            </td>
+
+        </tr>
+        <tr>
+            <th class="formTitle">电子邮箱</th>
+            <td class="formValue">
+                <input id="email" type="text" class="form-control" />
+            </td>
+            <th class="formTitle">传真</th>
+            <td class="formValue">
+                <input id="fax" type="text" class="form-control" />
+            </td>
+        </tr>
+
+        <tr>
+            <th class="formTitle">机构地点</th>
+            <td class="formValue" colspan="3">
+              <div style="float: left; width:320px;">
+               <select id="province" name="province" style="width:95px;"></select>
+        	   <select id="city" name="city" style="width:95px;"></select>
+       		   <select id="county" name="county" style="width:95px;"></select>
+       		   </div>
+       		   <div style="float: left; width: 290px;">
+                    <input id="address" type="text" class="form-control" style="" />
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle">邮编</th>
+            <td class="formValue">
+                <input id="postalcode" type="text" class="form-control" />
+            </td>
+        </tr>
+        <tr>
+            <th class="formTitle" valign="top" style="padding-top: 4px;">备注
+            </th>
+            <td class="formValue" colspan="3">
+                <textarea id="description" class="form-control" style="height: 70px;"></textarea>
+            </td>
+        </tr>
+    </table>
+</div>
+    </form>
+    
+<script>
+    var keyValue = request('keyValue');
+    var parentId = request('parentId');
+    $(function () {
+        initControl();
+    })
+    //初始化控件
+    function initControl() {
+        //上级公司
+        $("#parentid").ComboBoxTree({
+            url: "${ctx.contextPath}/sys/org/orgTree",
+            description: "==请选择==",
+            allowSearch: true
+        });
+        
+        //负责人
+        $("#manager").ComboBoxTree({
+            url: "${ctx.contextPath}/sys/org/zrrTree",
+            description: "==请选择==",
+            allowSearch: true
+        });
+        //公司性质
+        $("#nature").ComboBox({
+            url: "${ctx.contextPath}/sys/dict/getDictItem",
+            param: {classId: "102" },
+            id: "id",
+            text: "name",
+            description: "==请选择==",
+            height: "200px"
+        }); 
+        //获取表单
+        if (!!keyValue) {
+            $.SetForm({
+                url: "${ctx.contextPath}/sys/org/getFormJson",
+                param: { keyValue: keyValue },
+                success: function (data) {
+                    $("#form1").SetWebControls(data);
+                    if(data.foundedtime){
+                    	$("#foundedtime").val(formatDate(new Date(data.foundedtime), "yyyy-MM-dd"));
+                    	}
+					if(!!data.county){
+						new PCAS("province="+data.province+",请选择省份","city="+data.city+",请选择城市","county="+data.county+",请选择地区");
+					}else{
+						if(!!data.city){
+							new PCAS("province="+data.province+",请选择省份","city="+data.city+",请选择城市","county,请选择地区");
+						}else{
+                   if(!!data.province){
+								new PCAS("province="+data.province+",请选择省份","city,请选择城市","county,请选择地区");
+                   }else{
+								new PCAS("province,请选择省份","city,请选择城市","county,请选择地区");
+                   }
+                   }
+                   }
+                }
+            });
+        } else {
+        	new PCAS("province,请选择省份","city,请选择城市","county,请选择地区");
+            $("#parentid").ComboBoxTreeSetValue(parentId);
+        }
+    }
+    //保存表单
+    function AcceptClick() {
+        if (!$('#form1').Validform()) {
+            return false;
+        }
+        var postData = $("#form1").GetWebControls(keyValue);
+        //postData["manager"] = $("#manager").attr('data-text');
+        if (postData["parentid"] == "") {
+            postData["parentid"] = 0;
+        }
+        $.SaveForm({
+            url: "${ctx.contextPath}/sys/org/OrgSub",
+            param: postData,
+            loading: "正在保存数据...",
+            success: function () {
+                $.currentIframe().$("#gridTable").resetSelection();
+                $.currentIframe().$("#gridTable").trigger("reloadGrid");
+            }
+        })
+    }
+</script>
+    
+</body>
+</html>

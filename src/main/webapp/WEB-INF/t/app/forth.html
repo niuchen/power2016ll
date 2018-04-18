@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html><head>
+<meta name="viewport" content="width=device-width">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>高速智能分析系统</title>
+<link href="${ctx.contextPath}/res/app/css.css" rel="stylesheet" type="text/css" />
+<link href="${ctx.contextPath}/res/swiper/css/swiper.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="${ctx.contextPath}/res/app/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/swiper/js/swiper.min.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/fastclick/fastclick.js"></script>
+<style type="text/css">
+table{border-collapse:collapse; border-spacing:0; border-left:1px solid #add9c0; border-top:1px solid #add9c0; }
+td{border-right:1px solid #add9c0; border-bottom:1px solid #add9c0;padding:3px 15px;  text-align:left; color:#add9c0;}
+input{margin-top:12px;line-height:20px;}
+</style>
+</head>
+<body style="background-color:#426586;width:auto;">
+<div class="htmleaf-container">
+	<div class="htmleaf-content bgcolor-3">
+		<div id="Main-Content">
+			<div class="Container">
+				<!-- Flipster List -->
+				<div class="swiper-container">
+					<ul class="swiper-wrapper">
+						<li class="swiper-slide" id="news_list">
+	<div class="mainqp"  style="min-height:410px;">
+	<div class="bt">特情</div>
+	<div class="my1" style="margin-top: 0px;">
+<#if sjList?? && sjList?size&gt;0>
+<dl class="newslist">
+	<#list sjList as info>
+		<dd><div class="sfmo">
+			<a href="${ctx.contextPath}/app/tqsjMx?token=${token}&xh=${info.xh}">
+				<div class="sfzmc">${info.lrsj?string('yyyy-MM-dd')}[${info.zdmc}]</div>
+				<div class="money"><#if info.bt?length&gt;8>${info.bt?substring(0,8)}...<#else>${info.bt}</#if></div>
+			</a>
+		</div></dd>
+	</#list>
+</dl>
+<#else>
+<dl style="height:150px;margin-top:100px;color:#ffffff;text-align: center;">暂无数据</dl>
+</#if>
+	</div>
+	</div>
+						</li>
+<#if deptId??>
+<li class="swiper-slide">
+	<div class="mainqp" style="min-heigh:360px;">
+		<div class="bt">特情上报</div>
+		<div style="font-size: 14px; color: #fff; text-align: left; margin-top: 5px; margin-left: 20px;">
+			特情标题 <input type="text" placeholder="标题" id="bt" style="width: 215px;"/>
+		</div>
+		<div style="font-size: 14px; color: #fff; text-align: left; margin-top: 5px; margin-left: 20px;">
+			特情内容 <textarea rows="13" cols="37" id="nr" ></textarea>
+		</div>
+		<div style="font-size: 16px; color: #fff; margin-left: 18px;" class="widget_wrap">
+			<a class="on" style="text-align: center;" onclick="newTqsj();"><label>确定</label></a>
+		</div>
+	</div>
+</li><!-- 数据上报 --></#if>
+						<li class="swiper-slide">
+							<div class="mainqp" id="conctor_list">
+<div class="bt">通讯录</div>
+<div >
+   <div class="my1" style="margin-top: 2px;min-height: 360px;" >
+	<div style="margin-top: 0px; height: 100%;">
+		<table style="front-size: 10px;">
+			<tr>
+				<td>中心/站点</td>
+				<td>姓名</td>
+				<td>手机</td>
+			</tr>
+<#list users as u><tr><td>${u.deptName}</td><td>${u.realName}</td><td>${u.loginName}</td></tr></#list>
+		</table>
+	</div>
+	</div>
+</div
+							</div>
+						</li>
+					</ul>
+					<div class="swiper-button-next swiper-button-white" style="top: 30%;"></div>
+					<div class="swiper-button-prev swiper-button-white" style="top: 30%;"></div>
+				</div>
+				<!-- End Flipster List -->
+			</div>
+		</div>
+	</div>
+</div>
+    <!-- end #mainContent -->
+<input type="hidden" id="token"/>
+<!-- begin #footer -->
+<#include "/WEB-INF/t/app/footer.html"/>
+<!-- end #footer -->
+<script type="text/javascript">
+window.addEventListener('load', function() {FastClick.attach(document.body);}, false);
+$(document).ready(function(){//init
+	var swiper = new Swiper('#Main-Content .swiper-container',{
+		   loop : true,
+		   nextButton: '.swiper-button-next',
+	       prevButton: '.swiper-button-prev',
+	       onTransitionEnd: function(swiper){}
+	});
+});
+newTqsj=function(){
+	var token = $("#token").val();
+	if(token) {
+		var title =  $("#bt").val();
+		var content =  $("#nr").val();
+		if(title=="") {
+			alert("请输入标题");
+			return;
+		}
+		if(content=="") {
+			alert("请输入内容");
+			return;
+		}
+		var data = {token:token,bt:title,nr:content};
+		console.log(data);
+		$.post("${ctx.contextPath}/app/addTqsj",data,function(re){
+			if(re.success){
+				alert("发布成功");
+				var url = $(".foot .btn:eq(3)").find("a").attr("href");
+				window.location.href = url;
+			}
+		});
+	}
+}
+</script>
+
+</body>
+</html>

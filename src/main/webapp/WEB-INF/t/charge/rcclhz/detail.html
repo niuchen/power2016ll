@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>日常数据上报</title>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet">
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.extension.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet"/>
+	<script src="${ctx.contextPath}/res/ui/validator.js"></script>
+	<script src="${ctx.contextPath}/res/datepicker/WdatePicker.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+	<style type="text/css">
+	.tdTitle {
+	    position: relative;
+	    left: 0px;
+	    text-align: right;
+	    white-space: nowrap;
+	    font-weight: normal;
+	    width: 180px;
+	    padding-right: 10px;
+	}
+	.numberTxt{
+		border:none;
+		border:1px;
+		text-align:right;
+		border-bottom-style:solid;
+		font-weight: bold;
+		font-size: 16px;
+		color:blue;
+		padding-right: 5px;
+	}
+	.moneyTxt{
+		border:none;
+		border:1px;
+		text-align:right;
+		border-bottom-style:solid;
+		font-weight: bold;
+		font-size: 16px;
+		color:red;
+		padding-right: 5px;
+	}
+	.total{
+		text-align:right;
+		font-size: 14px;
+	}
+	</style>
+</head>
+<body>
+    <form id="form1">
+<div style="margin-left: 10px; margin-right: 10px;">
+    <div class="tab-content" style="padding-top: 10px;">
+    <input id="xh" name="xh" type="hidden" value=""/>
+            <table class="form">
+            	
+        <tr height="5px">
+                    <td class="formTitle">所属站点<font face="宋体">*</font></td>
+                    <td class="formValue">
+                    	<span style="font-weight: bold;font-size: 14px;color: green;">${user.deptName} </span>
+                        <input id="sszd" type="hidden" value="${user.deptId}"/>
+                        <input id="zdmc" type="hidden" value="${user.deptName}"/>
+                        <input id="lryxh" type="hidden" value="${user.uid}"/>
+                        <input id="lrymc" type="hidden" value="${user.realName}"/>
+                    </td>
+                    <td class="formTitle">上报日期<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <input id="sfrq" type="text" class="form-control input-wdatepicker" onfocus="WdatePicker({maxDate:'%y-%M-%d'})" value="${.now?string('yyyy-MM-dd')}"/>
+                    </td>
+                    <td class="formTitle">值班站长<font face="宋体">*</font></td>
+                    <td class="formValue">
+                        <div id=zdzz type="select" class="ui-select" isvalid="yes" checkexpession="NotNull"></div>
+                    </td>
+                
+               
+                 
+                
+                 <td class="formTitle">录入人员<font face="宋体">*</font></td>
+                 <td class="formValue">
+                	<span style="font-weight: bold;font-size: 14px;color: green;">${user.realName} </span>
+                	</td>
+                	</tr>
+                	<tr>
+                    <th class="formTitle" valign="top" style="padding-top: 4px;">备注信息</th>
+                    <td class="formValue" colspan="5">
+                        <textarea id="bz" class="form-control" style="height: 50px;"></textarea>
+                    </td>
+                </tr>
+         </table>
+         <table class="form">
+        <tr>
+        <td class="formTitle" style="width:120px;">客货车收入总计:</td>
+                    <td class="formValue" style="width:140px;">
+                        <input id="khcsrzj" type="text" class="form-control  sfmessage total" readonly="readonly" title="货车收入总计" name="hcsrzj" />
+                    </td>
+                <td class="formTitle" style="width:120px;">客车收入总计:</td>
+                    <td class="formValue" style="width:140px;">
+                        <input id="kcsrzj" type="text" class="form-control  sfmessage total" readonly="readonly" title="客车收入总计" name="kcsrzj" />
+                    </td>
+                    <td class="formTitle" style="width:120px;">货车收入总计:</td>
+                    <td class="formValue" style="width:140px;">
+                        <input id="hcsrzj" type="text" class="form-control  sfmessage total" readonly="readonly" title="货车收入总计" name="hcsrzj" />
+                    </td>
+                     
+                </tr>
+        </table>
+            <table class="form">
+                <header>车流量汇总信息</header>
+                 
+				<tr>
+                    <td class="formTitle" style="width:120px">客车出入口总计：</td>
+                    <td class="formValue">
+                        <input id="kccrkhj" type="text" class="form-control total" readonly="readonly" title="客车出入口总计" name="kccrkhj" />
+                    </td>
+                    <td class="formTitle">客车入口总计：</td>
+                    <td class="formValue">
+                        <input id="kcrkzj" type="text" class="form-control total" readonly="readonly" title="客车入口总计" name="kcrkzj" />
+                    </td>
+                    <td class="formTitle">客车出口总计：</td>
+                    <td class="formValue">
+                        <input id="kcckzj" type="text" class="form-control total" readonly="readonly" title="客车出口总计" name="kcckzj" />
+                    </td>
+                </tr>
+				<tr>
+                    <td class="formTitle">货车出入口总计：</td>
+                    <td class="formValue">
+                        <input id="hccrkhj" type="text" class="form-control total" readonly="readonly" title="货车出入口总计" name="hccrkhj" />
+                    </td>
+                    <td class="formTitle">货车入口总计：</td>
+                    <td class="formValue">
+                        <input id="hcrkzj" type="text" class="form-control total" readonly="readonly" title="货车入口总计" name="hcrkzj" />
+                    </td>
+                    <td class="formTitle">货车出口总计：</td>
+                    <td class="formValue">
+                        <input id="hcckzj" type="text" class="form-control total" readonly="readonly" title="货车出口总计" name="hcckzj" />
+                    </td>
+                </tr>
+				<tr>
+                    <td class="formTitle">免征出入口总计：</td>
+                    <td class="formValue">
+                        <input id="mzcrkhj" type="text" class="form-control total" readonly="readonly" title="免征出入口总计" name="mzcrkhj" />
+                    </td>
+                    <td class="formTitle">免征入口总计：</td>
+                    <td class="formValue">
+                        <input id="mzrkzj" type="text" class="form-control total" readonly="readonly" title="免征入口总计" name="mzrkzj" />
+                    </td>
+                    <td class="formTitle">免征出口总计：</td>
+                    <td class="formValue">
+                        <input id="mzckzj" type="text" class="form-control total" readonly="readonly" title="免征出口总计" name="mzckzj" />
+                    </td>
+                </tr>
+				<tr>
+                    <td class="formTitle">出入口流量总计：</td>
+                    <td class="formValue">
+                        <input id="crkllhj" type="text" class="form-control total" readonly="readonly" title="出入口流量总计" name="crkllhj" />
+                    </td>
+                    <td class="formTitle">入口流量总计：</td>
+                    <td class="formValue">
+                        <input id="rkllzj" type="text" class="form-control total" readonly="readonly" title="入口流量总计" name="rkllzj" />
+                    </td>
+                    <td class="formTitle">出口流量总计：</td>
+                    <td class="formValue">
+                        <input id="ckllzj" type="text" class="form-control total" readonly="readonly" title="出口流量总计" name="ckllzj" />
+                    </td>
+                </tr>
+            </table>
+        	<table class="form">
+					<header>收费客车信息</header>
+					<tr class="keyRow">
+                    <td class="tdTitle">1型客车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="kccrhj1" type="text" class="form-control total" readonly="readonly" title="1型客车出入口合计" name="kccrhj1" />
+                    </td>
+                    <td class="formTitle">1型客车(入)：</td>
+                    <td class="formValue">
+                        <input id="kcr1" type="text" class="form-control numberTxt kc1Add kcr" title="请输入数量" name="kcr1" />
+                    </td>
+                	<td class="formTitle">1型客车(出)：</td>
+                    <td class="formValue">
+                        <input id="kcc1" type="text" class="form-control numberTxt kc1Add kcc" title="请输入数量" name="kcc1" />
+                    </td>
+                	<td class="formTitle">1型客车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="kcsr1" type="text" class="form-control moneyTxt kcsrAdd" title="请输入金额：元" name="kcsr1" />
+                    </td>
+                </tr>
+        		<tr class="keyRow">
+                    <td class="formTitle">2型客车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="kccrhj2" type="text" class="form-control total" readonly="readonly" title="2型客车出入口合计" name="kccrhj2" />
+                    </td>
+                    <td class="formTitle">2型客车(入)：</td>
+                    <td class="formValue">
+                        <input id="kcr2" type="text" class="form-control numberTxt kc2Add kcr" title="请输入数量" name="kcr2" />
+                    </td>
+                	<td class="formTitle">2型客车(出)：</td>
+                    <td class="formValue">
+                        <input id="kcc2" type="text" class="form-control numberTxt kc2Add kcc" title="请输入数量" name="kcc2" />
+                    </td>
+                	<td class="formTitle">2型客车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="kcsr2" type="text" class="form-control moneyTxt kcsrAdd" title="请输入金额：元" name="kcsr2" />
+                    </td>
+                </tr>
+                <tr class="keyRow">
+                    <td class="formTitle">3型客车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="kccrhj3" type="text" class="form-control total" readonly="readonly" title="3型客车出入口合计" name="kccrhj3" />
+                    </td>
+                    <td class="formTitle">3型客车(入)：</td>
+                    <td class="formValue">
+                        <input id="kcr3" type="text" class="form-control numberTxt kc3Add kcr" title="请输入数量" name="kcr3" />
+                    </td>
+                	<td class="formTitle">3型客车(出)：</td>
+                    <td class="formValue">
+                        <input id="kcc3" type="text" class="form-control numberTxt kc3Add kcc" title="请输入数量" name="kcc3" />
+                    </td>
+                	<td class="formTitle">3型客车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="kcsr3" type="text" class="form-control moneyTxt kcsrAdd" title="请输入金额：元" name="kcsr3" />
+                    </td>
+                </tr>
+                <tr class="keyRow">
+                    <td class="formTitle">4型客车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="kccrhj4" type="text" class="form-control total" readonly="readonly" title="4型客车出入口合计" name="kccrhj4" />
+                    </td>
+                    <td class="formTitle">4型客车(入)：</td>
+                    <td class="formValue">
+                        <input id="kcr4" type="text" class="form-control numberTxt kc4Add kcr" title="请输入数量" name="kcr4" />
+                    </td>
+                	<td class="formTitle">4型客车(出)：</td>
+                    <td class="formValue">
+                        <input id="kcc4" type="text" class="form-control numberTxt kc4Add kcc" title="请输入数量" name="kcc4" />
+                    </td>
+                	<td class="formTitle">4型客车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="kcsr4" type="text" class="form-control moneyTxt kcsrAdd" title="请输入金额：元" name="kcsr4" />
+                    </td>
+                </tr>
+        	</table>
+        	<table class="form">
+					<header>收费货车信息</header>
+					<tr class="keyRow">
+                    <td class="tdTitle">A型货车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="hccrhj1" type="text" class="form-control total" readonly="readonly" title="1型货车出入口合计" name="hccrhj1" />
+                    </td>
+                    <td class="formTitle">A型货车(入)：</td>
+                    <td class="formValue">
+                        <input id="hcr1" type="text" class="form-control numberTxt hc1Add hcr" title="请输入数量" name="hcr1" />
+                    </td>
+                	<td class="formTitle">A型货车(出)：</td>
+                    <td class="formValue">
+                        <input id="hcc1" type="text" class="form-control numberTxt hc1Add hcc" title="请输入数量" name="hcc1" />
+                    </td>
+                	<td class="formTitle">A型货车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="hcsr1" type="text" class="form-control moneyTxt hcsrAdd" title="请输入金额：元" name="hcsr1" />
+                    </td>
+                </tr>
+        		<tr class="keyRow">
+                    <td class="formTitle">B型货车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="hccrhj2" type="text" class="form-control total" readonly="readonly" title="2型货车出入口合计" name="hccrhj2" />
+                    </td>
+                    <td class="formTitle">B型货车(入)：</td>
+                    <td class="formValue">
+                        <input id="hcr2" type="text" class="form-control numberTxt hc2Add hcr" title="请输入数量" name="hcr2" />
+                    </td>
+                	<td class="formTitle">B型货车(出)：</td>
+                    <td class="formValue">
+                        <input id="hcc2" type="text" class="form-control numberTxt hc2Add hcc" title="请输入数量" name="hcc2" />
+                    </td>
+                   <td class="formTitle">B型货车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="hcsr2" type="text" class="form-control moneyTxt hcsrAdd" title="请输入金额：元" name="hcsr2" />
+                    </td>
+                	
+                </tr>
+                <tr class="keyRow">
+                    <td class="formTitle">C型货车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="hccrhj3" type="text" class="form-control total" readonly="readonly" title="3型货车出入口合计" name="hccrhj3" />
+                    </td>
+                    <td class="formTitle">C型货车(入)：</td>
+                    <td class="formValue">
+                        <input id="hcr3" type="text" class="form-control numberTxt hc3Add hcr" title="请输入数量" name="hcr3" />
+                    </td>
+                	<td class="formTitle">C型货车(出)：</td>
+                    <td class="formValue">
+                        <input id="hcc3" type="text" class="form-control numberTxt hc3Add hcc" title="请输入数量" name="hcc3" />
+                    </td>
+                	<td class="formTitle">C型货车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="hcsr3" type="text" class="form-control moneyTxt hcsrAdd" title="请输入金额：元" name="hcsr3" />
+                    </td>
+                </tr>
+                <tr class="keyRow">
+                    <td class="formTitle">D型货车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="hccrhj4" type="text" class="form-control total" readonly="readonly" title="4型货车出入口合计" name="hccrhj4" />
+                    </td>
+                    <td class="formTitle">D型货车(入)：</td>
+                    <td class="formValue">
+                        <input id="hcr4" type="text" class="form-control numberTxt hc4Add hcr" title="请输入数量" name="hcr4" />
+                    </td>
+                	<td class="formTitle">D型货车(出)：</td>
+                    <td class="formValue">
+                        <input id="hcc4" type="text" class="form-control numberTxt hc4Add hcc" title="请输入数量" name="hcc4" />
+                    </td>
+                	<td class="formTitle">D型货车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="hcsr4" type="text" class="form-control moneyTxt hcsrAdd" title="请输入金额：元" name="hcsr4" />
+                    </td>
+                   
+                </tr>
+                <tr class="keyRow">
+                    <td class="formTitle">E型货车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="hccrhj5" type="text" class="form-control total" readonly="readonly" title="5型货车出入口合计" name="hccrhj5" />
+                    </td>
+                    <td class="formTitle">E型货车(入)：</td>
+                    <td class="formValue">
+                        <input id="hcr5" type="text" class="form-control numberTxt hc5Add hcr" title="请输入数量" name="hcr5" />
+                    </td>
+                	<td class="formTitle">E型货车(出)：</td>
+                    <td class="formValue">
+                        <input id="hcc5" type="text" class="form-control numberTxt hc5Add hcc" title="请输入数量" name="hcc5" />
+                    </td>
+                	<td class="formTitle">E型货车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="hcsr5" type="text" class="form-control moneyTxt hcsrAdd" title="请输入金额：元" name="hcsr5" />
+                    </td>
+                   
+                </tr>
+                <tr class="keyRow">
+                    <td class="formTitle">F型货车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="hccrhj6" type="text" class="form-control total" readonly="readonly" title="6型货车出入口合计" name="hccrhj6" />
+                    </td>
+                    <td class="formTitle">F型货车(入)：</td>
+                    <td class="formValue">
+                        <input id="hcr6" type="text" class="form-control numberTxt hc6Add hcr" title="请输入数量" name="hcr6" />
+                    </td>
+                	<td class="formTitle">F型货车(出)：</td>
+                    <td class="formValue">
+                        <input id="hcc6" type="text" class="form-control numberTxt hc6Add hcc" title="请输入数量" name="hcc6" />
+                    </td>
+                <td class="formTitle">F型货车收入(元)：</td>
+                    <td class="formValue">
+                        <input id="hcsr6" type="text" class="form-control moneyTxt hcsrAdd" title="请输入金额：元" name="hcsr6" />
+                    </td>
+                </tr>
+        	</table>
+        	<table class="form">
+					<header>免征车辆信息</header>
+					
+                  
+                </tr>
+					<tr class="keyRow">
+                    <td class="tdTitle">公务出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="gwcrhj" type="text" class="form-control total" readonly="readonly" title="公务出入口合计" name="gwcrhj" />
+                    </td>
+                    <td class="formTitle">公务(入)：</td>
+                    <td class="formValue">
+                        <input id="gwr" type="text" class="form-control numberTxt gwAdd mzr" title="请输入数量" name="gwr" />
+                    </td>
+                    <td class="formTitle">公务(出)：</td>
+                    <td class="formValue">
+                        <input id="gwc" type="text" class="form-control numberTxt gwAdd mzc" title="请输入数量" name="gwc" />
+                    </td>
+                </tr>
+        		<tr class="keyRow">
+                    <td class="formTitle">军车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="jccrhj" type="text" class="form-control total" readonly="readonly" title="军车出入口合计" name="jccrhj" />
+                    </td>
+                    <td class="formTitle">军车(入)：</td>
+                    <td class="formValue">
+                        <input id="jcr" type="text" class="form-control numberTxt jcAdd mzr" title="请输入数量" name="jcr" />
+                    </td>
+                    <td class="formTitle">军车(出)：</td>
+                    <td class="formValue">
+                        <input id="jcc" type="text" class="form-control numberTxt jcAdd mzc" title="请输入数量" name="jcc" />
+                    </td>
+                </tr>
+        		<tr class="keyRow">
+                    <td class="formTitle">警车出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="jchecrhj" type="text" class="form-control total" readonly="readonly" title="警车出入口合计" name="jchecrhj" />
+                    </td>
+                    <td class="formTitle">警车(入)：</td>
+                    <td class="formValue">
+                        <input id="jcher" type="text" class="form-control numberTxt jcheAdd mzr" title="请输入数量" name="jcher" />
+                    </td>
+                    <td class="formTitle">警车(出)：</td>
+                    <td class="formValue">
+                        <input id="jchec" type="text" class="form-control numberTxt jcheAdd mzc" title="请输入数量" name="jchec" />
+                    </td>
+                </tr>
+        		<tr class="keyRow">
+                    <td class="formTitle">免费出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="mfcrhj" type="text" class="form-control total" readonly="readonly" title="免费出入口合计" name="mfcrhj" />
+                    </td>
+                    <td class="formTitle">免费(入)：</td>
+                    <td class="formValue">
+                        <input id="mfr" type="text" class="form-control numberTxt mfAdd mzr" title="请输入数量" name="mfr" />
+                    </td>
+                    <td class="formTitle">免费(出)：</td>
+                    <td class="formValue">
+                        <input id="mfc" type="text" class="form-control numberTxt mfAdd mzc" title="请输入数量" name="mfc" />
+                    </td>
+                </tr>
+                <tr class="keyRow">
+                    <td class="formTitle">车队出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="cdhj" type="text" class="form-control total" readonly="readonly" title="车队出入口合计" name="cdhj" />
+                    </td>
+                    <td class="formTitle">车队(入)：</td>
+                    <td class="formValue">
+                        <input id="cdr" type="text" class="form-control numberTxt cdAdd mzr" title="请输入数量" name="cdr" />
+                    </td>
+                    <td class="formTitle">车队(出)：</td>
+                    <td class="formValue">
+                        <input id="cdc" type="text" class="form-control numberTxt cdAdd mzc" title="请输入数量" name="cdc" />
+                    </td>
+                </tr>
+                <tr class="keyRow">
+                    <td class="formTitle">闯关出入口 合计：</td>
+                    <td class="formValue">
+                        <input id="cghj" type="text" class="form-control total" readonly="readonly" title="闯关出入口合计" name="cghj" />
+                    </td>
+                    <td class="formTitle">闯关(入)：</td>
+                    <td class="formValue">
+                        <input id="cgr" type="text" class="form-control numberTxt cgAdd mzr" title="请输入数量" name="cgr" />
+                    </td>
+                    <td class="formTitle">闯关(出)：</td>
+                    <td class="formValue">
+                        <input id="cgc" type="text" class="form-control numberTxt cgAdd mzc" title="请输入数量" name="cgc" />
+                    </td>
+                </tr>
+               
+        	</table>
+        </div>
+    </div>
+</div>
+    </form>
+<script>
+var keyValue = request('keyValue');
+$(function () {
+    initControl();
+})
+//初始化控件
+function initControl() {
+    //获取表单
+    if (!!keyValue) {
+    	$.SetForm({
+            url: "${ctx.contextPath}/charge/getRcclhzFormJson",
+            param: { keyValue: keyValue },
+            success: function (data) {
+                $("#form1").SetWebControls(data);
+                //$("#zdzz").ComboBoxSetValue(data.zdzz);
+                $("#zdmc").text(data.zdmc);
+                $("#lrymc").text(data.lrymc);
+                var zdzz = top.clientuserData[data.zdzz] == null ? "" : top.clientuserData[data.zdzz].realname;//站点站长
+                $("#zdzz").text(zdzz);
+                $("#sfrq").val(formatDate(new Date(data.sfrq), "yyyy-MM-dd"));
+                $("#form1").find('.form-control,.ui-select,input').attr('disabled', 'disabled');
+            }
+        });
+    }
+}
+</script>
+</body>
+</html>

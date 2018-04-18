@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.SysDepartmentMapper">
+  <resultMap id="BaseResultMap" type="com.power.common.entity.SysDepartment">
+    <id column="departmentid" jdbcType="VARCHAR" property="departmentid" />
+    <result column="organizeid" jdbcType="VARCHAR" property="organizeid" />
+    <result column="parentid" jdbcType="VARCHAR" property="parentid" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="fullname" jdbcType="VARCHAR" property="fullname" />
+    <result column="shortname" jdbcType="VARCHAR" property="shortname" />
+    <result column="nature" jdbcType="VARCHAR" property="nature" />
+    <result column="managerid" jdbcType="VARCHAR" property="managerid" />
+    <result column="manager" jdbcType="VARCHAR" property="manager" />
+    <result column="outerphone" jdbcType="VARCHAR" property="outerphone" />
+    <result column="innerphone" jdbcType="VARCHAR" property="innerphone" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="fax" jdbcType="VARCHAR" property="fax" />
+    <result column="sortcode" jdbcType="INTEGER" property="sortcode" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="deletemark" jdbcType="INTEGER" property="deletemark" />
+    <result column="enabledmark" jdbcType="INTEGER" property="enabledmark" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="createdate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="createuserid" jdbcType="VARCHAR" property="createuserid" />
+    <result column="createusername" jdbcType="VARCHAR" property="createusername" />
+    <result column="modifydate" jdbcType="TIMESTAMP" property="modifydate" />
+    <result column="modifyuserid" jdbcType="VARCHAR" property="modifyuserid" />
+    <result column="modifyusername" jdbcType="VARCHAR" property="modifyusername" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    departmentid, organizeid, parentid, code, fullname, shortname, nature, managerid, 
+    manager, outerphone, innerphone, email, fax, sortcode, level, deletemark, enabledmark, 
+    description, createdate, createuserid, createusername, modifydate, modifyuserid, 
+    modifyusername
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_department
+    where departmentid = #{departmentid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_department
+    where departmentid = #{departmentid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.SysDepartment">
+    insert into sys_department (departmentid, organizeid, parentid, 
+      code, fullname, shortname, 
+      nature, managerid, manager, 
+      outerphone, innerphone, email, 
+      fax, sortcode, level, 
+      deletemark, enabledmark, description, 
+      createdate, createuserid, createusername, 
+      modifydate, modifyuserid, modifyusername
+      )
+    values (#{departmentid,jdbcType=VARCHAR}, #{organizeid,jdbcType=VARCHAR}, #{parentid,jdbcType=VARCHAR}, 
+      #{code,jdbcType=VARCHAR}, #{fullname,jdbcType=VARCHAR}, #{shortname,jdbcType=VARCHAR}, 
+      #{nature,jdbcType=VARCHAR}, #{managerid,jdbcType=VARCHAR}, #{manager,jdbcType=VARCHAR}, 
+      #{outerphone,jdbcType=VARCHAR}, #{innerphone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{fax,jdbcType=VARCHAR}, #{sortcode,jdbcType=INTEGER}, #{level,jdbcType=INTEGER}, 
+      #{deletemark,jdbcType=INTEGER}, #{enabledmark,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR}, 
+      #{createdate,jdbcType=TIMESTAMP}, #{createuserid,jdbcType=VARCHAR}, #{createusername,jdbcType=VARCHAR}, 
+      #{modifydate,jdbcType=TIMESTAMP}, #{modifyuserid,jdbcType=VARCHAR}, #{modifyusername,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.SysDepartment">
+    insert into sys_department
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="departmentid != null">
+        departmentid,
+      </if>
+      <if test="organizeid != null">
+        organizeid,
+      </if>
+      <if test="parentid != null">
+        parentid,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="fullname != null">
+        fullname,
+      </if>
+      <if test="shortname != null">
+        shortname,
+      </if>
+      <if test="nature != null">
+        nature,
+      </if>
+      <if test="managerid != null">
+        managerid,
+      </if>
+      <if test="manager != null">
+        manager,
+      </if>
+      <if test="outerphone != null">
+        outerphone,
+      </if>
+      <if test="innerphone != null">
+        innerphone,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="fax != null">
+        fax,
+      </if>
+      <if test="sortcode != null">
+        sortcode,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="deletemark != null">
+        deletemark,
+      </if>
+      <if test="enabledmark != null">
+        enabledmark,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="createdate != null">
+        createdate,
+      </if>
+      <if test="createuserid != null">
+        createuserid,
+      </if>
+      <if test="createusername != null">
+        createusername,
+      </if>
+      <if test="modifydate != null">
+        modifydate,
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid,
+      </if>
+      <if test="modifyusername != null">
+        modifyusername,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="departmentid != null">
+        #{departmentid,jdbcType=VARCHAR},
+      </if>
+      <if test="organizeid != null">
+        #{organizeid,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="fullname != null">
+        #{fullname,jdbcType=VARCHAR},
+      </if>
+      <if test="shortname != null">
+        #{shortname,jdbcType=VARCHAR},
+      </if>
+      <if test="nature != null">
+        #{nature,jdbcType=VARCHAR},
+      </if>
+      <if test="managerid != null">
+        #{managerid,jdbcType=VARCHAR},
+      </if>
+      <if test="manager != null">
+        #{manager,jdbcType=VARCHAR},
+      </if>
+      <if test="outerphone != null">
+        #{outerphone,jdbcType=VARCHAR},
+      </if>
+      <if test="innerphone != null">
+        #{innerphone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="sortcode != null">
+        #{sortcode,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="deletemark != null">
+        #{deletemark,jdbcType=INTEGER},
+      </if>
+      <if test="enabledmark != null">
+        #{enabledmark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuserid != null">
+        #{createuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="createusername != null">
+        #{createusername,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuserid != null">
+        #{modifyuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyusername != null">
+        #{modifyusername,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.SysDepartment">
+    update sys_department
+    <set>
+      <if test="organizeid != null">
+        organizeid = #{organizeid,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        parentid = #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="fullname != null">
+        fullname = #{fullname,jdbcType=VARCHAR},
+      </if>
+      <if test="shortname != null">
+        shortname = #{shortname,jdbcType=VARCHAR},
+      </if>
+      <if test="nature != null">
+        nature = #{nature,jdbcType=VARCHAR},
+      </if>
+      <if test="managerid != null">
+        managerid = #{managerid,jdbcType=VARCHAR},
+      </if>
+      <if test="manager != null">
+        manager = #{manager,jdbcType=VARCHAR},
+      </if>
+      <if test="outerphone != null">
+        outerphone = #{outerphone,jdbcType=VARCHAR},
+      </if>
+      <if test="innerphone != null">
+        innerphone = #{innerphone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="fax != null">
+        fax = #{fax,jdbcType=VARCHAR},
+      </if>
+      <if test="sortcode != null">
+        sortcode = #{sortcode,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="deletemark != null">
+        deletemark = #{deletemark,jdbcType=INTEGER},
+      </if>
+      <if test="enabledmark != null">
+        enabledmark = #{enabledmark,jdbcType=INTEGER},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="createdate != null">
+        createdate = #{createdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createuserid != null">
+        createuserid = #{createuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="createusername != null">
+        createusername = #{createusername,jdbcType=VARCHAR},
+      </if>
+      <if test="modifydate != null">
+        modifydate = #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyuserid != null">
+        modifyuserid = #{modifyuserid,jdbcType=VARCHAR},
+      </if>
+      <if test="modifyusername != null">
+        modifyusername = #{modifyusername,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where departmentid = #{departmentid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.SysDepartment">
+    update sys_department
+    set organizeid = #{organizeid,jdbcType=VARCHAR},
+      parentid = #{parentid,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      fullname = #{fullname,jdbcType=VARCHAR},
+      shortname = #{shortname,jdbcType=VARCHAR},
+      nature = #{nature,jdbcType=VARCHAR},
+      managerid = #{managerid,jdbcType=VARCHAR},
+      manager = #{manager,jdbcType=VARCHAR},
+      outerphone = #{outerphone,jdbcType=VARCHAR},
+      innerphone = #{innerphone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      fax = #{fax,jdbcType=VARCHAR},
+      sortcode = #{sortcode,jdbcType=INTEGER},
+      level = #{level,jdbcType=INTEGER},
+      deletemark = #{deletemark,jdbcType=INTEGER},
+      enabledmark = #{enabledmark,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      createdate = #{createdate,jdbcType=TIMESTAMP},
+      createuserid = #{createuserid,jdbcType=VARCHAR},
+      createusername = #{createusername,jdbcType=VARCHAR},
+      modifydate = #{modifydate,jdbcType=TIMESTAMP},
+      modifyuserid = #{modifyuserid,jdbcType=VARCHAR},
+      modifyusername = #{modifyusername,jdbcType=VARCHAR}
+    where departmentid = #{departmentid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 条件查询/全部查询 -->
+  <select id="showDept" parameterType="map" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_department
+    <where>
+      deletemark = 0
+      <if test="fullname != null">and fullname like concat('%',#{fullname,jdbcType=VARCHAR},'%')</if>
+      <if test="code != null">and code like concat('%',#{code,jdbcType=VARCHAR},'%')</if>
+      <if test="shortname != null">and shortname like concat('%',#{shortname,jdbcType=VARCHAR},'%')</if>
+      <if test="manager != null">and manager like concat('%',#{manager,jdbcType=VARCHAR},'%')</if>
+      <if test="phone != null">and phone like concat('%',#{phone,jdbcType=VARCHAR},'%')</if>
+      <if test="email != null">and email like concat('%',#{email,jdbcType=VARCHAR},'%')</if>
+      <if test="depts != null">and departmentid in (${depts})</if>
+      <if test="orgs != null">and organizeid in (${orgs})</if>
+      <if test="orgId != null">and organizeid=#{orgId}</if>
+      <if test="pId != null">and parentid=#{pId}</if>
+    </where>  
+    order by sortcode  
+  </select>
+  
+  <!--查询全部部门 -->
+  <select id="getAllDepts" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_department
+    where deletemark = 0
+  </select>
+   <select id="showPid" parameterType="map" resultMap="BaseResultMap">
+   SELECT parentid from sys_department
+	<if test="deptId != null">where departmentid = #{deptId}</if>
+   </select>
+  <!--根据organizeid查询部门 -->
+  <select id="getDeptsByCompanyId" parameterType="String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_department
+    where deletemark = 0 
+    <if test="_parameter!=null">and organizeid = #{value}</if>
+    
+    order by sortcode
+  </select>
+  
+  <!-- 判断部门是否存在下级部门或用户 -->
+  <select id="getCanDel" parameterType="String" resultType="Integer">
+	SELECT SUM(tt.t1) FROM (
+		(SELECT COUNT(1) as t1 FROM sys_department WHERE deletemark = 0 and parentid = #{deptid}) UNION 
+		(SELECT COUNT(1) as t2 FROM sys_user WHERE departmentid = #{deptid})) tt
+</select>
+</mapper>

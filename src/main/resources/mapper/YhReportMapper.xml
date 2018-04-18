@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.YhReportMapper">
+
+    <select id="getTxfcllrData" parameterType="map" resultType="com.power.report.entity.TxfcllrDataVO">
+   (SELECT * FROM(
+(select bm.sortcode, bm.fullname as zdmc,yh.sfrq,yh.sjje1 AS yhsjje1,etc.sjje1 AS etcsjje1,yd.ydxj1 AS ydydxj1,yh.sjje1+etc.sjje1+yd.ydxj1 AS xj1,yh.sjje2 AS yhsjje2,etc.sjje2 AS etcsjje2,yd.ydxj2 AS ydydxj2,yh.sjje2+etc.sjje2+yd.ydxj2 AS xj2,cl.ckllzj AS ckllzj,cl.rkllzj as rkllzj,cl.crkllhj AS crkllhj 
+from (select a.sortcode, a.fullname,a.departmentid from sys_department a where CHAR_LENGTH(a.parentid) > 1 and a.organizeid = (select og.* from (SELECT aaa.organizeid from sys_organize aaa where aaa.code > 0 ORDER BY aaa.code LIMIT 0,1) AS og )) as bm
+LEFT JOIN fx_yhsj yh ON bm.departmentid=yh.sszd and yh.sfrq = #{st} and yh.zt > 1
+LEFT JOIN fx_etcsj etc ON bm.departmentid = etc.sszd and etc.sfrq = #{st} and etc.zt > 1
+LEFT JOIN fx_ydsj yd ON bm.departmentid=yd.sszd and yd.sfrq = #{st}  and yd.zt > 1
+LEFT JOIN fx_rcclhz cl ON bm.departmentid=cl.sszd  and cl.sfrq =#{st}  and cl.zt > 1
+ORDER BY bm.sortcode))AS yy)
+UNION
+(select '洛栾段', '洛栾段' as zdmc,yh.sfrq,sum(yh.sjje1) AS yhsjje1,SUM(etc.sjje1) AS etcsjje1,SUM(yd.ydxj1) AS ydydxj1,SUM(yh.sjje1+etc.sjje1+yd.ydxj1) AS xj1,SUM(yh.sjje2) AS yhsjje2,SUM(etc.sjje2) AS etcsjje2,SUM(yd.ydxj2) AS ydydxj2,SUM(yh.sjje2+etc.sjje2+yd.ydxj2) AS xj2,SUM(cl.ckllzj) AS ckllzj,SUM(cl.rkllzj) as rkllzj,SUM(cl.crkllhj) AS crkllhj 
+from (select a.fullname,a.departmentid from sys_department a where CHAR_LENGTH(a.parentid) > 1 and a.organizeid = (select og.* from (SELECT aaa.organizeid from sys_organize aaa where aaa.code > 0 ORDER BY aaa.code LIMIT 0,1) AS og )) as bm
+LEFT JOIN fx_yhsj yh ON bm.departmentid=yh.sszd and yh.sfrq = #{st} and yh.zt > 1
+LEFT JOIN fx_etcsj etc ON bm.departmentid = etc.sszd and etc.sfrq = #{st} and etc.zt > 1
+LEFT JOIN fx_ydsj yd ON bm.departmentid=yd.sszd and yd.sfrq = #{st}  and yd.zt > 1
+LEFT JOIN fx_rcclhz cl ON bm.departmentid=cl.sszd  and cl.sfrq =#{st}  and cl.zt > 1)
+UNION
+(SELECT * FROM(
+(select bm.sortcode, bm.fullname as zdmc,yh.sfrq,yh.sjje1 AS yhsjje1,etc.sjje1 AS etcsjje1,yd.ydxj1 AS ydydxj1,yh.sjje1+etc.sjje1+yd.ydxj1 AS xj1,yh.sjje2 AS yhsjje2,etc.sjje2 AS etcsjje2,yd.ydxj2 AS ydydxj2,yh.sjje2+etc.sjje2+yd.ydxj2 AS xj2,cl.ckllzj AS ckllzj,cl.rkllzj as rkllzj,cl.crkllhj AS crkllhj 
+from (select a.sortcode, a.fullname,a.departmentid from sys_department a where CHAR_LENGTH(a.parentid) > 1 and a.organizeid = (select og.* from (SELECT aaa.organizeid from sys_organize aaa where aaa.code > 0 ORDER BY aaa.code LIMIT 1,1) AS og )) as bm
+LEFT JOIN fx_yhsj yh ON bm.departmentid=yh.sszd and yh.sfrq = #{st} and yh.zt > 1
+LEFT JOIN fx_etcsj etc ON bm.departmentid = etc.sszd and etc.sfrq = #{st} and etc.zt > 1
+LEFT JOIN fx_ydsj yd ON bm.departmentid=yd.sszd and yd.sfrq = #{st}  and yd.zt > 1
+LEFT JOIN fx_rcclhz cl ON bm.departmentid=cl.sszd  and cl.sfrq =#{st}  and cl.zt > 1
+ORDER BY bm.sortcode))AS yy)
+UNION
+(select '洛卢段', '洛卢段' as zdmc,yh.sfrq,sum(yh.sjje1) AS yhsjje1,SUM(etc.sjje1) AS etcsjje1,SUM(yd.ydxj1) AS ydydxj1,SUM(yh.sjje1+etc.sjje1+yd.ydxj1) AS xj1,SUM(yh.sjje2) AS yhsjje2,SUM(etc.sjje2) AS etcsjje2,SUM(yd.ydxj2) AS ydydxj2,SUM(yh.sjje2+etc.sjje2+yd.ydxj2) AS xj2,SUM(cl.ckllzj) AS ckllzj,SUM(cl.rkllzj) as rkllzj,SUM(cl.crkllhj) AS crkllhj 
+from (select a.fullname,a.departmentid from sys_department a where CHAR_LENGTH(a.parentid) > 1 and a.organizeid = (select og.* from (SELECT aaa.organizeid from sys_organize aaa where aaa.code > 0 ORDER BY aaa.code LIMIT 1,1) AS og )) as bm
+LEFT JOIN fx_yhsj yh ON bm.departmentid=yh.sszd and yh.sfrq = #{st} and yh.zt > 1
+LEFT JOIN fx_etcsj etc ON bm.departmentid = etc.sszd and etc.sfrq = #{st} and etc.zt > 1
+LEFT JOIN fx_ydsj yd ON bm.departmentid=yd.sszd and yd.sfrq = #{st}  and yd.zt > 1
+LEFT JOIN fx_rcclhz cl ON bm.departmentid=cl.sszd  and cl.sfrq =#{st}  and cl.zt > 1)
+UNION
+(
+select '总计', '总计' as zdmc,yh.sfrq,sum(yh.sjje1) AS yhsjje1,SUM(etc.sjje1) AS etcsjje1,SUM(yd.ydxj1) AS ydydxj1,SUM(yh.sjje1+etc.sjje1+yd.ydxj1) AS xj1,SUM(yh.sjje2) AS yhsjje2,SUM(etc.sjje2) AS etcsjje2,SUM(yd.ydxj2) AS ydydxj2,SUM(yh.sjje2+etc.sjje2+yd.ydxj2) AS xj2,SUM(cl.ckllzj) AS ckllzj,SUM(cl.rkllzj) as rkllzj,SUM(cl.crkllhj) AS crkllhj 
+from (select a.fullname from sys_department a where CHAR_LENGTH(code) &lt; 6) bm
+LEFT JOIN fx_yhsj yh ON bm.fullname=yh.zdmc and yh.sfrq = #{st} and yh.zt > 1
+LEFT JOIN fx_etcsj etc ON bm.fullname = etc.zdmc and etc.sfrq = #{st} and etc.zt > 1
+LEFT JOIN fx_ydsj yd ON bm.fullname=yd.zdmc and yd.sfrq = #{st}  and yd.zt > 1
+LEFT JOIN fx_rcclhz cl ON bm.fullname=cl.zdmc  and cl.sfrq =#{st} and cl.zt > 1                
+)
+</select>
+<select id="getLdTxfyData" parameterType="map" resultType="com.power.report.entity.LdtxfrDataVO">
+SELECT tt.sfrq, GROUP_CONCAT(tt.zdmc,':',tt.yhsjjehj,'-',tt.ydydhj,'-',tt.etcsjjehj) as hj
+	FROM
+		(SELECT yh.sfrq, yh.zdmc as zdmc,IFNULL(yh.sjjehj,0) AS yhsjjehj ,IFNULL(yd.ydhj,0) AS ydydhj,IFNULL(etc.sjjehj,0)AS etcsjjehj  from fx_yhsj yh 
+	LEFT JOIN fx_ydsj yd ON yh.sfrq = yd.sfrq AND yh.sszd = yd.sszd AND yh.zt>1 AND yd.zt>1
+	LEFT JOIN fx_etcsj etc ON yh.sfrq = etc.sfrq AND yh.sszd = etc.sszd AND yh.zt>1 AND etc.zt>1
+	WHERE substring(yh.sfrq,1,length(#{st})) between #{st} and #{et}
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	GROUP BY yh.sfrq,zdmc
+	)tt
+	GROUP BY sfrq
+	order by sfrq
+
+</select>
+
+ 
+  <select id="getYhTxfyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+	SELECT tt.sfrq, GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT sfrq, zdmc,sjjehj as je from fx_yhsj
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and substring(sfrq,1,length(#{st})) between #{st} and #{et}
+	)tt
+	GROUP BY sfrq
+	order by sfrq
+	</select>
+	
+	<select id="getYdTxfyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+	SELECT tt.sfrq, GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT sfrq, zdmc,ydhj as je from fx_ydsj
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and substring(sfrq,1,length(#{st})) between #{st} and #{et}
+	)tt
+	GROUP BY sfrq
+	order by sfrq
+	</select>
+	
+	<select id="getEtcTxfyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+	SELECT tt.sfrq, GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+	(SELECT sfrq, zdmc,sjjehj as je from fx_etcsj
+	WHERE zt>1 
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	and substring(sfrq,1,length(#{st})) between #{st} and #{et}
+	)tt
+	GROUP BY sfrq
+	order by sfrq
+	</select>
+	
+	<select id="getHzTxfyData" parameterType="map" resultType="com.power.report.entity.txfjcllmxhzDataVO">
+	SELECT tt.sfrq, GROUP_CONCAT(tt.zdmc,':',tt.je) as hj
+	FROM
+		(SELECT yh.sfrq, yh.zdmc as zdmc,IFNULL(yh.sjjehj,0)+IFNULL(yd.ydhj,0)+IFNULL(etc.sjjehj,0) as je from fx_yhsj yh 
+	LEFT JOIN fx_ydsj yd ON yh.sfrq = yd.sfrq AND yh.sszd = yd.sszd AND yh.zt>1 AND yd.zt>1
+	LEFT JOIN fx_etcsj etc ON yh.sfrq = etc.sfrq AND yh.sszd = etc.sszd AND yh.zt>1 AND etc.zt>1
+	WHERE substring(yh.sfrq,1,length(#{st})) between #{st} and #{et}
+	<if test="deptid!=null">and sszd = #{deptid}</if> 
+	GROUP BY yh.sfrq,zdmc
+	)tt
+	GROUP BY sfrq
+	order by sfrq
+	</select>
+</mapper>                                             

@@ -1,0 +1,502 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>模块</title>
+    <script src="${ctx.contextPath}/res/jquery/jquery-1.10.2.min.js"></script>
+    <link href="${ctx.contextPath}/res/fonts/font-awesome.min.css" rel="stylesheet" />
+    <link href="${ctx.contextPath}/res/jquery/jquery-ui.min.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/jquery/jquery-ui.min.js"></script>
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="${ctx.contextPath}/res/bootstrap/bootstrap.extension.css" rel="stylesheet" />
+    <script src="${ctx.contextPath}/res/bootstrap/bootstrap.min.js"></script>
+    <link href="${ctx.contextPath}/res/wdTree/tree.css" rel="stylesheet"/>
+	<link href="${ctx.contextPath}/res/wizard/wizard.css" rel="stylesheet"/>
+	<link href="${ctx.contextPath}/res/ui/power-ui.css" rel="stylesheet"/>
+    <script src="${ctx.contextPath}/res/wdTree/tree.js"></script>
+	<script src="${ctx.contextPath}/res/jquery/validator.js"></script>
+	<script src="${ctx.contextPath}/res/wizard/wizard.js"></script>
+	<script src="${ctx.contextPath}/res/ui/power-ui.js"></script>
+	
+	<link href="${ctx.contextPath}/res/jqgrid/jqgrid.css" rel="stylesheet" />
+	<script src="${ctx.contextPath}/res/jqgrid/jqgrid.min.js"></script>
+
+</head>
+<body>
+    <form id="form1">
+
+<script type="text/javascript">
+    var keyValue = request('id');
+    var parentId = request('pid');
+    $(function () {
+        initialPage();
+        buttonOperation();
+        getGridButton();
+        //getGridView();
+    })
+    //初始化页面
+    function initialPage() {
+        //加载导向
+        $('#wizard').wizard().on('change', function (e, data) {
+            var $finish = $("#btn_finish");
+            var $next = $("#btn_next");
+            if (data.direction == "next" && data.step == 1) {
+                //if (data.step == 1) {// 只有两步
+                    $finish.removeAttr('disabled');
+                    $next.attr('disabled', 'disabled');
+                //} else {
+                //    $finish.attr('disabled', 'disabled');
+                //}
+            } else {
+                $finish.attr('disabled', 'disabled');
+                $next.removeAttr('disabled');
+            }
+        });
+        initControl();
+    }
+    //初始化控件
+    function initControl() {
+        //目标
+        $("#target").ComboBox({
+            description: "==请选择==",
+            height: "200px"
+        });
+        //上级
+        $("#parentid").ComboBoxTree({
+            url: "${ctx.contextPath}/sys/module/getModuleTree",
+            description: "==请选择==",
+            height: "155px",
+            allowSearch: true
+        });
+        //获取表单
+        if (!!keyValue) {
+            $.SetForm({
+                url: "${ctx.contextPath}/sys/module/getModuleFormJson",
+                param: { key: keyValue },
+                success: function (data) {
+                    $("#form1").SetWebControls(data);
+                    if (data.ismenu == 1) {
+                        $("#btn_next").removeAttr('disabled');
+                        $("#btn_finish").attr('disabled', 'disabled');
+                    }
+                }
+            });
+        } else {
+            $("#parentid").ComboBoxTreeSetValue(parentId);
+        }
+    }
+    //选取图标
+    function SelectIcon() {
+        dialogOpen({
+            id: "SelectIcon",
+            title: '选取图标',
+            url: '${ctx.contextPath}/sys/module/selectIcon?ControlId=icon',
+            width: "1000px",
+            height: "600px",
+            btn: false
+        })
+    }
+    //保存表单
+    function AcceptClick() {
+        if (!$('#form1').Validform()) {
+            return false;
+        }
+        var postData = $("#form1").GetWebControls(keyValue);
+        if (postData["parentid"] == "") {
+            postData["parentid"] = 0;
+        }
+        postData["moduleButtonListJson"] = JSON.stringify(buttonJson);
+        //postData["moduleColumnListJson"] = JSON.stringify(columnJson);
+        $.SaveForm({
+            url: "${ctx.contextPath}/sys/module/newModuleSubmit?keyValue=" + keyValue,
+            param: postData,
+            loading: "正在保存数据...",
+            success: function () {
+                $.currentIframe().ref();
+            }
+        })
+    }
+
+    //按钮操作（上一步、下一步、完成、关闭）
+    function buttonOperation() {
+        var $last = $("#btn_last");
+        var $next = $("#btn_next");
+        var $finish = $("#btn_finish");
+        //如果是菜单，开启 上一步、下一步
+        $("#ismenu").click(function () {
+            if (!$(this).attr("checked")) {
+                $(this).attr("checked", true)
+                $next.removeAttr('disabled');
+                $finish.attr('disabled', 'disabled');
+            } else {
+                $(this).attr("checked", false)
+                $next.attr('disabled', 'disabled');
+                $finish.removeAttr('disabled');
+            }
+        });
+        //完成提交保存
+        $finish.click(function () {
+            AcceptClick();
+        })
+    }
+    /*系统按钮begin==================================*/
+    var buttonJson=[];
+    function getGridButton() {
+        var moduleId = $("#moduleid").val();
+        var $grid = $("#gridTable-button");
+        $grid.jqGrid({
+            unwritten: false,//不提示是否找到数据
+            //datatype: "local",
+            //data:[],//空数据
+            datatype: "jsonstring",
+            datastr: [],//组合使用，初始化显示空数据
+            height: $(window).height() - 165,
+            width: $(window).width() - 11,
+            colModel: [
+                { label: "主键", name: "buttonid", hidden: true,key:true},
+                { label: "名称", name: "fullname", width: 140, align: "left", sortable: false },
+                { label: "编号", name: "code", width: 140, align: "left", sortable: false },
+                { label: "地址", name: "actionaddress", width: 500, align: "left", sortable: false }
+            ],
+            treeGrid: true,
+            treeGridModel: "adjacency",//adjacency  nested
+            treeReader:{
+            	parent_id_field: "parentid"
+       		},
+            ExpandColumn: "code",
+            rowNum:1000,
+            rownumbers: true
+        });
+        //加载数据
+        if(moduleId && moduleId.length>0){
+	        $.ajax({
+	            url: "${ctx.contextPath}/sys/module/getModuleBtnList?moduleId=" + escape(moduleId),
+	            type: "get",
+	            dataType: "json",
+	            success: function (data) {
+	                buttonJson = data;
+			        ButtonListToListTreeJson(buttonJson);
+	            },
+	        });
+        }
+        
+        //处理Json
+        function ButtonListToListTreeJson(buttonJson) {
+            $.ajax({
+                url: "${ctx.contextPath}/sys/module/btnListToGrid",
+                data: { moduleButtonJson: JSON.stringify(buttonJson) },
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    $grid.clearGridData();
+                    $grid[0].addJSONData(data);
+                },
+            });
+        }
+        //新增
+        $("#lr-add-button").click(function () {
+            var parentId = $("#gridTable-button").jqGridRowValue("buttonid");
+            dialogOpen({
+                id: "buttonForm",
+                title: '添加按钮',
+                url: '${ctx.contextPath}/sys/module/btnForm?parentId=' + parentId + "&moduleId=" + escape(moduleId),
+                width: "450px",
+                height: "300px",
+                callBack: function (iframeId) {
+                    top.frames[iframeId].AcceptClick(function (data) {
+                        buttonJson.push(data);
+                        ButtonListToListTreeJson(buttonJson);
+                    });
+                }
+            });
+        })
+        //编辑
+        $("#lr-edit-button").click(function () {
+            var moduleButtonId = $("#gridTable-button").jqGridRowValue("buttonid");
+            if (checkedRow(moduleButtonId)) {
+                dialogOpen({
+                    id: "buttonForm",
+                    title: '编辑按钮',
+                    url: '${ctx.contextPath}/sys/module/btnForm?buttonId=' + moduleButtonId + "&moduleId=" + escape(moduleId),
+                    width: "450px",
+                    height: "300px",
+                    callBack: function (iframeId) {
+                        top.frames[iframeId].AcceptClick(function (data) {
+                            $.each(buttonJson, function (i) {
+                                if (buttonJson[i].buttonid == moduleButtonId) {
+                                    buttonJson[i] = data;
+                                }
+                            });
+                            ButtonListToListTreeJson(buttonJson);
+                        });
+                    }
+                });
+            }
+        })
+        //删除
+        $("#lr-delete-button").click(function () {
+            var moduleButtonId = $("#gridTable-button").jqGridRowValue("buttonid");
+            if (checkedRow(moduleButtonId)) {
+                $.each(buttonJson, function (i) {
+                    if (buttonJson[i].buttonid == moduleButtonId) {
+                        buttonJson.splice(i, 1);
+                        ButtonListToListTreeJson(buttonJson);
+                        return false;
+                    }
+                });
+            }
+        });
+        //复制
+        $("#lr-copy-button").click(function () {
+            var moduleButtonId = $("#gridTable-button").jqGridRowValue("buttonid");
+            if (checkedRow(moduleButtonId)) {
+                dialogOpen({
+                    id: "OptionModule",
+                    title: '将按钮复制到指定功能里面',
+                    url: '/AuthorizeManage/ModuleButton/OptionModule?keyValue=' + moduleButtonId,
+                    width: "500px",
+                    height: "500px",
+                    callBack: function (iframeId) {
+                        top.frames[iframeId].AcceptClick();
+                    }
+                });
+            }
+        });
+    }
+    /*系统按钮end====================================*/
+
+    /*系统视图being==================================*/
+    var columnJson = "";
+    function getGridView() {
+        var moduleId = $("#moduleid").val();
+        $.ajax({
+            url: "${ctx.contextPath}/ModuleColumn/GetListJson?moduleId=" + escape(moduleId),
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                columnJson = data;
+            },
+        });
+        var $grid = $("#gridTable-view");
+        $grid.jqGrid({
+            unwritten: false,
+            url: "${ctx.contextPath}/ModuleColumn/GetTreeListJson?moduleId=" + escape(moduleId),
+            datatype: "json",
+            height: $(window).height() - 165,
+            width: $(window).width() - 11,
+            colModel: [
+                { label: "主键", name: "F_ModuleColumnId", index: "F_ModuleColumnId", hidden: true },
+                { label: "名称", name: "F_FullName", index: "F_FullName", width: 140, align: "left", sortable: false, },
+                { label: "编号", name: "F_EnCode", index: "F_EnCode", width: 140, align: "left", sortable: false },
+                { label: "描述", name: "F_Description", index: "F_Description", width: 500, align: "left", sortable: false }
+            ],
+            rowNum: 1000,
+            rownumbers: true
+        });
+        //处理Json
+        function ViewListToListTreeJson(columnJson) {
+            $.ajax({
+                url: "${ctx.contextPath}/ModuleColumn/ListToListTreeJson",
+                data: { moduleColumnJson: JSON.stringify(columnJson) },
+                type: "post",
+                dataType: "json",
+                success: function (data) {
+                    $grid.clearGridData();
+                    $grid[0].addJSONData(data);
+                },
+            });
+        }
+        //新增
+        $("#lr-add-view").click(function () {
+            dialogOpen({
+                id: "viewForm",
+                title: '添加视图',
+                url: '${ctx.contextPath}/ModuleColumn/Form?moduleId=' + escape(moduleId),
+                width: "450px",
+                height: "260px",
+                callBack: function (iframeId) {
+                    top.frames[iframeId].AcceptClick(function (data) {
+                        columnJson.push(data);
+                        ViewListToListTreeJson(columnJson);
+                    });
+                }
+            });
+        })
+        //编辑
+        $("#lr-edit-view").click(function () {
+            var moduleColumnId = $("#gridTable-view").jqGridRowValue("F_ModuleColumnId");
+            if (checkedRow(moduleColumnId)) {
+                dialogOpen({
+                    id: "viewForm",
+                    title: '编辑视图',
+                    url: '${ctx.contextPath}/ModuleColumn/Form?moduleColumnId=' + moduleColumnId + "&moduleId=" + escape(moduleId),
+                    width: "450px",
+                    height: "260px",
+                    callBack: function (iframeId) {
+                        top.frames[iframeId].AcceptClick(function (data) {
+                            $.each(columnJson, function (i) {
+                                if (columnJson[i].F_ModuleColumnId == moduleColumnId) {
+                                    columnJson[i] = data;
+                                }
+                            });
+                            ViewListToListTreeJson(columnJson);
+                        });
+                    }
+                });
+            }
+        })
+        //删除
+        $("#lr-delete-view").click(function () {
+            var moduleColumnId = $("#gridTable-view").jqGridRowValue("F_ModuleColumnId");
+            if (checkedRow(moduleColumnId)) {
+                $.each(columnJson, function (i) {
+                    if (columnJson[i].F_ModuleColumnId == moduleColumnId) {
+                        columnJson.splice(i, 1);
+                        ViewListToListTreeJson(columnJson);
+                        return false;
+                    }
+                });
+            }
+        });
+        //批量添加
+        $("#lr-batch-addview").click(function () {
+            dialogOpen({
+                id: "viewForm",
+                title: '批量添加视图',
+                url: '${ctx.contextPath}/ModuleColumn/BatchAdd?moduleId=' + escape(moduleId),
+                width: "450px",
+                height: "300px",
+                callBack: function (iframeId) {
+                    top.frames[iframeId].AcceptClick(function (data) {
+                        columnJson = data;
+                        ViewListToListTreeJson(data);
+                    });
+                }
+            });
+        })
+    }
+    /*系统视图end====================================*/
+</script>
+<div class="widget-body">
+    <div id="wizard" class="wizard" data-target="#wizard-steps" style="border-left: none; border-top: none; border-right: none;">
+        <ul class="steps">
+            <li data-target="#step-1" class="active"><span class="step">1</span>系统功能<span class="chevron"></span></li>
+            <li data-target="#step-2"><span class="step">2</span>系统按钮<span class="chevron"></span></li>
+            <!-- <li data-target="#step-3"><span class="step">3</span>系统视图<span class="chevron"></span></li> -->
+        </ul>
+    </div>
+    <div class="step-content" id="wizard-steps" style="border-left: none; border-bottom: none; border-right: none;">
+        <div class="step-pane active" id="step-1" style="margin-left: 0px; margin-top: 15px; margin-right: 30px;">
+            <input id="moduleid" type="hidden" />
+            <table class="form">
+                <tr>
+                    <th class="formTitle">编号<font face="宋体">*</font></th>
+                    <td class="formValue">
+                        <input id="code" type="text" class="form-control" placeholder="请输入编号" isvalid="yes" checkexpession="NotNull" />
+                    </td>
+                    <th class="formTitle">名称<font face="宋体">*</font></th>
+                    <td class="formValue">
+                        <input id="fullname" type="text" class="form-control" placeholder="请输入名称" isvalid="yes" checkexpession="NotNull" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">上级</th>
+                    <td class="formValue">
+                        <div id="parentid" type="selectTree" class="ui-select">
+                        </div>
+                    </td>
+                    <th class="formTitle">图标</th>
+                    <td class="formValue">
+                        <input id="icon" type="text" class="form-control" />
+                        <span class="input-button" onclick="SelectIcon()" title="选取图标">...</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">目标<font face="宋体">*</font></th>
+                    <td class="formValue">
+                        <div id="target" type="select" class="ui-select" isvalid="yes" checkexpession="NotNull">
+                            <ul>
+                                <li data-value="expand">expand</li>
+                                <li data-value="iframe">iframe</li>
+                                <li data-value="open">open</li>
+                                <li data-value="href">href</li>
+                                <li data-value="blank">blank</li>
+                            </ul>
+                        </div>
+                    </td>
+                    <th class="formTitle">排序<font face="宋体">*</font></th>
+                    <td class="formValue">
+                        <input id="sortcode" type="text" class="form-control" isvalid="yes" checkexpession="Num" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle">地址</th>
+                    <td class="formValue" colspan="3">
+                        <input id="urladdress" type="text" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle" style="height: 37px;">选项</th>
+                    <td class="formValue">
+                        <div class="checkbox user-select">
+                            <label>
+                                <input id="ismenu" type="checkbox" />
+                                菜单
+                            </label>
+                            <label>
+                                <input id="allowexpand" type="checkbox" />
+                                展开
+                            </label>
+                            <label>
+                                <input id="enabledmark" type="checkbox" checked="checked" />
+                                有效
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="formTitle" valign="top" style="padding-top: 4px;">描述
+                    </th>
+                    <td class="formValue" colspan="3">
+                        <textarea id="remark" class="form-control" style="height: 70px;"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="step-pane" id="step-2" style="margin: 5px;">
+            <div style="height: 40px; line-height: 33px; text-align: right;">
+                <div class="btn-group">
+                    <a id="lr-add-button" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;新增</a>
+                    <a id="lr-edit-button" class="btn btn-default"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑</a>
+                    <a id="lr-delete-button" class="btn btn-default"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+                </div>
+                <div class="btn-group">
+                    <a id="lr-copy-button" class="btn btn-default"><i class="fa fa-copy"></i>&nbsp;复制</a>
+                </div>
+            </div>
+            <table id="gridTable-button"></table>
+        </div>
+        <div class="step-pane" id="step-3" style="margin: 5px;">
+            <div style="height: 40px; line-height: 33px; text-align: right;">
+                <div class="btn-group">
+                    <a id="lr-add-view" class="btn btn-default"><i class="fa fa-plus"></i>&nbsp;新增</a>
+                    <a id="lr-edit-view" class="btn btn-default"><i class="fa fa-pencil-square-o"></i>&nbsp;编辑</a>
+                    <a id="lr-delete-view" class="btn btn-default"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+                </div>
+                <div class="btn-group">
+                    <a id="lr-batch-addview" class="btn btn-default"><i class="fa fa-sign-in"></i>&nbsp;批量添加</a>
+                </div>
+            </div>
+            <table id="gridTable-view"></table>
+        </div>
+    </div>
+</div>
+<div class="form-button" id="wizard-actions">
+    <a id="btn_last" disabled class="btn btn-default btn-prev">上一步</a>
+    <a id="btn_next" disabled class="btn btn-default btn-next">下一步</a>
+    <a id="btn_finish" class="btn btn-success">完成</a>
+</div>
+    </form>
+</body>
+</html>

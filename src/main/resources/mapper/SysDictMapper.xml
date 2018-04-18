@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mapper.SysDictMapper">
+  <resultMap id="BaseResultMap" type="com.power.common.entity.SysDict">
+    <id column="dictid" jdbcType="VARCHAR" property="dictid" />
+    <result column="parentid" jdbcType="VARCHAR" property="parentid" />
+    <result column="code" jdbcType="INTEGER" property="code" />
+    <result column="fullname" jdbcType="VARCHAR" property="fullname" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="category" jdbcType="INTEGER" property="category" />
+    <result column="sortcode" jdbcType="INTEGER" property="sortcode" />
+    <result column="deletemark" jdbcType="INTEGER" property="deletemark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    dictid, parentid, code, fullname, remark, category, sortcode, deletemark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_dict
+    where deletemark = 0 and dictid = #{dictid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from sys_dict
+    where dictid = #{dictid,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.power.common.entity.SysDict">
+    insert into sys_dict (dictid, parentid, code, 
+      fullname, remark, category, 
+      sortcode, deletemark)
+    values (#{dictid,jdbcType=VARCHAR}, #{parentid,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{fullname,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, 
+      #{sortcode,jdbcType=INTEGER}, #{deletemark,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.power.common.entity.SysDict">
+    insert into sys_dict
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dictid != null">
+        dictid,
+      </if>
+      <if test="parentid != null">
+        parentid,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="fullname != null">
+        fullname,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="sortcode != null">
+        sortcode,
+      </if>
+      <if test="deletemark != null">
+        deletemark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dictid != null">
+        #{dictid,jdbcType=VARCHAR},
+      </if>
+      <if test="parentid != null">
+        #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="fullname != null">
+        #{fullname,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=INTEGER},
+      </if>
+      <if test="sortcode != null">
+        #{sortcode,jdbcType=INTEGER},
+      </if>
+      <if test="deletemark != null">
+        #{deletemark,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.power.common.entity.SysDict">
+    update sys_dict
+    <set>
+      <if test="parentid != null">
+        parentid = #{parentid,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="fullname != null">
+        fullname = #{fullname,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        category = #{category,jdbcType=INTEGER},
+      </if>
+      <if test="sortcode != null">
+        sortcode = #{sortcode,jdbcType=INTEGER},
+      </if>
+      <if test="deletemark != null">
+        deletemark = #{deletemark,jdbcType=INTEGER},
+      </if>
+    </set>
+    where dictid = #{dictid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.power.common.entity.SysDict">
+    update sys_dict
+    set parentid = #{parentid,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      fullname = #{fullname,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      category = #{category,jdbcType=INTEGER},
+      sortcode = #{sortcode,jdbcType=INTEGER},
+      deletemark = #{deletemark,jdbcType=INTEGER}
+    where dictid = #{dictid,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 左侧列表查询 -->
+  <select id="getTreeList" parameterType="map" resultType="com.power.common.entity.SysDict">
+    select 
+    dictid, parentid, code, fullname, remark, category, sortcode, deletemark
+    from sys_dict
+	where deletemark = 0 and LENGTH(dictid)&lt;=3
+    order by sortcode
+  </select>
+  
+  <!-- 条件查询 -->
+  <select id="getAllList" parameterType="map" resultType="com.power.common.entity.SysDict">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_dict
+   <where>
+   		deletemark = 0
+    	<if test="dictid!=null">and dictid like concat('%',#{dictid,jdbcType=VARCHAR},'%')</if>
+    	<if test="fullname!=null">and fullname like concat('%',#{fullname,jdbcType=VARCHAR},'%')</if>
+    	<if test="pid!=null">and LENGTH(dictid)>3 and left(dictid,3) = #{pid}</if>
+    </where>
+    order by sortcode
+  </select>
+  
+  <!-- 获取最大的字典编码 -->
+  <select id="getMax" parameterType="Integer" resultType="String">
+	select fn_getDict_ID(#{value})
+  </select>
+  
+  <!-- getDictItem -->
+   <select id="getDictItem" parameterType="string" resultType="com.power.base.sys.entity.KeyValue">
+    select dictid as id,fullname as name from sys_dict
+    where deletemark = 0 and LENGTH(dictid)>3 and left(dictid,3) = #{pid}
+    order by sortcode
+  </select>
+  
+  <!-- 首页全局参数 -->
+  <select id="getDict" resultType="com.power.common.entity.SysDict">
+    select dictid, parentid, code, fullname
+    from sys_dict where deletemark = 0 and LENGTH(dictid)>=3
+    order by sortcode
+  </select>
+  
+  <select id="getCanDel" parameterType="String" resultType="Integer">
+	SELECT COUNT(1) as t1 FROM sys_dict 
+	WHERE deletemark = 0 and LENGTH(dictid)>3 and left(dictid,3) = #{dictid}
+</select>
+</mapper>

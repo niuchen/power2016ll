@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>用户信息修改</title>
+<link rel="stylesheet" type="text/css" href="${ctx.contextPath}/res/theme/default/style.css"/>
+<script type="text/javascript" src="${ctx.contextPath}/res/jquery/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/formvalidator/formValidator-4.1.1.min.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/formvalidator/formValidatorRegex.js"></script>
+<link rel="stylesheet" type="text/css" href="${ctx.contextPath}/res/ligerUI/skins/Aqua/css/ligerui-all.css"/>
+<script type="text/javascript" src="${ctx.contextPath}/res/ligerUI/js/core/base.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/ligerUI/js/plugins/ligerTab.js"></script>
+<script type="text/javascript" src="${ctx.contextPath}/res/sys/user/index.js"></script>
+</head><body>
+<form id="userForm" method="post" action="${ctx}/user/editSubmit">
+<input id="id" name="id" type="hidden" value="${_user.id}">
+<div id="userDiv">
+<div tabid="home" title="用户基本信息" lselected="true" >
+	<div class="ModuleContent">
+	<div class="ListRow" style="height: 25px; margin-top: 8px">                    	
+		<div class="ListItemTitle" style="width: 90px;"><span class="red">*</span>用户名:</div>
+		<div class="ListItemContent" style="width:160px;">
+			<input name="username" type="text" id="username" style="160px;" maxlength="20" value="${_user.username }"/>
+		</div>
+		<div class="ListItemContent" id="usernameTip" style="width:220px;"></div>
+	</div>
+	<div class="ListRow" style="height: 25px; margin-top: 8px">                    	
+		<div class="ListItemTitle" style="width: 90px;"><span class="red">*</span>姓名:</div>
+		<div class="ListItemContent" style="width:160px;">
+			<input name="realname" type="text" id="realname" maxlength="10" value="${_user.realname }"/>
+		</div>
+		<div class="ListItemContent" id="nameTip" style="width:220px;"></div>
+	</div>
+	<div class="ListRow" style="height: 25px; margin-top: 8px">                    	
+		<div class="ListItemTitle" style="width: 90px;"><span class="red">*</span>身份证号:</div>
+		<div class="ListItemContent" style="width:160px;">
+			<input name="idcard" type="text" id="idcard" maxlength="18" value="${_user.idcard}"/>
+		</div>
+		<div class="ListItemContent" id="idcardTip" style="width:220px;"></div>
+	</div>
+	<div class="ListRow" style="height: 25px; margin-top: 8px">                    	
+		<div class="ListItemTitle" style="width: 90px;"><span class="red">*</span>手机号:</div>
+		<div class="ListItemContent" style="width:160px;">
+			<input name="mobile" type="text" id="mobile" maxlength="18" value="${_user.mobile}"/>
+		</div>
+		<div class="ListItemContent" id="idcardTip" style="width:220px;"></div>
+	</div>
+	<div class="ListRow" style="height: 25px; margin-top: 8px">                    	
+		<div class="ListItemTitle" style="width: 90px;"><span class="red">*</span>性别:</div>
+		<div class="ListItemContent" style="width:120px;">
+			<select name="gender">
+				<option value="1" ${_user.gender==1?"selected='selected'":""}>男</option>
+				<option value="0" ${_user.gender==0?"selected='selected'":""}>女</option>
+			</select>
+		</div>
+		<div class="ListItemTitle" style="width: 90px;"><span class="red">*</span>用户状态:</div>
+		<div class="ListItemContent" style="width:160px;">
+			<select name="state">
+				<option value="1" ${_user.state==1?"selected='selected'":""}>启用</option>
+				<option value="0" ${_user.state==0?"selected='selected'":""}>不启用</option>
+			</select>
+		</div>
+	</div>	
+	<div class="ListRow" style="height:70px; margin-top: 8px">                    	
+		<div class="ListItemTitle" style="width: 90px;"><span class="red">*</span>备注:</div>
+		<div class="ListItemContent" style="width:360px;height: 70px;">
+			<textarea id="memo" name="memo" class="" style="width: 98.5%" rows="3">${_user.memo }</textarea>
+		</div>
+	</div>	
+	
+	</div>
+	<div class="Content" align="center">
+		<input id="submit" type="submit" value="保存" />
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="reset" value="重置" />
+	</div>
+
+</div>
+<div title="角色">
+	<div id="roleDiv" style="">
+		<table id="RoleTable" style="width: 100%; border-collapse: collapse;" cellspacing="0" cellpadding="0" border="0" width="100%">
+		<tbody>
+			<tr class="TableHeader">
+				<td class="TableHeaderCell" style="width: 25px"></td>				
+				<td class="TableHeaderCell" nowrap="nowrap" align="center" style="width: 40px">选择</td>
+				<td class="TableHeaderCell" nowrap="nowrap">角色名称</td>
+			</tr>
+			<c:forEach var="role" items="${roles}" varStatus="s">
+				<tr class="TableRow" oldclass="TableRow" onmouseover="javascript:if (this.className!='TableRowSelected') this.className='TableRowOver'"
+					onmouseout="javascript:if (this.className!='TableRowSelected') this.className='TableRow'">
+					<td class="TableCellIndex" nowrap="nowrap" align="center">${s.index+1}</td>
+					<td nowrap="nowrap" class="TableCell" align="center">
+						<input id="roleId" name="roleId" type="checkbox" value="${role.id}" <c:if test="${role.checked>0 }" >checked="checked"</c:if>/>
+					</td>
+					<td nowrap="nowrap" class="TableCell">${role.name}</td>					
+				</tr>
+			</c:forEach>
+		</tbody>
+	</table>
+	</div>
+</div>
+</div>
+</form>
+</body></html>
